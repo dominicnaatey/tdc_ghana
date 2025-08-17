@@ -10,12 +10,12 @@ export default function Header() {
 
   const navigation = [
     { name: "Home", href: "/" },
-    { name: "Housing Projects", href: "/housing" },
-    { name: "Land Development", href: "/land" },
-    { name: "Projects", href: "/projects" },
-    { name: "Downloads", href: "/downloads" },
+    { name: "About", href: "/about" },
     { name: "News", href: "/news" },
-    { name: "About Us", href: "/about" },
+    { name: "Residential Houses", href: "/housing" },
+    { name: "Serviced Plots", href: "/land" },
+    { name: "Current Projects", href: "/projects" },
+    { name: "Downloads", href: "/downloads" },
     { name: "Contact", href: "/contact" },
   ]
 
