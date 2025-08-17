@@ -17,9 +17,8 @@ export default function HomePage() {
       <div className="min-h-screen bg-background">
         <Header />
         <main>
-          {/* Image Carousel */}
-          <Carousel />
           <HeroSection />
+          <Carousel />
           <FeaturedProjects />
           <NewsSection />
         </main>
