@@ -38,12 +38,12 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center flex-shrink-0 pr-6">
             <Link href="/" className="flex items-center space-x-3">
-              <div className={`flex items-center justify-center transition-all duration-300 ${isScrolled ? 'w-10 h-10' : 'w-16 h-16'}`}>
+              <div className={`flex items-center justify-center transition-all duration-300 ${isScrolled ? 'w-12 h-12' : 'w-16 h-16'}`}>
                 <Image
                   src={isScrolled ? "/tdc_logo_2.png" : "/tdc_logo.png"}
                   alt="TDC Ghana Ltd Logo"
-                  width={isScrolled ? 40 : 64}
-                  height={isScrolled ? 40 : 64}
+                  width={isScrolled ? 48 : 64}
+                  height={isScrolled ? 48 : 64}
                   className="object-contain transition-all duration-300 w-full h-auto"
                 />
               </div>
