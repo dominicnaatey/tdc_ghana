@@ -1,12 +1,26 @@
 "use client";
 
-import { SidebarProvider } from "@/components/Layouts/sidebar/sidebar-context";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarProvider } from "@/Layouts/sidebar/sidebar-context";
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useState } from 'react';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export default function Providers({ children }: { children: React.ReactNode }) {
+  const [supabaseClient] = useState(() => createClientComponentClient());
+
   return (
-    <ThemeProvider defaultTheme="light" attribute="class">
-      <SidebarProvider>{children}</SidebarProvider>
-    </ThemeProvider>
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <SidebarProvider>
+          {children}
+        </SidebarProvider>
+      </ThemeProvider>
+    </SessionContextProvider>
   );
 }
