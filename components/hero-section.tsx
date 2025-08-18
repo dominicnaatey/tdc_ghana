@@ -54,7 +54,7 @@ export default function HeroSection() {
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
               <img
-                src="/ghana-modern-housing.png"
+                src="/hero_1.jpg"
                 alt="TDC Ghana Housing Development"
                 className="w-full h-full object-cover"
               />
