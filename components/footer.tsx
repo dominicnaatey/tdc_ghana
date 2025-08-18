@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin } from "lucide-react"
 
 export default function Footer() {
@@ -9,8 +10,14 @@ export default function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg font-serif">TDC</span>
+              <div className="w-10 h-10 relative">
+                <Image
+                  src="/tdc_logo.png"
+                  alt="TDC Ghana Ltd Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-foreground font-serif">TDC Ghana Ltd</h3>
