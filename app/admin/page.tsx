@@ -1,121 +1,210 @@
-import { createServerClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FileText, Home, MapPin, Users, TrendingUp, Calendar } from "lucide-react";
+'use client'
 
-export default async function AdminPage() {
-  const supabase = createServerClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+import { useEffect, useState } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
+import { Button } from '@/ui/button'
+import { Badge } from '@/ui/badge'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/ui/dropdown-menu'
+import { useDashboardStats, useContactInquiries } from '@/lib/hooks/use-admin-data'
 
-  if (!session) {
-    redirect("/auth/login");
+export default function AdminPage() {
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+  
+  const { stats, loading: statsLoading } = useDashboardStats()
+  const { inquiries: recentInquiries, loading: inquiriesLoading } = useContactInquiries({ 
+    status: 'new', 
+    limit: 5 
+  })
+
+  useEffect(() => {
+    async function getUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/auth/login')
+        return
+      }
+      setUser(user)
+      setLoading(false)
+    }
+
+    getUser()
+  }, [router, supabase.auth])
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/auth/login')
   }
 
-  // Mock data - replace with real Supabase queries
-  const stats = {
-    totalNews: 12,
-    totalHousing: 8,
-    totalLand: 15,
-    totalInquiries: 23,
-  };
+  if (loading || statsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Dashboard Overview
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Welcome back! Here's what's happening with TDC Ghana.
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Welcome back, {user?.email}</p>
         </div>
+        <Button onClick={handleSignOut} variant="outline">
+          Sign Out
+        </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total News</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalNews}</div>
-            <p className="text-xs text-muted-foreground">
-              +2 from last month
-            </p>
+            <div className="text-2xl font-bold">{stats?.totalNews || 0}</div>
           </CardContent>
         </Card>
-
+        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Housing Projects</CardTitle>
-            <Home className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalHousing}</div>
-            <p className="text-xs text-muted-foreground">
-              +1 new project
-            </p>
+            <div className="text-2xl font-bold">{stats?.totalHousingProjects || 0}</div>
           </CardContent>
         </Card>
-
+        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Land Plots</CardTitle>
-            <MapPin className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalLand}</div>
-            <p className="text-xs text-muted-foreground">
-              +3 new listings
-            </p>
+            <div className="text-2xl font-bold">{stats?.totalLandPlots || 0}</div>
           </CardContent>
         </Card>
-
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Projects</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats?.totalProjects || 0}</div>
+          </CardContent>
+        </Card>
+        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Inquiries</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalInquiries}</div>
-            <p className="text-xs text-muted-foreground">
-              +5 this week
-            </p>
+            <div className="text-2xl font-bold">{stats?.totalInquiries || 0}</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Button className="h-20 flex-col space-y-2">
-              <FileText className="h-6 w-6" />
-              <span>Add News</span>
+      {/* Recent Activity */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Recent Inquiries</CardTitle>
+            <CardDescription>Latest contact inquiries from your website</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {inquiriesLoading ? (
+              <div>Loading inquiries...</div>
+            ) : (
+              <div className="space-y-4">
+                {recentInquiries?.map((inquiry) => (
+                  <div key={inquiry.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="space-y-1">
+                      <p className="font-medium">{inquiry.name}</p>
+                      <p className="text-sm text-muted-foreground">{inquiry.email}</p>
+                      <p className="text-sm">{inquiry.subject}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant={inquiry.status === 'new' ? 'default' : 'secondary'}>
+                        {inquiry.status}
+                      </Badge>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm">⋮</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem>View Details</DropdownMenuItem>
+                          <DropdownMenuItem>Mark as Read</DropdownMenuItem>
+                          <DropdownMenuItem>Reply</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
+                ))}
+                {(!recentInquiries || recentInquiries.length === 0) && (
+                  <p className="text-muted-foreground">No recent inquiries</p>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common administrative tasks</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button className="w-full justify-start" variant="outline">
+              Add New Article
             </Button>
-            <Button variant="outline" className="h-20 flex-col space-y-2">
-              <Home className="h-6 w-6" />
-              <span>New Housing</span>
+            <Button className="w-full justify-start" variant="outline">
+              Create Housing Project
             </Button>
-            <Button variant="outline" className="h-20 flex-col space-y-2">
-              <MapPin className="h-6 w-6" />
-              <span>Add Land Plot</span>
+            <Button className="w-full justify-start" variant="outline">
+              Add Land Plot
             </Button>
-            <Button variant="outline" className="h-20 flex-col space-y-2">
-              <Users className="h-6 w-6" />
-              <span>View Inquiries</span>
+            <Button className="w-full justify-start" variant="outline">
+              Manage Downloads
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+            <Button className="w-full justify-start" variant="outline">
+              View All Inquiries
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Featured Content */}
+      {stats?.featuredNews && stats.featuredNews.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Featured News</CardTitle>
+            <CardDescription>Currently featured articles on your website</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3">
+              {stats.featuredNews.map((article: any) => (
+                <div key={article.id} className="p-4 border rounded-lg">
+                  <h3 className="font-medium">{article.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {article.excerpt || article.content.substring(0, 100) + '...'}
+                  </p>
+                  <div className="flex items-center justify-between mt-2">
+                    <Badge variant={article.published ? 'default' : 'secondary'}>
+                      {article.published ? 'Published' : 'Draft'}
+                    </Badge>
+                    <Button size="sm" variant="ghost">Edit</Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
-  );
+  )
 }
