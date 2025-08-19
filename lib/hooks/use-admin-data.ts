@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
-import AdminDataProvider, { 
+import ClientAdminDataProvider, { 
   NewsItem, 
   HousingProject, 
   LandPlot, 
   Project, 
   Download, 
   ContactInquiry 
-} from '../supabase/admin-data-provider'
+} from '../supabase/admin-data-provider-client'
 
-const adminDataProvider = new AdminDataProvider()
+const adminDataProvider = new ClientAdminDataProvider()
 
 export function useAdminData() {
   return adminDataProvider
@@ -97,7 +97,7 @@ export function useContactInquiries(filters?: { status?: string; inquiry_type?: 
       const data = await adminDataProvider.getContactInquiries(filters)
       setInquiries(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch inquiries')
+      setError(err instanceof Error ? err.message : 'Failed to fetch contact inquiries')
     } finally {
       setLoading(false)
     }
