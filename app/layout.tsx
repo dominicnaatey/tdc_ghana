@@ -10,7 +10,7 @@ import { Header } from "@/Layouts/header";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
-import { Providers } from "./providers";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: {
