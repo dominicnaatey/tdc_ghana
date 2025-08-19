@@ -1,14 +1,12 @@
-"use client";
-
-import { useDashboardStats } from '@/lib/hooks/use-admin-data';
-import { OverviewCard } from './OverviewCard';
+import { useDashboardStats } from "@/lib/hooks/use-admin-data";
+import { OverviewCard } from "./OverviewCard";
 import { 
   NewspaperIcon, 
   HomeIcon, 
   MapIcon, 
   FolderIcon, 
   EnvelopeIcon 
-} from '@heroicons/react/24/outline';
+} from "@/assets/icons";
 
 export function OverviewCardsGroup() {
   const { stats, loading } = useDashboardStats();
