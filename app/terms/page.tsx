@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      {/* <Header /> */}
       <main>
         {/* Hero Section */}
         <section className="py-16 lg:py-24 bg-gradient-to-br from-primary/5 to-accent/5">
@@ -178,7 +178,7 @@ export default function TermsPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
