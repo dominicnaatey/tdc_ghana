@@ -102,13 +102,14 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
       {/* Header Section */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-[#0D3562] border-b border-gray-100">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-black mb-4">
+            <h1 className="text-5xl font-bold text-gray-100 mb-4">
+
               Stories & Insights
             </h1>
-            <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
               Discover the latest developments, innovations, and insights from TDC Ghana Ltd.
             </p>
           </div>
