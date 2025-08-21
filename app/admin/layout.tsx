@@ -1,12 +1,12 @@
 "use client";
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { SidebarProvider } from '@/components/admin/SidebarContext';
-import type { User } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/client';
+import type { User, AuthChangeEvent, Session } from '@supabase/supabase-js';
 
 export default function AdminLayout({
   children,
@@ -16,20 +16,36 @@ export default function AdminLayout({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
 
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
       if (!user) {
         router.push('/auth/login');
-      } else {
-        setUser(user);
       }
       setLoading(false);
     };
 
     getUser();
+
+    // Listen for authentication state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          setUser(session.user);
+          setLoading(false);
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          router.push('/auth/login');
+        }
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [router, supabase.auth]);
 
   if (loading) {
@@ -48,9 +64,9 @@ export default function AdminLayout({
     <SidebarProvider>
       <div className="flex min-h-screen">
         <AdminSidebar />
-        <div className="w-full bg-gray-50 dark:bg-gray-900">
+        <div className="flex-1 flex flex-col">
           <AdminHeader user={user} />
-          <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+          <main className="flex-1 p-6 bg-gray-50">
             {children}
           </main>
         </div>
