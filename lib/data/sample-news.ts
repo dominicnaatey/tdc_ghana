@@ -52,7 +52,7 @@ export const sampleNews: NewsArticle[] = [
     title: "Community 26 Kpone Affordable Housing Project",
     slug: "community-26-kpone-affordable-housing-project",
     content: `<p>TDC Ghana Ltd, is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale.</p>`,
-    excerpt: "",
+    excerpt: "TDC Ghana Ltd, is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale.",
     featured_image: "/news/news2/Picture1.jpg",
     status: "published",
     category: "Housing",
@@ -72,7 +72,7 @@ export const sampleNews: NewsArticle[] = [
     <img src="/news/news3/Picture2.jpg" class="w-full h-auto rounded-lg mt-6" />
     <img src="/news/news3/Picture3.jpg" class="w-full h-auto rounded-lg mt-6" />
     <img src="/news/news3/Picture4.jpg" class="w-full h-auto rounded-lg mt-6" />`,
-    excerpt: "",
+    excerpt: "A delegation from the Bussa Ethnic community in Tema, led by Chief Gibril Mahmoud Bancey III, paid a visit to the Managing Director of TDC Ghana Ltd.",
     featured_image: "/news/news3/Picture1.jpg",
 
     status: "published",
@@ -90,7 +90,7 @@ export const sampleNews: NewsArticle[] = [
     
     <img src="/news/news4/Picture2.jpg" class="w-full h-auto rounded-lg mt-6" />
     <img src="/news/news4/Picture3.jpg" class="w-full h-auto rounded-lg mt-6" />`,
-    excerpt: "",
+    excerpt: "TDC Ghana Ltd participated in the 2025 May Day Celebration, held at the historic Black Star Square, to commemorate and appreciate the invaluable contributions of workers.",
     featured_image: "/news/news4/Picture1.jpg",
     status: "published",
     category: "Sustainability",
@@ -106,7 +106,7 @@ export const sampleNews: NewsArticle[] = [
     content: `<p>A delegation from FreeMinds Communication Limited, owners of Plan B FM, recently paid a visit to TDC Ghana Ltd to seek their support for an upcoming Community Soccer Gala. The team expressed interest in the company's participation in their educational programs to raise awareness about their activities and foster cooperation among Tema residents to build a better city.</p>
     <p>Leading the delegation, Chief Executive Madam Comfort Aniagyei highlighted the importance of a partnership between Plan B FM and TDC Ghana Ltd. She noted that TDC's reputation as a leading institution in creating and managing sustainable urban settlements would be further enhanced through a mutually beneficial partnership with Plan B FM.</p>
     <p>In response, the Managing Director of TDC Ghana Ltd commended Plan B FM for their good work and pledged to partner with them on developmental programs aimed at promoting good living in Tema.`,
-    excerpt: "",
+    excerpt: "A delegation from FreeMinds Communication Limited, owners of Plan B FM, recently paid a visit to TDC Ghana Ltd to seek their support for an upcoming Community Soccer Gala. The team expressed interest in the company's participation in their educational programs to raise awareness about their activities and foster cooperation among Tema residents to build a better city.",
     featured_image: "/news/news5/Picture1.jpg",
     status: "published",
     category: "Infrastructure",
@@ -123,7 +123,7 @@ export const sampleNews: NewsArticle[] = [
     <p>Dr. Akwetey appealed to TDC to tap into AGI’s expertise as a catalyst for Tema’s development, stressing the value of closer collaboration. In turn, Mr. Nunekpeku commended AGI for initiating what he described as a “fruitful relationship” and urged members to meet their ground-rent obligation.</p>
     <p>Looking ahead, Mr. Nunekpeku announced plans to convene a broad stakeholder forum—co-hosted by TDC and the Tema Metropolitan Assembly—to devise a permanent solution to the city’s sewage challenges.</p> `,
     
-    excerpt: "",
+    excerpt: "On Monday, 28 April 2025, the Tema branch of the Association of Ghana Industries (AGI) paid a courtesy call on Mr. Courage K. M. Nunekpeku, Managing Director of TDC Ghana Ltd.",
     featured_image: "/news/news6/Picture1.jpg",
     status: "published",
     category: "Events",
