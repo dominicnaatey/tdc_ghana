@@ -1,104 +1,98 @@
 import { Suspense } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { CalendarDays, Clock, ArrowRight } from "lucide-react"
+import { CalendarDays, Clock } from "lucide-react"
 import Link from "next/link"
-import { createServerClient } from "@/lib/supabase/server"
 import { formatDistanceToNow } from "date-fns"
+import { getPublishedNews } from "@/lib/data/sample-news"
 
-async function getNews() {
-  const supabase = createServerClient()
-
-  const { data: news, error } = await supabase
-    .from("news")
-    .select("*")
-    .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(20)
-
-  if (error) {
-    console.error("Error fetching news:", error)
-    return []
-  }
-
-  return news || []
+function getNews() {
+  return getPublishedNews()
 }
 
 function NewsCardSkeleton() {
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-video">
-        <Skeleton className="w-full h-full" />
-      </div>
-      <CardHeader>
-        <div className="flex items-center gap-2 mb-2">
-          <Skeleton className="h-5 w-20" />
-          <Skeleton className="h-4 w-24" />
+    <article className="py-8 border-b border-gray-100 last:border-b-0" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
+      <div className="flex gap-6">
+        <div className="flex-1">
+          <Skeleton className="h-7 w-full mb-3" />
+          <Skeleton className="h-5 w-full mb-2" />
+          <Skeleton className="h-5 w-3/4 mb-4" />
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-16" />
+          </div>
         </div>
-        <Skeleton className="h-6 w-full mb-2" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
-      </CardHeader>
-    </Card>
+        <div className="w-48 h-32 flex-shrink-0">
+          <Skeleton className="w-full h-full rounded" />
+        </div>
+      </div>
+    </article>
   )
 }
 
-async function NewsList() {
-  const news = await getNews()
+function NewsCard({ article }: { article: any }) {
+  return (
+    <article 
+      className="py-8 border-b border-gray-100 last:border-b-0"
+      style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}
+    >
+      <div className="flex gap-6">
+        <Link href={`/news/${article.slug}`} className="block flex-1">
+          <div className="flex-1 cursor-pointer">
+            <h2 className="font-bold text-black mb-2 line-clamp-2 leading-tight hover:text-black" style={{ fontSize: '24px' }}>
+              {article.title}
+            </h2>
+            <p className="text-gray-600 line-clamp-2 text-base leading-relaxed mb-4">
+              {article.excerpt}
+            </p>
+            
+            <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-1">
+                <CalendarDays className="w-4 h-4" />
+                <span>{formatDistanceToNow(new Date(article.published_at), { addSuffix: true })}</span>
+              </div>
+              <span className="text-gray-300">·</span>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                <span>{article.read_time} min read</span>
+              </div>
+            </div>
+          </div>
+        </Link>
+        
+        {article.featured_image && (
+          <Link href={`/news/${article.slug}`} className="block">
+            <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
+              <img
+                src={article.featured_image || "/placeholder.svg"}
+                alt={article.title}
+                className="w-full h-full object-cover opacity-90 transition-opacity"
+                style={{ borderRadius: '1px' }}
+              />
+            </div>
+          </Link>
+        )}
+      </div>
+    </article>
+  )
+}
+
+function NewsList() {
+  const news = getNews()
 
   if (news.length === 0) {
     return (
-      <div className="text-center py-12">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No news articles found</h3>
-        <p className="text-gray-600">Check back later for updates and announcements.</p>
+      <div className="text-center py-16" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
+        <h3 className="text-xl font-semibold text-black mb-2">No stories published yet</h3>
+        <p className="text-gray-600">Check back soon for the latest updates and insights.</p>
       </div>
     )
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="max-w-4xl mx-auto">
       {news.map((article) => (
-        <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-          {article.featured_image && (
-            <div className="aspect-video overflow-hidden">
-              <img
-                src={article.featured_image || "/placeholder.svg"}
-                alt={article.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          )}
-          <CardHeader>
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary" className="bg-cyan-100 text-cyan-800">
-                {article.category}
-              </Badge>
-              <div className="flex items-center text-sm text-gray-500">
-                <CalendarDays className="w-4 h-4 mr-1" />
-                {formatDistanceToNow(new Date(article.published_at), { addSuffix: true })}
-              </div>
-            </div>
-            <CardTitle className="line-clamp-2 hover:text-cyan-700 transition-colors">
-              <Link href={`/news/${article.slug}`}>{article.title}</Link>
-            </CardTitle>
-            <p className="text-gray-600 line-clamp-3 text-sm">{article.excerpt}</p>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center text-sm text-gray-500">
-                <Clock className="w-4 h-4 mr-1" />
-                {article.read_time} min read
-              </div>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href={`/news/${article.slug}`}>
-                  Read More <ArrowRight className="w-4 h-4 ml-1" />
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <NewsCard key={article.id} article={article} />
       ))}
     </div>
   )
@@ -106,22 +100,26 @@ async function NewsList() {
 
 export default function NewsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-cyan-800 to-cyan-900 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold mb-4">News & Updates</h1>
-            <p className="text-xl text-cyan-100">
-              Stay informed with the latest developments, announcements, and insights from TDC Ghana Ltd.
+    <div className="min-h-screen bg-white" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
+      {/* Header Section */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl font-bold text-black mb-4">
+              Stories & Insights
+            </h1>
+            <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+              Discover the latest developments, innovations, and insights from TDC Ghana Ltd.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      {/* News Content */}
+      <div className="container mx-auto px-4 py-8">
         <Suspense
           fallback={
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="max-w-4xl mx-auto">
               {Array.from({ length: 6 }).map((_, i) => (
                 <NewsCardSkeleton key={i} />
               ))}
