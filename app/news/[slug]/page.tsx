@@ -5,30 +5,21 @@ import { Separator } from "@/components/ui/separator"
 import { CalendarDays, Clock, ArrowLeft, Share2, Heart, MessageCircle, Bookmark, Twitter, Facebook, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
-import { getNewsBySlug, getRelatedNews } from "@/lib/data/sample-news"
+import { getNewsBySlug, sampleNews, NewsArticle } from "@/lib/data/sample-news"
 
 function getNewsArticle(slug: string) {
   return getNewsBySlug(slug)
 }
 
-function getRelatedNewsArticles(currentId: number, category: string) {
+function getRelatedNewsArticles(currentId: number, category: string): NewsArticle[] {
   // Get the 2 most recent articles (excluding the current article)
   return sampleNews
-    .filter(article => 
+    .filter((article: NewsArticle) => 
       article.id !== currentId && 
       article.status === 'published'
     )
-    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+    .sort((a: NewsArticle, b: NewsArticle) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
     .slice(0, 2);
-}
-
-const related = getRelatedNews(currentId, category, 6)
-// Add debugging
-console.log('Current article ID:', currentId)
-console.log('Current category:', category)
-console.log('Related news found:', related.length)
-console.log('Related articles:', related)
-return related
 }
 
 export default function NewsArticlePage({
@@ -199,22 +190,13 @@ export default function NewsArticlePage({
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-black mb-4">More from TDC</h2>
           
-          {/* Debug information */}
-          <div className="mb-8 p-4 bg-yellow-100 rounded-lg">
-            <p><strong>Debug Info:</strong></p>
-            <p>Current Article: {article.title}</p>
-            <p>Article ID: {article.id}</p>
-            <p>Category: {article.category}</p>
-            <p>Related News Count: {relatedNews.length}</p>
-          </div>
-          
           {relatedNews.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {relatedNews.slice(0, 4).map((related) => (
                 <Link key={related.id} href={`/news/${related.slug}`} className="group">
                   <article className="space-y-4">
                     {related.featured_image && (
-                      <div className="aspect-[3/2] overflow-hidden rounded-lg">
+                      <div className="aspect-[2/1] overflow-hidden rounded-md">
                         <img
                           src={related.featured_image || "/placeholder.svg"}
                           alt={related.title}
@@ -224,18 +206,7 @@ export default function NewsArticlePage({
                     )}
                     
                     {/* Author Info */}
-                    <div className="flex items-center space-x-3 mb-3">
-                      <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-xs font-semibold text-gray-600">
-                          {related.author?.charAt(0) || 'A'}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <span className="font-medium">{related.author || 'TDC Ghana'}</span>
-                        <span>in</span>
-                        <span className="font-medium text-green-600">{related.category || 'News'}</span>
-                      </div>
-                    </div>
+                    
 
                     <div className="space-y-3">
                       <h3 className="font-bold text-lg text-black group-hover:text-gray-700 transition-colors line-clamp-2 leading-tight">
