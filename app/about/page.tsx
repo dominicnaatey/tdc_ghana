@@ -68,12 +68,14 @@ export default function AboutPage() {
       {/* <Header /> */}
       <main>
         {/* Hero Section */}
-        <section className="py-16 lg:py-24 bg-gradient-to-br from-primary/5 to-accent/5">
+        <section className="py-16 lg:py-24 bg-[#003366] from-primary/5 to-accent/5">
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground font-serif mb-6">About TDC Ghana Ltd</h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Tema Development Corporation has been at the forefront of Ghana's development since 1952, transforming
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-100 font-serif mb-6">About TDC Ghana Ltd</h1>
+              <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+
+                TDC Ghana Ltd has been at the forefront of Ghana's development since 1952, transforming
                 communities through innovative housing, strategic land development, and essential infrastructure
                 projects across the nation.
               </p>
