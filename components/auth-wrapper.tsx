@@ -14,12 +14,30 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
       const { data: { session } } = await supabase.auth.getSession()
       if (session) {
         router.push('/admin')
+        // Don't set loading to false here - let the redirect happen
       } else {
         setLoading(false)
       }
     }
 
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          setLoading(true) // Show loading during redirect
+          router.push('/admin')
+        } else if (event === 'SIGNED_OUT') {
+          setLoading(false)
+        }
+      }
+    )
+
     checkAuth()
+
+    // Cleanup subscription
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [router, supabase.auth])
 
   if (loading) {
