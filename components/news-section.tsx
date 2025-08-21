@@ -1,42 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRight } from "lucide-react"
+import { Calendar, ArrowRight, Heart, MessageCircle, Bookmark } from "lucide-react"
 import Link from "next/link"
-
-const newsItems = [
-  {
-    id: 1,
-    title: "TDC Ghana Launches New Affordable Housing Initiative",
-    excerpt:
-      "TDC Ghana announces new affordable housing initiative to deliver 500+ quality homes for middle-income families.",
-    date: "2024-01-15",
-    category: "Housing",
-    image: "/ghana-housing-construction.png",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Infrastructure Development Update: New Road Networks",
-    excerpt: "New road networks completed as part of TDC Ghana's ongoing infrastructure development program.",
-    date: "2024-01-10",
-    category: "Infrastructure",
-    image: "/ghana-road-construction.png",
-    featured: false,
-  },
-  {
-    id: 3,
-    title: "Community Engagement: TDC Ghana Partners with Local Schools",
-    excerpt:
-      "TDC Ghana partners with local schools to improve educational infrastructure and support student learning.",
-    date: "2024-01-05",
-    category: "Community",
-    image: "/ghana-school-construction.png",
-    featured: false,
-  },
-]
+import { format } from "date-fns"
+import { getPublishedNews } from "@/lib/data/sample-news"
 
 export default function NewsSection() {
+  const newsItems = getPublishedNews().slice(0, 4)
+
   return (
     <section className="py-16 lg:py-24 bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,52 +21,56 @@ export default function NewsSection() {
         </div>
 
         {/* News Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {newsItems.map((item) => (
-            <Card
-              key={item.id}
-              className="group hover:shadow-lg transition-shadow duration-300 bg-background border-border"
-            >
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4">
-                  <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                    {item.category}
-                  </Badge>
-                </div>
-              </div>
-
-              <CardHeader className="pb-3">
-                <div className="flex items-center text-muted-foreground text-sm mb-2">
-                  <Calendar className="h-4 w-4 mr-1" />
-                  {new Date(item.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </div>
-                <CardTitle className="text-xl font-semibold text-foreground font-serif line-clamp-2">
-                  {item.title}
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground text-sm line-clamp-3">{item.excerpt}</p>
-
-                <Button
-                  variant="ghost"
-                  className="w-full justify-between text-primary hover:text-primary-foreground hover:bg-primary group"
-                >
-                  Read More
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {newsItems.map((article) => (
+              <Link key={article.id} href={`/news/${article.slug}`} className="group">
+                <article className="space-y-4">
+                  {article.featured_image && (
+                    <div className="aspect-[2/1] overflow-hidden rounded-md">
+                      <img
+                        src={article.featured_image || "/placeholder.svg"}
+                        alt={article.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  
+                  <div className="space-y-3">
+                    <h3 className="font-bold text-lg text-black group-hover:text-gray-700 transition-colors line-clamp-2 leading-tight">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                    
+                    {/* Engagement and Date */}
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="flex items-center space-x-4 text-xs text-gray-500">
+                        <span>{format(new Date(article.published_at), "MMM d")}</span>
+                        <div className="flex items-center space-x-1">
+                          <Heart className="w-3 h-3" />
+                          <span>{Math.floor(Math.random() * 100) + 10}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <MessageCircle className="w-3 h-3" />
+                          <span>{Math.floor(Math.random() * 20) + 1}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Bookmark className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" />
+                        <button className="text-gray-400 hover:text-gray-600">
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* CTA */}
