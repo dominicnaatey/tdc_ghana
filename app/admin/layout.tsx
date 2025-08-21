@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { AdminHeader } from '@/components/admin/AdminHeader';
 import { SidebarProvider } from '@/components/admin/SidebarContext';
+import { AdminThemeProvider } from '@/components/admin-theme-provider';
 import { createClient } from '@/lib/supabase/client';
 import type { User, AuthChangeEvent, Session } from '@supabase/supabase-js';
 
@@ -61,16 +62,18 @@ export default function AdminLayout({
   }
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen">
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col">
-          <AdminHeader user={user} />
-          <main className="flex-1 p-6 bg-gray-50">
-            {children}
-          </main>
+    <AdminThemeProvider>
+      <SidebarProvider>
+        <div className="flex min-h-screen">
+          <AdminSidebar />
+          <div className="flex-1 flex flex-col">
+            <AdminHeader user={user} />
+            <main className="flex-1 p-6 bg-gray-50 dark:bg-gray-900">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </AdminThemeProvider>
   );
 }
