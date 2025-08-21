@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   },
   description:
     "Tema Development Corporation leads Ghana's transformation through innovative housing projects, strategic land development, and essential infrastructure that creates thriving communities.",
+  icons: {
+    icon: "/tdc_logo.ico",
+    shortcut: "/tdc_logo.ico",
+    apple: "/tdc_logo.ico",
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
