@@ -99,26 +99,27 @@ class AdminDataProvider {
   }
 
   // News operations
+  // Fix for getNews method (around line 102-125)
   async getNews(filters?: {
     published?: boolean;
     featured?: boolean;
     limit?: number;
   }) {
     let query = this.supabase.from("news").select("*");
-
+  
     if (filters?.published !== undefined) {
       query = query.eq("published", filters.published);
     }
     if (filters?.featured !== undefined) {
       query = query.eq("featured", filters.featured);
     }
-
-    query = query.order("created_at", { ascending: false });
-
+  
     if (filters?.limit) {
-      query = query.limit(filters.limit);
+      query = query.order("created_at", { ascending: false }).limit(filters.limit);
+    } else {
+      query = query.order("created_at", { ascending: false });
     }
-
+  
     const { data, error } = await query;
     if (error) throw error;
     return data as NewsItem[];
@@ -165,26 +166,27 @@ class AdminDataProvider {
   }
 
   // Housing Projects operations
+  // Fix for getHousingProjects method (around line 168-191)
   async getHousingProjects(filters?: {
     status?: string;
     featured?: boolean;
     limit?: number;
   }) {
     let query = this.supabase.from("housing_projects").select("*");
-
+  
     if (filters?.status) {
       query = query.eq("status", filters.status);
     }
     if (filters?.featured !== undefined) {
       query = query.eq("featured", filters.featured);
     }
-
-    query = query.order("created_at", { ascending: false });
-
+  
     if (filters?.limit) {
-      query = query.limit(filters.limit);
+      query = query.order("created_at", { ascending: false }).limit(filters.limit);
+    } else {
+      query = query.order("created_at", { ascending: false });
     }
-
+  
     const { data, error } = await query;
     if (error) throw error;
     return data as HousingProject[];
