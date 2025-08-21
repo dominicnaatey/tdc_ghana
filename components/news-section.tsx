@@ -7,7 +7,7 @@ import { format } from "date-fns"
 import { getPublishedNews } from "@/lib/data/sample-news"
 
 export default function NewsSection() {
-  const newsItems = getPublishedNews().slice(0, 4)
+  const newsItems = getPublishedNews().slice(0, 3)
 
   return (
     <section className="py-16 lg:py-24 bg-card">
@@ -20,9 +20,9 @@ export default function NewsSection() {
           </p>
         </div>
 
-        {/* News Grid */}
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {/* News Grid - 1 row, 3 columns */}
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {newsItems.map((article) => (
               <Link key={article.id} href={`/news/${article.slug}`} className="group">
                 <article className="space-y-4">
