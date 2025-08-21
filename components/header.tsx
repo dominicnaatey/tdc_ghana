@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navigationItems = [
     { name: "Home", href: "/" },
@@ -18,6 +20,13 @@ export default function Header() {
     { name: "Downloads", href: "/downloads" },
     { name: "Contact", href: "/contact" },
   ];
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -40,7 +49,11 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors duration-200"
+                className={`text-sm font-medium transition-colors duration-200 ${
+                  isActive(item.href)
+                    ? "text-accent"
+                    : "text-gray-700 hover:text-accent"
+                }`}
               >
                 {item.name}
               </Link>
@@ -68,7 +81,11 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-base font-medium text-gray-700 hover:text-purple-600 transition-colors duration-200"
+                  className={`text-base font-medium transition-colors duration-200 ${
+                    isActive(item.href)
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-accent"
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
