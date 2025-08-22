@@ -12,7 +12,7 @@ const images = [
   "/carousel/7.jpg",
   "/carousel/8.jpeg",
   "/carousel/9.jpeg",
-  "/carousel/10.jpeg",
+  "/carousel/10.jpg",
   "/carousel/11.jpeg"
 ];
 
@@ -57,7 +57,7 @@ const Carousel: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-full" data-carousel="static">
           {/* Carousel wrapper */}
-          <div className="relative h-56 overflow-hidden rounded-lg md:h-120">
+          <div className="relative h-56 overflow-hidden rounded-lg md:h-140">
             {images.map((src, index) => (
               <div
                 key={index}
