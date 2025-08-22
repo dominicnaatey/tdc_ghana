@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Home, Building } from "lucide-react";
+import MuxPlayer from "@mux/mux-player-react";
 
 export default function HeroSection() {
   return (
@@ -65,13 +66,13 @@ export default function HeroSection() {
           {/* Video/Visual */}
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
-              <iframe
-                src="https://player.mux.com/W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E?metadata-video-title=Welcome+to+TDC+Ghana+Ltd&video-title=Welcome+to+TDC+Ghana+Ltd&controls=false&autoplay=1&muted=1&loop=1"
-                className="w-full h-full"
-                style={{ border: 'none' }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                allowFullScreen
-                title="Welcome to TDC Ghana Ltd"
+              <MuxPlayer 
+                playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
+                metadataVideoTitle="Welcome to TDC Ghana Ltd"
+                metadataViewerUserId="user-tdc-001"
+                autoPlay="muted"
+                loop
+                style={{width: '100%', height: '100%'}}
               />
             </div>
 
