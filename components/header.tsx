@@ -83,7 +83,7 @@ export default function Header() {
                   href={item.href}
                   className={`text-base font-medium transition-colors duration-200 ${
                     isActive(item.href)
-                      ? "text-blue-600"
+                      ? "text-accent"
                       : "text-gray-700 hover:text-accent"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
