@@ -54,7 +54,7 @@ export default function HeroSection() {
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
               <iframe 
-                src="https://player.mux.com/W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E?metadata-video-title=Welcome+to+TDC+Ghana+Ltd&video-title=Welcome+to+TDC+Ghana+Ltd" 
+                src="https://player.mux.com/W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E?metadata-video-title=Welcome+to+TDC+Ghana+Ltd&video-title=Welcome+to+TDC+Ghana+Ltd&controls=false" 
                 className="w-full h-full"
                 style={{ border: 'none' }}
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
