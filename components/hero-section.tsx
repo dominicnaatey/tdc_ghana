@@ -66,14 +66,22 @@ export default function HeroSection() {
           {/* Video/Visual */}
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
-              <MuxPlayer 
-                playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
-                metadataVideoTitle="Welcome to TDC Ghana Ltd"
-                metadataViewerUserId="user-tdc-001"
-                autoPlay="muted"
-                loop
-                style={{width: '100%', height: '100%'}}
-              />
+              <MuxPlayer
+              playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
+              metadataVideoTitle="Welcome to TDC Ghana Ltd"
+              metadataViewerUserId="user-tdc-001"
+              autoPlay="muted"
+              loop
+              style={{
+                width: '100%',
+                height: '100%',
+                '--controls': 'none',
+                '--control-bar': 'none',
+                '--top-control-bar': 'none',
+                '--center-controls': 'none',
+                '--bottom-control-bar': 'none'
+              } as React.CSSProperties}
+            />
             </div>
 
             {/* Floating Cards */}
