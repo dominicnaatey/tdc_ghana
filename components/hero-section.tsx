@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Home, Building } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Home, Building } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -7,20 +7,24 @@ export default function HeroSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="text-4xl lg:text-6xl font-bold text-foreground font-serif leading-tight">
+              <h1 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
                 Building Ghana's
                 <span className="text-primary block">Future Together</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-                Tema Development Corporation leads Ghana's transformation through innovative housing projects, strategic
-                land development, and essential infrastructure that creates thriving communities.
+                TDC Ghana Ltd leads Ghana's transformation
+                through innovative housing projects, strategic land development,
+                and essential infrastructure that creates thriving communities.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
                 Explore Housing Projects
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -34,17 +38,25 @@ export default function HeroSection() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8">
-              <div className="text-center">
-                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">10,500+</div>
-                <div className="text-sm text-muted-foreground">Housing Units</div>
+            <div className="grid grid-cols-3 gap-5 pt-4">
+              <div className="text-start">
+                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">
+                  10,500+
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Housing Units
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">60,200+</div>
+              <div className="text-start">
+                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">
+                  60,200+
+                </div>
                 <div className="text-sm text-muted-foreground">Land Plots</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">25+</div>
+              <div className="text-start">
+                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">
+                  25+
+                </div>
                 <div className="text-sm text-muted-foreground">Projects</div>
               </div>
             </div>
@@ -53,11 +65,11 @@ export default function HeroSection() {
           {/* Video/Visual */}
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
-              <iframe 
-                src="https://player.mux.com/W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E?metadata-video-title=Welcome+to+TDC+Ghana+Ltd&video-title=Welcome+to+TDC+Ghana+Ltd&controls=false" 
+              <iframe
+                src="https://player.mux.com/W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E?metadata-video-title=Welcome+to+TDC+Ghana+Ltd&video-title=Welcome+to+TDC+Ghana+Ltd&controls=false&autoplay=1&muted=1&loop=1"
                 className="w-full h-full"
                 style={{ border: 'none' }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
                 allowFullScreen
                 title="Welcome to TDC Ghana Ltd"
               />
@@ -91,5 +103,5 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
