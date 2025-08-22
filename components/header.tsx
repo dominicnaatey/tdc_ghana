@@ -29,7 +29,8 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-600 bg-[#0D3562]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0D3562]/90">
+
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Brand */}
@@ -52,7 +53,7 @@ export default function Header() {
                 className={`text-sm font-medium transition-colors duration-200 ${
                   isActive(item.href)
                     ? "text-accent"
-                    : "text-gray-700 hover:text-accent"
+                    : "text-gray-100 hover:text-accent"
                 }`}
               >
                 {item.name}
@@ -62,7 +63,9 @@ export default function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex">
-            <Button className="bg-gray-800 hover:bg-purple-600 text-white transition-colors duration-200">
+            <Button className="bg-accent hover:bg-[#DA7A0B] txt-white transition-colors duration-200">
+
+
               Get Started
             </Button>
           </div>
