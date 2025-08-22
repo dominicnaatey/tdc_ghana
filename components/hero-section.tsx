@@ -36,32 +36,35 @@ export default function HeroSection() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 pt-8">
               <div className="text-center">
-                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">500+</div>
+                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">10,500+</div>
                 <div className="text-sm text-muted-foreground">Housing Units</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">1,200+</div>
+                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">60,200+</div>
                 <div className="text-sm text-muted-foreground">Land Plots</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">50+</div>
+                <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">25+</div>
                 <div className="text-sm text-muted-foreground">Projects</div>
               </div>
             </div>
           </div>
 
-          {/* Image/Visual */}
+          {/* Video/Visual */}
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
-              <img
-                src="/hero_1.jpg"
-                alt="TDC Ghana Housing Development"
-                className="w-full h-full object-cover"
+              <iframe 
+                src="https://player.mux.com/W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E?metadata-video-title=Welcome+to+TDC+Ghana+Ltd&video-title=Welcome+to+TDC+Ghana+Ltd" 
+                className="w-full h-full"
+                style={{ border: 'none' }}
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
+                allowFullScreen
+                title="Welcome to TDC Ghana Ltd"
               />
             </div>
 
             {/* Floating Cards */}
-            <div className="absolute -bottom-6 -left-6 bg-background border border-border rounded-xl p-4 shadow-lg">
+            {/* <div className="absolute -bottom-6 -left-6 bg-background border border-border rounded-xl p-4 shadow-lg">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                   <Home className="h-5 w-5 text-accent-foreground" />
@@ -71,9 +74,9 @@ export default function HeroSection() {
                   <div className="text-sm text-muted-foreground">Affordable & Modern</div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="absolute -top-6 -right-6 bg-background border border-border rounded-xl p-4 shadow-lg">
+            {/* <div className="absolute -top-6 -right-6 bg-background border border-border rounded-xl p-4 shadow-lg">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                   <Building className="h-5 w-5 text-primary-foreground" />
@@ -83,7 +86,7 @@ export default function HeroSection() {
                   <div className="text-sm text-muted-foreground">World-Class Standards</div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
