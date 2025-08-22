@@ -3,20 +3,17 @@
 import React, { useState, useEffect } from "react";
 
 const images = [
-  "/carousel/01.jpg",
-  "/carousel/03.jpg",
-  "/carousel/08.jpg",
-  "/carousel/cc1.jpg",
-  "/carousel/hf1.jpg",
-  "/carousel/hf2.jpg",
-  "/carousel/ho1.jpg",
-  "/carousel/ho2.jpg",
-  "/carousel/tdcaffd2.jpg",
-  "/carousel/tl.jpg",
-  "/carousel/tl1.jpg",
-  "/carousel/tl6.jpg",
-  "/carousel/tvip.jpg",
-  "/carousel/tvip2.jpg",
+  "/carousel/1.jpeg",
+  "/carousel/2.jpg",
+  "/carousel/3.jpeg",
+  "/carousel/4.jpeg",
+  "/carousel/5.jpeg",
+  "/carousel/6.jpeg",
+  "/carousel/7.jpg",
+  "/carousel/8.jpeg",
+  "/carousel/9.jpeg",
+  "/carousel/10.jpeg",
+  "/carousel/11.jpeg"
 ];
 
 const Carousel: React.FC = () => {
@@ -60,7 +57,7 @@ const Carousel: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-full" data-carousel="static">
           {/* Carousel wrapper */}
-          <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+          <div className="relative h-56 overflow-hidden rounded-lg md:h-120">
             {images.map((src, index) => (
               <div
                 key={index}
