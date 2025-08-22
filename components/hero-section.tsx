@@ -15,9 +15,9 @@ export default function HeroSection() {
                 <span className="text-primary block">Future Together</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-                TDC Ghana Ltd leads Ghana's transformation
-                through innovative housing projects, strategic land development,
-                and essential infrastructure that creates thriving communities.
+                TDC Ghana Ltd leads Ghana's transformation through innovative
+                housing projects, strategic land development, and essential
+                infrastructure that creates thriving communities.
               </p>
             </div>
 
@@ -67,21 +67,35 @@ export default function HeroSection() {
           <div className="relative">
             <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
               <MuxPlayer
-              playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
-              metadataVideoTitle="Welcome to TDC Ghana Ltd"
-              metadataViewerUserId="user-tdc-001"
-              autoPlay="muted"
-              loop
-              style={{
-                width: '100%',
-                height: '100%',
-                '--controls': 'none',
-                '--control-bar': 'none',
-                '--top-control-bar': 'none',
-                '--center-controls': 'none',
-                '--bottom-control-bar': 'none'
-              } as React.CSSProperties}
-            />
+                playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
+                metadataVideoTitle="Welcome to TDC Ghana Ltd"
+                metadataViewerUserId="user-tdc-001"
+                autoPlay="muted"
+                loop
+                style={
+                  {
+                    width: "100%",
+                    height: "100%",
+                    "--control-bar": "flex",
+                    "--top-control-bar": "none",
+                    "--center-controls": "none",
+                    "--play-button": "none",
+                    "--seek-backward-button": "none",
+                    "--seek-forward-button": "none",
+                    "--time-display": "none",
+                    "--time-range": "none",
+                    "--duration-display": "none",
+                    "--rendition-menu-button": "none",
+                    "--captions-menu-button": "none",
+                    "--airplay-button": "none",
+                    "--cast-button": "none",
+                    "--pip-button": "none",
+                    "--fullscreen-button": "none",
+                    "--volume-range": "flex",
+                    "--mute-button": "flex",
+                  } as React.CSSProperties
+                }
+              />
             </div>
 
             {/* Floating Cards */}
