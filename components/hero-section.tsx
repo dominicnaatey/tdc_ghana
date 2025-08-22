@@ -4,11 +4,11 @@ import MuxPlayer from "@mux/mux-player-react";
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 py-20 lg:py-32">
+    <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 pt-10 pb-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="space-y-6">
+          <div className="space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
               <h1 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
                 Building Ghana's
@@ -40,7 +40,8 @@ export default function HeroSection() {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-5 pt-4">
-              <div className="text-start">
+              <div className="text-center lg:text-start"> 
+
                 <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">
                   10,500+
                 </div>
@@ -48,13 +49,13 @@ export default function HeroSection() {
                   Housing Units
                 </div>
               </div>
-              <div className="text-start">
+              <div className="text-center lg:text-start">
                 <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">
                   60,200+
                 </div>
                 <div className="text-sm text-muted-foreground">Land Plots</div>
               </div>
-              <div className="text-start">
+              <div className="text-center lg:text-start">
                 <div className="text-2xl lg:text-3xl font-bold text-primary font-serif">
                   25+
                 </div>
@@ -64,7 +65,7 @@ export default function HeroSection() {
           </div>
 
           {/* Video/Visual */}
-          <div className="relative">
+          <div className="relative order-1 lg:order-2">
             <div className="aspect-[3/2] lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
               <MuxPlayer
                 playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
