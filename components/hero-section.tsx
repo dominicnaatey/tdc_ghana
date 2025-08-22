@@ -65,7 +65,7 @@ export default function HeroSection() {
 
           {/* Video/Visual */}
           <div className="relative">
-            <div className="aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
+            <div className="aspect-[3/2] lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
               <MuxPlayer
                 playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
                 metadataVideoTitle="Welcome to TDC Ghana Ltd"
