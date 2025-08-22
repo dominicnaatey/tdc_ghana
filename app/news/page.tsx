@@ -1,19 +1,28 @@
-'use client'
+"use client";
 
-import { Suspense, useState, useEffect, useRef, useCallback } from "react"
-import { Skeleton } from "@/components/ui/skeleton"
-import { CalendarDays, Clock, Heart, MessageCircle, Bookmark } from "lucide-react"
-import Link from "next/link"
-import { formatDistanceToNow, format } from "date-fns"
-import { getPublishedNews } from "@/lib/data/sample-news"
+import { Suspense, useState, useEffect, useRef, useCallback } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  CalendarDays,
+  Clock,
+  Heart,
+  MessageCircle,
+  Bookmark,
+} from "lucide-react";
+import Link from "next/link";
+import { formatDistanceToNow, format } from "date-fns";
+import { getPublishedNews } from "@/lib/data/sample-news";
 
 function getNews() {
-  return getPublishedNews()
+  return getPublishedNews();
 }
 
 function NewsCardSkeleton() {
   return (
-    <article className="py-8 border-b border-gray-100 last:border-b-0 md:block hidden" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
+    <article
+      className="py-8 border-b border-gray-100 last:border-b-0 md:block hidden"
+      style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
+    >
       <div className="flex gap-6">
         <div className="flex-1">
           <Skeleton className="h-7 w-full mb-3" />
@@ -29,7 +38,7 @@ function NewsCardSkeleton() {
         </div>
       </div>
     </article>
-  )
+  );
 }
 
 function MobileNewsCardSkeleton() {
@@ -55,31 +64,38 @@ function MobileNewsCardSkeleton() {
         </div>
       </div>
     </article>
-  )
+  );
 }
 
 function NewsCard({ article }: { article: any }) {
   return (
     <>
       {/* Desktop Layout */}
-      <article 
+      <article
         className="py-8 border-b border-gray-100 last:border-b-0 hidden md:block"
-        style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}
+        style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
       >
         <div className="flex gap-6">
           <Link href={`/news/${article.slug}`} className="block flex-1">
             <div className="flex-1 cursor-pointer">
-              <h2 className="font-bold text-black mb-2 line-clamp-2 leading-tight hover:text-black" style={{ fontSize: '24px' }}>
+              <h2
+                className="font-bold text-black mb-2 line-clamp-2 leading-tight hover:text-black"
+                style={{ fontSize: "24px" }}
+              >
                 {article.title}
               </h2>
               <p className="text-gray-600 line-clamp-2 text-base leading-relaxed mb-4">
                 {article.excerpt}
               </p>
-              
+
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <CalendarDays className="w-4 h-4" />
-                  <span>{formatDistanceToNow(new Date(article.published_at), { addSuffix: true })}</span>
+                  <span>
+                    {formatDistanceToNow(new Date(article.published_at), {
+                      addSuffix: true,
+                    })}
+                  </span>
                 </div>
                 <span className="text-gray-300">·</span>
                 <div className="flex items-center gap-1">
@@ -89,7 +105,7 @@ function NewsCard({ article }: { article: any }) {
               </div>
             </div>
           </Link>
-          
+
           {article.featured_image && (
             <Link href={`/news/${article.slug}`} className="block">
               <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
@@ -97,7 +113,7 @@ function NewsCard({ article }: { article: any }) {
                   src={article.featured_image || "/placeholder.svg"}
                   alt={article.title}
                   className="w-full h-full object-cover opacity-90 transition-opacity"
-                  style={{ borderRadius: '1px' }}
+                  style={{ borderRadius: "1px" }}
                 />
               </div>
             </Link>
@@ -106,7 +122,10 @@ function NewsCard({ article }: { article: any }) {
       </article>
 
       {/* Mobile Layout */}
-      <Link href={`/news/${article.slug}`} className="group md:hidden block mb-8">
+      <Link
+        href={`/news/${article.slug}`}
+        className="group md:hidden block mb-8"
+      >
         <article className="space-y-4">
           {article.featured_image && (
             <div className="aspect-[2/1] overflow-hidden rounded-md">
@@ -117,7 +136,7 @@ function NewsCard({ article }: { article: any }) {
               />
             </div>
           )}
-          
+
           <div className="space-y-3">
             <h3 className="font-bold text-lg text-black group-hover:text-gray-700 transition-colors line-clamp-2 leading-tight">
               {article.title}
@@ -125,7 +144,7 @@ function NewsCard({ article }: { article: any }) {
             <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
               {article.excerpt}
             </p>
-            
+
             {/* Engagement and Date */}
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center space-x-4 text-xs text-gray-500">
@@ -142,7 +161,11 @@ function NewsCard({ article }: { article: any }) {
               <div className="flex items-center space-x-2">
                 <Bookmark className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" />
                 <button className="text-gray-400 hover:text-gray-600">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                   </svg>
                 </button>
@@ -152,61 +175,73 @@ function NewsCard({ article }: { article: any }) {
         </article>
       </Link>
     </>
-  )
+  );
 }
 
 function NewsList() {
-  const allNews = getNews()
-  const [displayedNews, setDisplayedNews] = useState(allNews.slice(0, 5))
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasMore, setHasMore] = useState(allNews.length > 5)
-  const observerRef = useRef<HTMLDivElement>(null)
+  const allNews = getNews();
+  const [displayedNews, setDisplayedNews] = useState(allNews.slice(0, 5));
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(allNews.length > 5);
+  const desktopObserverRef = useRef<HTMLDivElement>(null);
+  const mobileObserverRef = useRef<HTMLDivElement>(null);
 
   const loadMoreNews = useCallback(() => {
-    if (isLoading || !hasMore) return
+    if (isLoading || !hasMore) return;
 
-    setIsLoading(true)
-    
+    setIsLoading(true);
+
     // Simulate loading delay
     setTimeout(() => {
-      const currentLength = displayedNews.length
-      const nextBatch = allNews.slice(currentLength, currentLength + 5)
-      
+      const currentLength = displayedNews.length;
+      const nextBatch = allNews.slice(currentLength, currentLength + 5);
+
       if (nextBatch.length > 0) {
-        setDisplayedNews(prev => [...prev, ...nextBatch])
-        setHasMore(currentLength + nextBatch.length < allNews.length)
+        setDisplayedNews((prev) => [...prev, ...nextBatch]);
+        setHasMore(currentLength + nextBatch.length < allNews.length);
       } else {
-        setHasMore(false)
+        setHasMore(false);
       }
-      
-      setIsLoading(false)
-    }, 800)
-  }, [allNews, displayedNews.length, isLoading, hasMore])
+
+      setIsLoading(false);
+    }, 800);
+  }, [allNews, displayedNews.length, isLoading, hasMore]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !isLoading) {
-          loadMoreNews()
+          loadMoreNews();
         }
       },
       { threshold: 0.1 }
-    )
+    );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current)
+    // Observe both desktop and mobile targets
+    if (desktopObserverRef.current) {
+      observer.observe(desktopObserverRef.current);
+    }
+    if (mobileObserverRef.current) {
+      observer.observe(mobileObserverRef.current);
     }
 
-    return () => observer.disconnect()
-  }, [loadMoreNews, hasMore, isLoading])
+    return () => observer.disconnect();
+  }, [loadMoreNews, hasMore, isLoading]);
 
   if (allNews.length === 0) {
     return (
-      <div className="text-center py-16" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
-        <h3 className="text-xl font-semibold text-black mb-2">No stories published yet</h3>
-        <p className="text-gray-600">Check back soon for the latest updates and insights.</p>
+      <div
+        className="text-center py-16"
+        style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
+      >
+        <h3 className="text-xl font-semibold text-black mb-2">
+          No stories published yet
+        </h3>
+        <p className="text-gray-600">
+          Check back soon for the latest updates and insights.
+        </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -216,7 +251,7 @@ function NewsList() {
         {displayedNews.map((article) => (
           <NewsCard key={article.id} article={article} />
         ))}
-        
+
         {/* Loading skeletons for desktop */}
         {isLoading && (
           <>
@@ -225,10 +260,10 @@ function NewsList() {
             ))}
           </>
         )}
-        
-        {/* Observer target */}
-        {hasMore && <div ref={observerRef} className="h-10" />}
-        
+
+        {/* Observer target for desktop */}
+        {hasMore && <div ref={desktopObserverRef} className="h-10" />}
+
         {/* End message */}
         {!hasMore && displayedNews.length > 5 && (
           <div className="text-center py-8 text-gray-500">
@@ -242,7 +277,7 @@ function NewsList() {
         {displayedNews.map((article) => (
           <NewsCard key={article.id} article={article} />
         ))}
-        
+
         {/* Loading skeletons for mobile */}
         {isLoading && (
           <>
@@ -251,10 +286,10 @@ function NewsList() {
             ))}
           </>
         )}
-        
-        {/* Observer target */}
-        {hasMore && <div ref={observerRef} className="h-10" />}
-        
+
+        {/* Observer target for mobile */}
+        {hasMore && <div ref={mobileObserverRef} className="h-10" />}
+
         {/* End message */}
         {!hasMore && displayedNews.length > 5 && (
           <div className="text-center py-8 text-gray-500">
@@ -263,12 +298,15 @@ function NewsList() {
         )}
       </div>
     </>
-  )
+  );
 }
 
 export default function NewsPage() {
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: 'Segoe UI, system-ui, sans-serif' }}>
+    <div
+      className="min-h-screen bg-white"
+      style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
+    >
       {/* Header Section */}
       <div className="bg-[#0D3562] border-b border-gray-100">
         <div className="container mx-auto px-4 py-16">
@@ -277,7 +315,8 @@ export default function NewsPage() {
               Stories & Insights
             </h1>
             <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
-              Discover the latest developments, innovations, and insights from TDC Ghana Ltd.
+              Discover the latest developments, innovations, and insights from
+              TDC Ghana Ltd.
             </p>
           </div>
         </div>
@@ -294,7 +333,7 @@ export default function NewsPage() {
                   <NewsCardSkeleton key={i} />
                 ))}
               </div>
-              
+
               {/* Mobile Skeleton */}
               <div className="max-w-2xl mx-auto md:hidden">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -308,5 +347,5 @@ export default function NewsPage() {
         </Suspense>
       </div>
     </div>
-  )
+  );
 }
