@@ -30,6 +30,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning className="light">
+      <head>
+        <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer></script>
+      </head>
       <body suppressHydrationWarning className="bg-white text-gray-900">
         <Providers>
           <NextTopLoader color="#164e63" showSpinner={false} />
