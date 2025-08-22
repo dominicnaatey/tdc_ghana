@@ -29,7 +29,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-600 bg-[#0D3562]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0D3562]/90">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Brand */}
@@ -52,7 +52,7 @@ export default function Header() {
                 className={`text-sm font-medium transition-colors duration-200 ${
                   isActive(item.href)
                     ? "text-accent"
-                    : "text-gray-100 hover:text-accent"
+                    : "text-gray-700 hover:text-accent"
                 }`}
               >
                 {item.name}
@@ -62,20 +62,20 @@ export default function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex">
-            <Button className="bg-accent hover:bg-[#DA7A0B] txt-white transition-colors duration-200">
+            <Button className="bg-accent hover:bg-[#DA7A0B] text-white transition-colors duration-200">
               Get Started
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-            {isMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+            {isMenuOpen ? <X className="h-6 w-6 text-gray-700" /> : <Menu className="h-6 w-6 text-gray-700" />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-400 bg-[#0D3562]">
+          <div className="md:hidden border-t border-gray-200 bg-white">
             <nav className="flex flex-col space-y-4 px-4 py-6">
               {navigationItems.map((item) => (
                 <Link
@@ -84,7 +84,7 @@ export default function Header() {
                   className={`text-base font-medium transition-colors duration-200 ${
                     isActive(item.href)
                       ? "text-accent"
-                      : "text-gray-100 hover:text-accent"
+                      : "text-gray-700 hover:text-accent"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
