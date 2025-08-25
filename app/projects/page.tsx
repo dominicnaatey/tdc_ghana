@@ -7,6 +7,11 @@ import { MapPin, Calendar, Users, ArrowRight, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { sampleProjects } from "@/lib/data/sample-projects"
 
+async function getDevelopmentProjects() {
+  // Use sample projects data instead of Supabase
+  return sampleProjects
+}
+
 function ProjectCardSkeleton() {
   return (
     <Card className="overflow-hidden">
@@ -29,8 +34,8 @@ function ProjectCardSkeleton() {
   )
 }
 
-function ProjectsList() {
-  const projects = sampleProjects
+async function ProjectsList() {
+  const projects = await getDevelopmentProjects()
 
   if (projects.length === 0) {
     return (
@@ -62,42 +67,48 @@ function ProjectsList() {
                   project.status === "completed"
                     ? "bg-green-100 text-green-800"
                     : project.status === "ongoing"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-gray-100 text-gray-800"
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-gray-100 text-gray-800"
                 }
               >
                 {project.status === "completed" && <CheckCircle className="w-3 h-3 mr-1" />}
                 {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
               </Badge>
-              <Badge variant="outline">{project.project_type}</Badge>
+              <Badge variant="outline" className="text-xs">
+                {project.project_type}
+              </Badge>
             </div>
-            <CardTitle className="line-clamp-2 hover:text-cyan-700 transition-colors">
-              <Link href={`/projects/${project.slug}`}>{project.title}</Link>
-            </CardTitle>
-            <div className="flex items-center text-sm text-gray-500 mb-2">
-              <MapPin className="w-4 h-4 mr-1" />
-              {project.location}
-            </div>
-            <p className="text-gray-600 line-clamp-2 text-sm">{project.description}</p>
+            <CardTitle className="text-lg mb-2 line-clamp-2">{project.title}</CardTitle>
+            <p className="text-sm text-gray-600 line-clamp-3 mb-3">{project.description}</p>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center text-gray-600">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  {new Date(project.start_date).getFullYear()} - {new Date(project.completion_date).getFullYear()}
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <Users className="w-4 h-4 mr-1" />
-                  {project.beneficiaries?.toLocaleString()} people
-                </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span className="truncate">{project.location}</span>
               </div>
-              <div className="text-lg font-semibold text-cyan-800">Budget: GHS {project.budget?.toLocaleString()}</div>
-              <Button className="w-full" asChild>
+              <div className="flex items-center text-sm text-gray-600">
+                <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span>
+                  {new Date(project.start_date).toLocaleDateString()} -{" "}
+                  {new Date(project.completion_date).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <Users className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span>{project.beneficiaries.toLocaleString()} beneficiaries</span>
+              </div>
+              <div className="pt-2">
+                <p className="text-sm font-semibold text-gray-900 mb-3">
+                  Budget: ${project.budget.toLocaleString()}
+                </p>
                 <Link href={`/projects/${project.slug}`}>
-                  View Details <ArrowRight className="w-4 h-4 ml-2" />
+                  <Button className="w-full group">
+                    View Details
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </Link>
-              </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -126,7 +137,7 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-black mb-2">7+</div>
+              <div className="text-3xl font-bold text-black mb-2">25+</div>
               <div className="text-sm text-gray-600">Active Projects</div>
             </CardContent>
           </Card>
@@ -138,13 +149,13 @@ export default function ProjectsPage() {
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-black mb-2">300K+</div>
+              <div className="text-3xl font-bold text-black mb-2">250K+</div>
               <div className="text-sm text-gray-600">People Benefited</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-black mb-2">3</div>
+              <div className="text-3xl font-bold text-black mb-2">8</div>
               <div className="text-sm text-gray-600">Completed Projects</div>
             </CardContent>
           </Card>
