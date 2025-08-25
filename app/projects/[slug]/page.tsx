@@ -23,9 +23,10 @@ import { format } from "date-fns"
 export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const project = getProjectBySlug(params.slug)
+  const { slug } = await params
+  const project = getProjectBySlug(slug)
 
   if (!project) {
     notFound()
@@ -56,7 +57,7 @@ export default async function ProjectPage({
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container max-w-7xl mx-auto px-4 py-6">
           <Button variant="ghost" asChild className="mb-4">
             <Link href="/projects">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -87,27 +88,70 @@ export default async function ProjectPage({
                 <span className="text-lg">{project.location}</span>
               </div>
               
-              <p className="text-xl text-gray-700 leading-relaxed max-w-3xl">
-                {project.description}
-              </p>
+              {/* Remove description from here */}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container max-w-7xl mx-auto px-4 py-12">
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Project Image */}
             <Card className="overflow-hidden">
-              <div className="aspect-video">
-                <img
-                  src={project.featured_image || "/placeholder.svg?height=500&width=800&query=development project"}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              {project.image_collection && project.image_collection.length > 1 ? (
+                // Booking.com style masonry layout
+                <div className="flex gap-2 h-96">
+                  {/* Main large image - left side */}
+                  <div className="flex-1">
+                    <img
+                      src={project.featured_image || "/placeholder.svg?height=500&width=800&query=development project"}
+                      alt={project.title}
+                      className="w-full h-full object-cover rounded-l-lg hover:opacity-90 transition-opacity duration-300"
+                    />
+                  </div>
+                  
+                  {/* Grid of smaller images - right side */}
+                  <div className="w-1/2 grid grid-cols-2 gap-2">
+                    {project.image_collection.slice(0, 4).map((image, index) => (
+                      <div key={index} className="relative overflow-hidden">
+                        <img
+                          src={image}
+                          alt={`${project.title} - Image ${index + 1}`}
+                          className="w-full h-full object-cover hover:opacity-90 transition-opacity duration-300"
+                        />
+                        {/* Show +X more overlay on last image if there are more photos */}
+                        {index === 3 && project.image_collection && project.image_collection.length > 4 && (
+                          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                            <span className="text-white font-semibold text-sm">
+                              +{project.image_collection.length - 4} photos
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                // Single featured image
+                <div className="aspect-video">
+                  <img
+                    src={project.featured_image || "/placeholder.svg?height=500&width=800&query=development project"}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </Card>
+
+            {/* Project Description - Moved here */}
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  {project.description}
+                </p>
+              </CardContent>
             </Card>
 
             {/* Project Overview */}
@@ -119,6 +163,38 @@ export default async function ProjectPage({
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Announcement Section */}
+                {project.announcement && (
+                  <>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-semibold text-blue-900 mb-2">Announcement</h4>
+                      <p className="text-blue-800">{project.announcement}</p>
+                    </div>
+                    <Separator />
+                  </>
+                )}
+
+                {/* Apartment Types Section */}
+                {project.apartment_types && (
+                  <>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-4">Available Apartment Types</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {project.apartment_types.map((apt, index) => (
+                          <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h5 className="font-medium text-gray-900 mb-2">{apt.type}</h5>
+                            <div className="flex items-center text-gray-600">
+                              <span className="text-sm">Floor Area: </span>
+                              <span className="font-semibold ml-1">{apt.floor_area_sqm} sqm</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <Separator />
+                  </>
+                )}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
@@ -157,6 +233,35 @@ export default async function ProjectPage({
                     </div>
                   </div>
                 </div>
+
+                {/* Payment Information */}
+                {project.payment_details && (
+                  <>
+                    <Separator />
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <h4 className="font-semibold text-green-900 mb-3">Payment Information</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-green-800">Bank:</span>
+                          <span className="font-medium text-green-900">{project.payment_details.bank}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-green-800">Account Number:</span>
+                          <span className="font-medium text-green-900">{project.payment_details.account_number}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-green-800">Currency:</span>
+                          <span className="font-medium text-green-900">{project.payment_details.currency}</span>
+                        </div>
+                      </div>
+                      {project.note && (
+                        <div className="mt-3 pt-3 border-t border-green-200">
+                          <p className="text-sm text-green-800 italic">{project.note}</p>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
 
                 {/* Facilities & Features */}
                 {(project.facilities || project.features) && (
@@ -205,14 +310,40 @@ export default async function ProjectPage({
                 <CardTitle>Get More Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button className="w-full bg-[#0D3562] hover:bg-[#0D3562]/90" size="lg">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Call: +233 303 202 106
-                </Button>
-                <Button variant="outline" className="w-full" size="lg">
-                  <Mail className="w-4 h-4 mr-2" />
-                  Email Inquiry
-                </Button>
+                {/* Project-specific contact info */}
+                {project.contact ? (
+                  <>
+                    {project.contact.mobile.map((mobile, index) => (
+                      <Button key={index} className="w-full bg-[#0D3562] hover:bg-[#0D3562]/90" size="lg">
+                        <Phone className="w-4 h-4 mr-2" />
+                        Call: {mobile}
+                      </Button>
+                    ))}
+                    {project.contact.telephone && (
+                      <Button variant="outline" className="w-full" size="lg">
+                        <Phone className="w-4 h-4 mr-2" />
+                        Tel: {project.contact.telephone}
+                      </Button>
+                    )}
+                    {project.contact.whatsapp && (
+                      <Button variant="outline" className="w-full bg-green-50 hover:bg-green-100 text-green-700 border-green-200" size="lg">
+                        <Phone className="w-4 h-4 mr-2" />
+                        WhatsApp: {project.contact.whatsapp}
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Button className="w-full bg-[#0D3562] hover:bg-[#0D3562]/90" size="lg">
+                      <Phone className="w-4 h-4 mr-2" />
+                      Call: +233 303 202 106
+                    </Button>
+                    <Button variant="outline" className="w-full" size="lg">
+                      <Mail className="w-4 h-4 mr-2" />
+                      Email Inquiry
+                    </Button>
+                  </>
+                )}
                 <Button variant="outline" className="w-full" size="lg">
                   <Calendar className="w-4 h-4 mr-2" />
                   Schedule Site Visit
