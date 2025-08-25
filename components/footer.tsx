@@ -108,7 +108,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-blue-500 mt-8 pt-8 text-center">
+        <div className="border-t border-blue-500/50 mt-8 pt-8 text-center">
           <p className="text-blue-100 text-sm">
             © 2024 TDC Ghana Ltd. All rights reserved. |
             <Link href="/privacy" className="hover:text-white transition-colors ml-1">
