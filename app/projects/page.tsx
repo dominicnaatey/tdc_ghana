@@ -212,11 +212,11 @@ async function ProjectsList() {
 export default function ProjectsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-green-800 to-green-900 text-white py-16">
+      <div className="bg-[#0D3562] text-white py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
+          <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl font-bold mb-4">Development Projects</h1>
-            <p className="text-xl text-green-100">
+            <p className="text-xl text-gray-100">
               Explore our major infrastructure and development initiatives that are transforming communities across
               Ghana.
             </p>
@@ -224,30 +224,30 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container max-w-7xl mx-auto px-4 py-12">
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-green-700 mb-2">15+</div>
+              <div className="text-3xl font-bold text-black mb-2">25+</div>
               <div className="text-sm text-gray-600">Active Projects</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-green-700 mb-2">GHS 500M+</div>
+              <div className="text-3xl font-bold text-black mb-2">GHS 500M+</div>
               <div className="text-sm text-gray-600">Total Investment</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-green-700 mb-2">250K+</div>
+              <div className="text-3xl font-bold text-black mb-2">250K+</div>
               <div className="text-sm text-gray-600">People Benefited</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="text-3xl font-bold text-green-700 mb-2">8</div>
+              <div className="text-3xl font-bold text-black mb-2">8</div>
               <div className="text-sm text-gray-600">Completed Projects</div>
             </CardContent>
           </Card>
