@@ -10,8 +10,10 @@ export interface Project {
   budget: number;
   beneficiaries: number;
   featured_image: string;
-  project_type: 'Infrastructure' | 'Housing' | 'Community' | 'Industrial' | 'Energy' | 'Utilities';
+  project_type: 'Infrastructure' | 'Housing' | 'Community' | 'Industrial' | 'Energy' | 'Utilities' | 'Commercial';
   featured: boolean;
+  facilities?: string[];
+  features?: string[];
 }
 
 export const sampleProjects: Project[] = [
@@ -104,6 +106,43 @@ export const sampleProjects: Project[] = [
     featured_image: "/water-sanitation.png",
     project_type: "Utilities",
     featured: false
+  },
+  {
+    id: 7,
+    title: "TDC Towers",
+    slug: "tdc-towers",
+    description: "TDC Towers is a 7-storey commercial building located in Tema, Community 2 between the Aggrey and Lumumba Roads and just opposite the Tema Community 2 Police Station. The structure, which is 'L' shaped, sits at the edge of Salifu Dagati Extension Street, facing the police station and parts of the Tema Harbour.",
+    location: "Tema, Community 2",
+    status: "completed",
+    start_date: "2020-01-01",
+    completion_date: "2023-06-30",
+    budget: 50000000,
+    beneficiaries: 5000,
+    featured_image: "/tdc-towers.png",
+    project_type: "Commercial",
+    featured: true,
+    facilities: [
+      "Ancillary Parking",
+      "Four (4) elevators",
+      "Three (3) Stairways",
+      "Disability ramp",
+      "Escape Stairways",
+      "Fully air-conditioned office and retail space",
+      "Underground and overhead water storage and supply",
+      "CCTV cameras available on each floor",
+      "Backup Generator of 2000 K.V.A",
+      "24 hour security service",
+      "Fire alarms and extinguishers available",
+      "Telephone, Cable & Fibre Optics available"
+    ],
+    features: [
+      "Open plan Office space",
+      "Ground Floor available for banking halls and retail outlets",
+      "1st to 2nd floor available for retail and restaurant",
+      "450 seater conference facility",
+      "Cafeteria available on the 7th floor",
+      "Cafeteria/Restaurant space to complement Conference Facility"
+    ]
   }
 ];
 
