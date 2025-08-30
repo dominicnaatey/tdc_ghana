@@ -50,11 +50,11 @@ export default function NewsSection() {
                         <span>{format(new Date(article.published_at), "MMM d")}</span>
                         <div className="flex items-center space-x-1">
                           <Heart className="w-3 h-3" />
-                          <span>{Math.floor(Math.random() * 100) + 10}</span>
+                          <span>{article.id * 7 + 15}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <MessageCircle className="w-3 h-3" />
-                          <span>{Math.floor(Math.random() * 20) + 1}</span>
+                          <span>{article.id * 3 + 2}</span>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
