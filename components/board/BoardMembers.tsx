@@ -25,7 +25,7 @@ const boardMembers: BoardMember[] = [
     id: 1,
     name: "Isaac Ashai Odamtten (MP, Tema East)",
     position: "Board Chairman",
-    bio: "<p>Hon. Odamtten is a distinguished public servant and corporate executive with over two decades of leadership across the financial, governance and infrastructure development sectors. As the Board Chairman of TDC Ghana Ltd, he brings a powerful blend of visionary leadership and technical expertise to the Company's mandate in urban planning and regeneration. As Member of Parliament for Tema East, he continues to shape national policy, with active contributions across parliamentary committees on Health, Employment and State Enterprises.</p></br><p>Hon. Odamtten holds a Postgraduate Certificate in Project Management from the Ghana Institute of Management and Public Administration (GIMPA), an MBA in Accounting from the University of Ghana Business School, a Bachelor of Commerce from the University of Cape Coast, and a Master of Practical Theology from Oral Roberts University, USA. His career has spanned corporate banking, where he served as Senior Manager, Corporate Services at International Commercial Bank (now First Bank), to public sector leadership as Metropolitan Chief Executive (MCE) of the Tema Metropolitan Assembly (2013–2017), which he led to national acclaim, earning accolades including Best Performing District (2014, 2016) and significantly advancing municipal infrastructure, sanitation and international partnerships.</p></br><p>In both public office and corporate leadership, Hon. Odamtten has demonstrated a strategic commitment to sustainable development, stakeholder engagement and performance-based governance. His oversight of major projects, implementation of Public-Private Partnerships and advocacy for underserved communities position him as a transformational leader. As Board Chairman, he provides strategic leadership to TDC, with a focus on urban renewal, efficient service delivery and innovative infrastructure development in Tema and beyond.</p>",
+    bio: "Hon. Odamtten is a distinguished public servant and corporate executive with over two decades of leadership across the financial, governance and infrastructure development sectors. As the Board Chairman of TDC Ghana Ltd, he brings a powerful blend of visionary leadership and technical expertise to the Company's mandate in urban planning and regeneration. As Member of Parliament for Tema East, he continues to shape national policy, with active contributions across parliamentary committees on Health, Employment and State Enterprises. Hon. Odamtten holds a Postgraduate Certificate in Project Management from the Ghana Institute of Management and Public Administration (GIMPA), an MBA in Accounting from the University of Ghana Business School, a Bachelor of Commerce from the University of Cape Coast, and a Master of Practical Theology from Oral Roberts University, USA. His career has spanned corporate banking, where he served as Senior Manager, Corporate Services at International Commercial Bank (now First Bank), to public sector leadership as Metropolitan Chief Executive (MCE) of the Tema Metropolitan Assembly (2013–2017), which he led to national acclaim, earning accolades including Best Performing District (2014, 2016) and significantly advancing municipal infrastructure, sanitation and international partnerships. In both public office and corporate leadership, Hon. Odamtten has demonstrated a strategic commitment to sustainable development, stakeholder engagement and performance-based governance. His oversight of major projects, implementation of Public-Private Partnerships and advocacy for underserved communities position him as a transformational leader. As Board Chairman, he provides strategic leadership to TDC, with a focus on urban renewal, efficient service delivery and innovative infrastructure development in Tema and beyond.",
     image: "/board/1.jpg",
     qualifications: [
       "Postgraduate Certificate in Project Management - Ghana Institute of Management and Public Administration (GIMPA)",
@@ -38,32 +38,41 @@ const boardMembers: BoardMember[] = [
     id: 2,
     name: "Courage Makafui Nunekpeku",
     position: "Ag Managing Director and a Member",
-    bio: "A seasoned finance executive with extensive experience in project financing and investment management. She has overseen major infrastructure projects across West Africa.",
+    bio: "Mr. Nunekpeku is a seasoned engineer with comprehensive expertise in Quantity Surveying and Project Management. Throughout his career, he has delivered exceptional results across complex infrastructure projects, collaborating with prestigious organisations including Regimanuel Gray Estate, Ghana Ports and Harbours Authority, Cappa D'Alberto PLC and Kelm Engineering Limited. His technical proficiency spans both domestic and international markets, supported by rigorous academic studies in Ghana and abroad, with a continued commitment to professional development. He holds a Master of Arts degree in Public Sector Management from the University of Ghana, Legon, where he developed a strong foundation in public administration, policy formulation and institutional governance. He also earned a Bachelor of Science with Honours in Construction Engineering and Management from Liverpool John Moores University in the United Kingdom, equipping him with comprehensive technical and managerial skills in the built environment. In addition, he pursued other academic development at the Kwame Nkrumah University of Science and Technology, the University of Ulster in Northern Ireland, United Kingdom as well as the Accra and Ho Technical Universities. Beyond his technical capabilities, Mr. Nunekpeku has proven himself as a successful entrepreneur, establishing and scaling businesses across diverse industry sectors. His strategic vision and operational expertise have enabled him to identify market opportunities and create sustainable value for stakeholders. As a leader, he combines technical precision with innovative thinking, driving results whilst maintaining the highest standards of professional integrity.",
     image: "/board/2.jpg",
-    qualifications: ["CPA", "MSc Finance", "Chartered Financial Analyst"],
+    qualifications: [
+      "Master of Arts in Public Sector Management - University of Ghana, Legon",
+      "Bachelor of Science with Honours in Construction Engineering and Management - Liverpool John Moores University, UK",
+      "Academic development at Kwame Nkrumah University of Science and Technology",
+      "Academic development at University of Ulster, Northern Ireland, UK",
+      "Academic development at Accra and Ho Technical Universities"
+    ],
   },
   {
     id: 3,
     name: "Dorothy A. Asare-Kumah Adolf, Esq",
-    position: "Member",
-    bio: "A distinguished civil engineer with expertise in construction management and infrastructure development. He has led numerous large-scale residential and commercial projects.",
+    position: "Board Secretary",
+    bio: "Mrs. Asare-Kumah Adolf is the Head of Corporate Planning and Communications at TDC Ghana Ltd. She holds dual Master's degrees in Communications and Law (LLM) from Grand Valley University, Michigan, USA, and the University of Law, UK, respectively. Her academic background also includes a Bachelor of Arts from the University of Ghana and a Bachelor of Laws (LLB) from the Ghana Institute of Management and Public Administration (GIMPA), as well as a Qualifying Certificate in Law from the Ghana School of Law. Additionally, she holds a Postgraduate Diploma in Education from the University of Education, Winneba, and a Diploma in Journalism from the Ghana Institute of Journalism. Prior to joining TDC nearly two decades ago, Mrs. Asare-Kumah Adolf established her career in journalism and lectured briefly at Tarrant County Community College in Fort Worth, Texas, as well as at the Ghana Institute of Journalism. Since joining TDC, she has played a pivotal role in its transformation from a Public Corporation into a Limited Liability Company, offering strategic legal counsel to workers as a committed workers' Union leader. Her dual legal and communications expertise has been instrumental in staff welfare advocacy and institutional reform. She is a member of the Ghana Bar Association, the Ghana Journalists Association, and the Institute of Public Relations, Ghana.",
     image: "/board/3.jpg",
     qualifications: [
-      "BSc Civil Engineering",
-      "MSc Construction Management",
-      "Professional Engineer",
+      "Master's degree in Communications - Grand Valley University, Michigan, USA",
+      "Master of Laws (LLM) - University of Law, UK",
+      "Bachelor of Arts - University of Ghana",
+      "Bachelor of Laws (LLB) - Ghana Institute of Management and Public Administration (GIMPA)",
+      "Qualifying Certificate in Law - Ghana School of Law",
+      "Postgraduate Diploma in Education - University of Education, Winneba",
+      "Diploma in Journalism - Ghana Institute of Journalism"
     ],
   },
   {
     id: 4,
     name: "Awal Adam",
     position: "Member",
-    bio: "An academic and policy expert specializing in sustainable development and environmental planning. She advises on green building practices and sustainable urban development.",
+    bio: "Mr. Adam is a seasoned professional with a strong background in communication and public administration. He brings to the Board extensive experience in strategic leadership, logistics management, and stakeholder engagement across both the public and private sectors. His career reflects a consistent commitment to institutional performance, problem-solving, and results-oriented service delivery. He holds a Master's degree in Public Administration from the Ghana Institute of Management and Public Administration (GIMPA) and a Bachelor's degree in Communication Studies from the Islamic University College, Ghana (IUCG). His academic training has equipped him with a robust foundation in policy development, organisational dynamics, and effective communication—skills he has applied across various leadership roles. Mr. Adam has served in diverse capacities including Managing Director and Board Member of Legacy Rise Sports, Technician at Ghana Link Network Services Limited, and Sales Team Member at Stanbic Bank Ghana. As a Board Member of TDC Ghana Ltd, he is committed to enhancing institutional efficiency, promoting innovation, and strengthening stakeholder relations. His deep understanding of public sector operations and strategic focus position him as a valuable contributor to the company's ongoing transformation agenda.",
     image: "/board/4.jpg",
     qualifications: [
-      "PhD Environmental Science",
-      "MSc Urban Planning",
-      "LEED Accredited Professional",
+      "Master's degree in Public Administration - Ghana Institute of Management and Public Administration (GIMPA)",
+      "Bachelor's degree in Communication Studies - Islamic University College, Ghana (IUCG)"
     ],
   },
   {
