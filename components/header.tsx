@@ -64,17 +64,21 @@ export default function Header() {
             </Link>
             
             {/* About Dropdown */}
-            <Dropdown isOpen={isAboutDropdownOpen} setIsOpen={setIsAboutDropdownOpen}>
-              <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
-                isActive("/about") || isActive("/board-of-directors")
-                  ? "text-accent"
-                  : "text-gray-700 hover:text-accent"
-              }`}>
-                <span>About</span>
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
-                  isAboutDropdownOpen ? "rotate-180" : ""
-                }`} />
-              </DropdownTrigger>
+            <div 
+              onMouseEnter={() => setIsAboutDropdownOpen(true)}
+              onMouseLeave={() => setIsAboutDropdownOpen(false)}
+            >
+              <Dropdown isOpen={isAboutDropdownOpen} setIsOpen={setIsAboutDropdownOpen}>
+                <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
+                  isActive("/about") || isActive("/board-of-directors")
+                    ? "text-accent"
+                    : "text-gray-700 hover:text-accent"
+                }`}>
+                  <span>About</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
+                    isAboutDropdownOpen ? "rotate-180" : ""
+                  }`} />
+                </DropdownTrigger>
               <DropdownContent align="start" className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px]">
                 {aboutSubmenuItems.map((item) => (
                   <DropdownClose key={item.name}>
@@ -92,6 +96,7 @@ export default function Header() {
                 ))}
               </DropdownContent>
             </Dropdown>
+            </div>
             
             {/* Other Navigation Items */}
             {navigationItems.slice(1).map((item) => (
