@@ -5,11 +5,21 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Dropdown, DropdownContent, DropdownTrigger, DropdownClose } from "@/components/ui/dropdown";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
   const pathname = usePathname();
 
   const navigationItems = [
@@ -65,8 +75,19 @@ export default function Header() {
             
             {/* About Dropdown */}
             <div 
-              onMouseEnter={() => setIsAboutDropdownOpen(true)}
-              onMouseLeave={() => setIsAboutDropdownOpen(false)}
+              onMouseEnter={() => {
+                if (hoverTimeout) {
+                  clearTimeout(hoverTimeout);
+                  setHoverTimeout(null);
+                }
+                setIsAboutDropdownOpen(true);
+              }}
+              onMouseLeave={() => {
+                const timeout = setTimeout(() => {
+                  setIsAboutDropdownOpen(false);
+                }, 150);
+                setHoverTimeout(timeout);
+              }}
             >
               <Dropdown isOpen={isAboutDropdownOpen} setIsOpen={setIsAboutDropdownOpen}>
                 <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
