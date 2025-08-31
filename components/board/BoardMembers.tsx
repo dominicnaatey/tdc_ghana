@@ -37,7 +37,7 @@ const boardMembers: BoardMember[] = [
   {
     id: 2,
     name: "Courage Makafui Nunekpeku",
-    position: "Ag Managing Director and a Member",
+    position: "AG Managing Director and a Member",
     bio: "Mr. Nunekpeku is a seasoned engineer with comprehensive expertise in Quantity Surveying and Project Management. Throughout his career, he has delivered exceptional results across complex infrastructure projects, collaborating with prestigious organisations including Regimanuel Gray Estate, Ghana Ports and Harbours Authority, Cappa D'Alberto PLC and Kelm Engineering Limited. His technical proficiency spans both domestic and international markets, supported by rigorous academic studies in Ghana and abroad, with a continued commitment to professional development.</br></br> He holds a Master of Arts degree in Public Sector Management from the University of Ghana, Legon, where he developed a strong foundation in public administration, policy formulation and institutional governance. He also earned a Bachelor of Science with Honours in Construction Engineering and Management from Liverpool John Moores University in the United Kingdom, equipping him with comprehensive technical and managerial skills in the built environment. In addition, he pursued other academic development at the Kwame Nkrumah University of Science and Technology, the University of Ulster in Northern Ireland, United Kingdom as well as the Accra and Ho Technical Universities.</br></br> Beyond his technical capabilities, Mr. Nunekpeku has proven himself as a successful entrepreneur, establishing and scaling businesses across diverse industry sectors. His strategic vision and operational expertise have enabled him to identify market opportunities and create sustainable value for stakeholders. As a leader, he combines technical precision with innovative thinking, driving results whilst maintaining the highest standards of professional integrity.",
     image: "/board/2.jpg",
     qualifications: [
@@ -45,7 +45,7 @@ const boardMembers: BoardMember[] = [
       "Bachelor of Science with Honours in Construction Engineering and Management - Liverpool John Moores University, UK",
       "Academic development at Kwame Nkrumah University of Science and Technology",
       "Academic development at University of Ulster, Northern Ireland, UK",
-      "Academic development at Accra and Ho Technical Universities"
+      "Academic development at Accra and Ho Technical Universities",
     ],
   },
   {
@@ -61,7 +61,7 @@ const boardMembers: BoardMember[] = [
       "Bachelor of Laws (LLB) - Ghana Institute of Management and Public Administration (GIMPA)",
       "Qualifying Certificate in Law - Ghana School of Law",
       "Postgraduate Diploma in Education - University of Education, Winneba",
-      "Diploma in Journalism - Ghana Institute of Journalism"
+      "Diploma in Journalism - Ghana Institute of Journalism",
     ],
   },
   {
@@ -72,7 +72,7 @@ const boardMembers: BoardMember[] = [
     image: "/board/4.jpg",
     qualifications: [
       "Master's degree in Public Administration - Ghana Institute of Management and Public Administration (GIMPA)",
-      "Bachelor's degree in Communication Studies - Islamic University College, Ghana (IUCG)"
+      "Bachelor's degree in Communication Studies - Islamic University College, Ghana (IUCG)",
     ],
   },
   {
@@ -84,7 +84,7 @@ const boardMembers: BoardMember[] = [
     qualifications: [
       "Qualifying Certificate in Law - Ghana School of Law",
       "Bachelor of Laws (LLB) - University of Ghana",
-      "Bachelor of Arts in Political Science - University of Ghana"
+      "Bachelor of Arts in Political Science - University of Ghana",
     ],
   },
   {
@@ -99,7 +99,7 @@ const boardMembers: BoardMember[] = [
       "Strategic Urban Planning Certification - UTI, Cairo",
       "Project Management Certification - Shanghai Business School, China",
       "Chartered Professional Administrator and Management Consultant",
-      "Currently pursuing Senior Professional in Human Resources (SPHRi) certification"
+      "Currently pursuing Senior Professional in Human Resources (SPHRi) certification",
     ],
   },
   {
@@ -113,7 +113,7 @@ const boardMembers: BoardMember[] = [
       "Bachelor of Arts in Law and Religion - University of Ghana",
       "Member of Ghana Bar Association since 1988",
       "Former Assistant Director, Legal Department - Ghana Prisons Service",
-      "National Coordinator - LAWA (Ghana) Alumnae Inc."
+      "National Coordinator - LAWA (Ghana) Alumnae Inc.",
     ],
   },
   {
@@ -128,7 +128,7 @@ const boardMembers: BoardMember[] = [
       "Former Public Relations Officer - Ghana Industrial Trawlers Association",
       "Director - El-Shadai School in Tema",
       "Secretary - Greater Accra Women's Working Committee (NDC)",
-      "Special Aide to 2024 Presidential Campaign Manager"
+      "Special Aide to 2024 Presidential Campaign Manager",
     ],
   },
   {
@@ -137,8 +137,7 @@ const boardMembers: BoardMember[] = [
     position: "Member",
     bio: "",
     image: "/board/9.jpg",
-    qualifications: [
-    ],
+    qualifications: [],
   },
 ];
 
@@ -256,48 +255,55 @@ export default function BoardMembers() {
       </div>
 
       {/* Board Member Dialog */}
-      <Dialog open={!!selectedMember} onOpenChange={handleCloseDialog}>
-        <DialogContent className="max-w-6xl max-h-[90vh] p-0 overflow-hidden overflow-y-auto">
-          {selectedMember && (
-            <div className="container mx-auto ">
-              <div className="flex flex-col max-w-7xl md:flex-row items-start py-16 px-16 sm:px-6 lg:px-8">
-                <div className="md:w-1/3  mb-6 md:mb-0 md:mr-12 flex-shrink-0">
-                  <Image
-                    src={selectedMember.image}
-                    alt={`Portrait of ${selectedMember.name}`}
-                    width={300}
-                    height={300}
-                    className="rounded-lg shadow-md w-full object-cover object-top"
-                  />
-                  {selectedMember.qualifications && selectedMember.qualifications.length > 0 && (
-                    <div className="mt-4 bg-gray-50 p-4 rounded-md">
-                      <h3 className="text-base font-bold text-gray-900 mb-2">QUALIFICATIONS</h3>
-                      <ul className="list-disc pl-5 text-sm text-gray-800 space-y-1">
-                        {selectedMember.qualifications.map((qualification, index) => (
-                          <li key={index}>{qualification}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-                <div className="md:w-2/3">
-                  <h1 className="text-2xl font-bold text-black tracking-wider">
-                    {selectedMember.name}
-                  </h1>
-                  <h2 className="text-sm font-semibold text-accent tracking-widest mt-2">
-                    {selectedMember.position}
-                  </h2>
-                  <div className="mt-6 text-gray-900 text-start space-y-4">
-                    <div
-                      dangerouslySetInnerHTML={{ __html: selectedMember.bio }}
+      <div className="mx-10">
+        <Dialog open={!!selectedMember} onOpenChange={handleCloseDialog}>
+          <DialogContent className="max-w-6xl max-h-[90vh] p-0 overflow-hidden overflow-y-auto">
+            {selectedMember && (
+              <div className="w-full">
+                <div className="flex flex-col md:flex-row items-start py-8 px-4 sm:py-12 sm:px-6 md:py-16 md:px-8 lg:px-12">
+                  <div className="md:w-1/3  mb-6 md:mb-0 md:mr-12 flex-shrink-0">
+                    <Image
+                      src={selectedMember.image}
+                      alt={`Portrait of ${selectedMember.name}`}
+                      width={300}
+                      height={375}
+                      className="rounded-lg shadow-md w-full aspect-[14/15] object-cover object-top"
                     />
+                    {selectedMember.qualifications &&
+                      selectedMember.qualifications.length > 0 && (
+                        <div className="mt-4 bg-gray-50 p-4 rounded-md">
+                          <h3 className="text-base font-bold text-gray-900 mb-2">
+                            QUALIFICATIONS
+                          </h3>
+                          <ul className="list-disc pl-5 text-sm text-gray-800 space-y-1">
+                            {selectedMember.qualifications.map(
+                              (qualification, index) => (
+                                <li key={index}>{qualification}</li>
+                              )
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                  </div>
+                  <div className="md:w-2/3">
+                    <h1 className="text-2xl font-bold text-black tracking-wider">
+                      {selectedMember.name}
+                    </h1>
+                    <h2 className="text-sm font-semibold text-accent tracking-widest mt-2">
+                      {selectedMember.position}
+                    </h2>
+                    <div className="mt-6 text-gray-900 text-start space-y-4">
+                      <div
+                        dangerouslySetInnerHTML={{ __html: selectedMember.bio }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
     </section>
   );
 }
