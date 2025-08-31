@@ -75,6 +75,7 @@ export default function Header() {
             
             {/* About Dropdown */}
             <div 
+              className="relative py-2 px-1"
               onMouseEnter={() => {
                 if (hoverTimeout) {
                   clearTimeout(hoverTimeout);
@@ -85,7 +86,7 @@ export default function Header() {
               onMouseLeave={() => {
                 const timeout = setTimeout(() => {
                   setIsAboutDropdownOpen(false);
-                }, 150);
+                }, 50);
                 setHoverTimeout(timeout);
               }}
             >
@@ -100,7 +101,7 @@ export default function Header() {
                     isAboutDropdownOpen ? "rotate-180" : ""
                   }`} />
                 </DropdownTrigger>
-              <DropdownContent align="start" className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px]">
+              <DropdownContent align="start" className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px] !mt-0">
                 {aboutSubmenuItems.map((item) => (
                   <DropdownClose key={item.name}>
                     <Link
