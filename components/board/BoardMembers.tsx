@@ -152,18 +152,18 @@ export default function BoardMembers() {
           {boardMembers.map((member) => (
             <div
               key={member.id}
-              className="text-center cursor-pointer transition-transform hover:scale-105"
+              className="text-center cursor-pointer group"
               onClick={() => handleMemberClick(member)}
             >
-              <div className="relative w-full aspect-[4/5] mx-auto mb-6 rounded-lg overflow-hidden bg-gray-200 border-1 border-gray-200 shadow-xl">
+              <div className="relative w-full aspect-[9/10] mx-auto mb-6 rounded-lg overflow-hidden bg-gray-200 border-1 border-gray-200 shadow-xl">
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
-                  className="object-cover object-top"
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 text-start mb-2">
+              <h3 className="text-xl font-bold text-gray-900 text-start mb-2 group-hover:text-gray-700 transition-colors">
                 {member.name}
               </h3>
               <p className="text-gray-600 font-medium text-start italic">
