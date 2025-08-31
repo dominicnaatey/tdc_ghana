@@ -168,14 +168,14 @@ export default function BoardMembers() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-8">
           {boardMembers.map((member) => (
             <div
               key={member.id}
               className="text-center cursor-pointer group"
               onClick={() => handleMemberClick(member)}
             >
-              <div className="relative w-full aspect-[9/10] mx-auto mb-6 rounded-lg overflow-hidden bg-gray-200 border-1 border-gray-200 shadow-xl">
+              <div className="relative w-full aspect-[9/10] mx-auto mb-4 md:mb-6 rounded-lg overflow-hidden bg-gray-200 border-1 border-gray-200 shadow-xl">
                 <Image
                   src={member.image}
                   alt={member.name}
@@ -183,10 +183,10 @@ export default function BoardMembers() {
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 text-start mb-2 group-hover:text-gray-700 transition-colors">
+              <h3 className="text-base md:text-xl font-bold text-gray-900 text-start mb-2 group-hover:text-gray-700 transition-colors">
                 {member.name}
               </h3>
-              <p className="text-gray-600 font-medium text-start italic">
+              <p className="text-sm md:text-base text-gray-600 font-medium text-start italic">
                 {member.position}
               </p>
             </div>
@@ -194,7 +194,7 @@ export default function BoardMembers() {
         </div>
 
         {/* Board Committees Section */}
-        <div className="mt-16 pt-16 border-t border-gray-200">
+        {/* <div className="mt-16 pt-16 border-t border-gray-200">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 font-serif mb-4">
               Board Committees
@@ -251,13 +251,15 @@ export default function BoardMembers() {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Board Member Dialog */}
-      <div className="mx-10">
-        <Dialog open={!!selectedMember} onOpenChange={handleCloseDialog}>
-          <DialogContent className="max-w-6xl max-h-[90vh] p-0 overflow-hidden overflow-y-auto">
+      <Dialog open={!!selectedMember} onOpenChange={handleCloseDialog}>
+          <DialogContent className="max-w-6xl max-h-[90vh] p-0 overflow-hidden overflow-y-auto ">
+            <DialogTitle className="sr-only">
+              {selectedMember?.name || "Board Member Details"}
+            </DialogTitle>
             {selectedMember && (
               <div className="w-full">
                 <div className="flex flex-col md:flex-row items-start py-8 px-4 sm:py-12 sm:px-6 md:py-16 md:px-8 lg:px-12">
@@ -271,7 +273,7 @@ export default function BoardMembers() {
                     />
                     {selectedMember.qualifications &&
                       selectedMember.qualifications.length > 0 && (
-                        <div className="mt-4 bg-gray-50 p-4 rounded-md">
+                        <div className="mt-4 bg-gray-50 p-4 rounded-md hidden md:block">
                           <h3 className="text-base font-bold text-gray-900 mb-2">
                             QUALIFICATIONS
                           </h3>
@@ -292,6 +294,21 @@ export default function BoardMembers() {
                     <h2 className="text-sm font-semibold text-accent tracking-widest mt-2">
                       {selectedMember.position}
                     </h2>
+                    {selectedMember.qualifications &&
+                      selectedMember.qualifications.length > 0 && (
+                        <div className="mt-4 bg-gray-50 p-4 rounded-md md:hidden">
+                          <h3 className="text-base font-bold text-gray-900 mb-2">
+                            QUALIFICATIONS
+                          </h3>
+                          <ul className="list-disc pl-5 text-sm text-gray-800 space-y-1">
+                            {selectedMember.qualifications.map(
+                              (qualification, index) => (
+                                <li key={index}>{qualification}</li>
+                              )
+                            )}
+                          </ul>
+                        </div>
+                      )}
                     <div className="mt-6 text-gray-900 text-start space-y-4">
                       <div
                         dangerouslySetInnerHTML={{ __html: selectedMember.bio }}
@@ -302,8 +319,7 @@ export default function BoardMembers() {
               </div>
             )}
           </DialogContent>
-        </Dialog>
-      </div>
+      </Dialog>
     </section>
   );
 }
