@@ -159,13 +159,13 @@ export default function BoardMembers() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-serif mb-4">
-            Our Board Of 
+            Our Board Of Directors
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          {/* <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our board of directors comprises experienced professionals from
             diverse backgrounds, united in their commitment to excellence and
             sustainable development.
-          </p>
+          </p> */}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-8">
