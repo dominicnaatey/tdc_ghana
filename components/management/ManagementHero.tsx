@@ -10,7 +10,7 @@ export default function ManagementHero({
   description = "Meet the experienced management team driving TDC Ghana Ltd's operations and strategic initiatives in real estate development and sustainable urban planning."
 }: ManagementHeroProps) {
   return (
-    <section className="relative py-8 lg:py-4 overflow-hidden">
+    <section className="relative overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
