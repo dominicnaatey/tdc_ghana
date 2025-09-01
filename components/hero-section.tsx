@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Home, Building } from "lucide-react";
 import MuxPlayer from "@mux/mux-player-react";
+import { useState } from "react";
 
 export default function HeroSection() {
+  const [videoError, setVideoError] = useState(false);
+
   return (
     <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 pt-10 pb-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,36 +70,49 @@ export default function HeroSection() {
           {/* Video/Visual */}
           <div className="relative order-1 lg:order-2">
             <div className="aspect-[3/2] lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
-              <MuxPlayer
-                playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
-                metadataVideoTitle="Welcome to TDC Ghana Ltd"
-                metadataViewerUserId="user-tdc-001"
-                autoPlay="muted"
-                loop
-                style={
-                  {
-                    width: "100%",
-                    height: "100%",
-                    "--control-bar": "flex",
-                    "--top-control-bar": "none",
-                    "--center-controls": "none",
-                    "--play-button": "none",
-                    "--seek-backward-button": "none",
-                    "--seek-forward-button": "none",
-                    "--time-display": "none",
-                    "--time-range": "none",
-                    "--duration-display": "none",
-                    "--rendition-menu-button": "none",
-                    "--captions-menu-button": "none",
-                    "--airplay-button": "none",
-                    "--cast-button": "none",
-                    "--pip-button": "none",
-                    "--fullscreen-button": "none",
-                    "--volume-range": "flex",
-                    "--mute-button": "flex",
-                  } as React.CSSProperties
-                }
-              />
+              {!videoError ? (
+                <MuxPlayer
+                  playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
+                  metadataVideoTitle="Welcome to TDC Ghana Ltd"
+                  metadataViewerUserId="user-tdc-001"
+                  autoPlay="muted"
+                  loop
+                  onError={() => setVideoError(true)}
+                  style={
+                    {
+                      width: "100%",
+                      height: "100%",
+                      "--control-bar": "flex",
+                      "--top-control-bar": "none",
+                      "--center-controls": "none",
+                      "--play-button": "none",
+                      "--seek-backward-button": "none",
+                      "--seek-forward-button": "none",
+                      "--time-display": "none",
+                      "--time-range": "none",
+                      "--duration-display": "none",
+                      "--rendition-menu-button": "none",
+                      "--captions-menu-button": "none",
+                      "--airplay-button": "none",
+                      "--cast-button": "none",
+                      "--pip-button": "none",
+                      "--fullscreen-button": "none",
+                      "--volume-range": "flex",
+                      "--mute-button": "flex",
+                    } as React.CSSProperties
+                  }
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                  <div className="text-center space-y-4">
+                    <Building className="h-16 w-16 text-primary mx-auto" />
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-semibold text-foreground">TDC Ghana Ltd</h3>
+                      <p className="text-muted-foreground">Building Ghana's Future Together</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Floating Cards */}
