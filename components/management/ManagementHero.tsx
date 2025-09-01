@@ -17,8 +17,7 @@ export default function ManagementHero({
           src="/carousel/4.jpeg"
           alt="TDC Ghana Management Team"
           fill
-          className="object-cover"
-          style={{ objectPosition: '50% 25%' }}
+          className="object-cover scale-145 md:scale-100 object-[50%_3%] md:object-[50%_21%]"
           priority
         />
         {/* Gradient Overlay */}
@@ -26,7 +25,7 @@ export default function ManagementHero({
       </div>
       
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end h-[40vh]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end h-[30vh] md:h-[43vh]">
         <div className="text-center mb-8 w-full">
           <h1 className="text-4xl lg:text-5xl font-bold text-white font-serif mb-6">
             {/* {title} */}
