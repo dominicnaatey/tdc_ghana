@@ -25,7 +25,7 @@ export default function BoardHero({
       </div>
       
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end h-[30vh] md:h-[40vh]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end h-[30vh] md:h-[43vh]">
         <div className="text-center w-full">
           <h1 className="text-4xl lg:text-5xl font-bold text-white font-serif">
             {/* {title} */}
