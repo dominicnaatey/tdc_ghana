@@ -111,7 +111,7 @@ const managementMembers: ManagementMember[] = [
     id: 7,
     name: "Sarah Donkor",
     position: "Head of Estates",
-    bio: "Surveyor Sarah Donkor (Mrs) has over two decades experience in Land Administration and Management. She joined TDC in 1999 as a National Service person and has risen through the ranks to her current position as the Head of Estates. She is a Chartered Valuer and a professional member of the Ghana Institution of Surveyors (GhIS). She holds a BSC in Land Economy and MSc in Real Estate from the Kwame Nkrumah University of Science and Technology. Kumasi. She has attended several Capacity Building courses in Valuation, Land Administration and Management. She serves on the Board of Regency Engineering and Construction Limited (REC), a Ghanaian company which offers Engineering and Project Management services.",
+    bio: "Surveyor Sarah Donkor (Mrs) has over two decades experience in Land Administration and Management.<br><br> She joined TDC in 1999 as a National Service person and has risen through the ranks to her current position as the Head of Estates.<br><br> She is a Chartered Valuer and a professional member of the Ghana Institution of Surveyors (GhIS). She holds a BSC in Land Economy and MSc in Real Estate from the Kwame Nkrumah University of Science and Technology. Kumasi. She has attended several Capacity Building courses in Valuation, Land Administration and Management. She serves on the Board of Regency Engineering and Construction Limited (REC), a Ghanaian company which offers Engineering and Project Management services.",
     image: "/management/7.jpg",
     qualifications: [
       "BSc in Land Economy - Kwame Nkrumah University of Science and Technology, Kumasi",
@@ -143,10 +143,10 @@ export default function ManagementMembers() {
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-serif mb-4">
             Our Management Team
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          {/* <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our management team comprises experienced professionals dedicated to
             operational excellence and strategic growth in real estate development.
-          </p>
+          </p> */}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-8">
