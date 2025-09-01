@@ -159,7 +159,7 @@ export default function BoardMembers() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-serif mb-4">
-            Our Distinguished Board
+            Our Board Of 
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our board of directors comprises experienced professionals from
@@ -183,10 +183,10 @@ export default function BoardMembers() {
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-base md:text-xl font-bold text-gray-900 text-start mb-2 group-hover:text-gray-700 transition-colors">
+              <h3 className="text-base md:text-xl font-bold text-gray-900 text-start md:text-center mb-2 group-hover:text-gray-700 transition-colors">
                 {member.name}
               </h3>
-              <p className="text-sm md:text-base text-gray-600 font-medium text-start italic">
+              <p className="text-sm md:text-base text-gray-600 font-medium text-start md:text-center italic">
                 {member.position}
               </p>
             </div>
