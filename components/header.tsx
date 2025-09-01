@@ -35,7 +35,7 @@ export default function Header() {
   const aboutSubmenuItems = [
     { name: "About Us", href: "/about" },
     { name: "Board of Directors", href: "/board-of-directors" },
-    { name: "Management", href: "/about/management" },
+    { name: "Management", href: "/management" },
   ];
 
   const isActive = (href: string) => {
@@ -93,7 +93,7 @@ export default function Header() {
             >
               <Dropdown isOpen={isAboutDropdownOpen} setIsOpen={setIsAboutDropdownOpen}>
                 <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
-                  isActive("/about") || isActive("/board-of-directors") || isActive("/about/management")
+                  isActive("/about") || isActive("/board-of-directors") || isActive("/management")
                     ? "text-accent"
                     : "text-gray-700 hover:text-accent"
                 }`}>
