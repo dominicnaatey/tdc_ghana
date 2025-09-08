@@ -14,15 +14,15 @@ export default function AboutHero({
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/carousel/2.jpg"
+          src="/bg-primary.jpg"
           alt="TDC Ghana Building"
           fill
-          className="object-cover"
-          style={{ objectPosition: '50% 35%' }}
+          className="object-cover object-center"
+          // style={{ objectPosition: '50% 35%' }}
           priority
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/50 to-black/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/90"></div>
       </div>
       
       {/* Content */}
