@@ -14,7 +14,7 @@ export default function ManagementHero({
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/carousel/4.jpeg"
+          src="/bg-primary.jpg"
           alt="TDC Ghana Management Team"
           fill
           className="object-cover scale-145 md:scale-100 object-[50%_3%] md:object-[50%_21%]"
