@@ -21,7 +21,7 @@ export default function BoardHero({
           priority
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/5 to-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
       </div>
       
       {/* Content */}
