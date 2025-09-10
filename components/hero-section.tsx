@@ -69,7 +69,7 @@ export default function HeroSection() {
 
           {/* Video/Visual */}
           <div className="relative order-1 lg:order-2">
-            <div className="aspect-[3/2] lg:aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-border">
+            <div className=" overflow-hidden bg-card border border-border">
               {!videoError ? (
                 <MuxPlayer
                   playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
