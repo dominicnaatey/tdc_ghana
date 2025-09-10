@@ -17,7 +17,7 @@ export default function ManagementHero({
           src="/bg-primary.jpg"
           alt="TDC Ghana Management Team"
           fill
-          className="object-cover scale-145 md:scale-100 object-[50%_3%] md:object-[50%_21%]"
+          className="object-cover object-center"
           priority
         />
         {/* Gradient Overlay */}
