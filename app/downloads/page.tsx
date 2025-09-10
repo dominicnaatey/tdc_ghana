@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -6,87 +8,71 @@ import { FileText, Download, Search, Filter, Calendar, Eye } from "lucide-react"
 
 const documentCategories = [
   {
-    name: "Annual Reports",
-    description: "Comprehensive annual reports and financial statements",
+    name: "Forms & Applications",
+    description: "Essential forms and applications for various services",
     documents: [
-      { name: "TDC Ghana Annual Report 2023", type: "PDF", size: "2.4 MB", date: "2024-03-15", downloads: 1250 },
-      { name: "TDC Ghana Annual Report 2022", type: "PDF", size: "2.1 MB", date: "2023-03-20", downloads: 2100 },
-      { name: "TDC Ghana Annual Report 2021", type: "PDF", size: "1.9 MB", date: "2022-03-18", downloads: 1800 },
+      { name: "Cadastral Plan Form", type: "PDF", size: "450 KB", date: "2024-01-10", downloads: 1250, filename: "Cadastral Plan Form.pdf" },
+      { name: "Client Information Form", type: "PDF", size: "320 KB", date: "2024-01-15", downloads: 980, filename: "Client Information Form.pdf" },
+      { name: "Checklist of Requirements for Processing Consent for Transfers, Mortgages, Vesting Assents Form", type: "PDF", size: "680 KB", date: "2024-01-20", downloads: 750, filename: "Checklist of Requirements for Processing Consent for Transfers, Mortgages, Vesting Assents Form.pdf" },
     ],
   },
   {
-    name: "Housing Applications",
-    description: "Forms and applications for housing projects",
+    name: "Housing & Properties",
+    description: "Information about residential houses and commercial plots",
     documents: [
-      { name: "Housing Application Form", type: "PDF", size: "450 KB", date: "2024-01-10", downloads: 5200 },
-      { name: "Housing Eligibility Guidelines", type: "PDF", size: "680 KB", date: "2024-01-10", downloads: 3100 },
-      { name: "Payment Plan Options", type: "PDF", size: "320 KB", date: "2024-01-15", downloads: 2800 },
-      { name: "Housing Project Brochure", type: "PDF", size: "1.2 MB", date: "2024-02-01", downloads: 1900 },
+      { name: "Residential Houses", type: "PDF", size: "1.2 MB", date: "2024-02-01", downloads: 2100, filename: "Residential Houses.pdf" },
+      { name: "Serviced Residential and Commercial Plots", type: "PDF", size: "890 KB", date: "2024-02-05", downloads: 1800, filename: "Serviced Residential and Commercial Plots.pdf" },
     ],
   },
   {
-    name: "Land Development",
-    description: "Land acquisition and development documentation",
+    name: "Service Offerings",
+    description: "Premium services and offerings with detailed information",
     documents: [
-      { name: "Land Acquisition Application", type: "PDF", size: "380 KB", date: "2024-01-08", downloads: 2400 },
-      { name: "Land Development Guidelines", type: "PDF", size: "750 KB", date: "2024-01-08", downloads: 1600 },
-      { name: "Site Plan Requirements", type: "PDF", size: "520 KB", date: "2024-01-12", downloads: 1200 },
-      { name: "Land Use Regulations", type: "PDF", size: "890 KB", date: "2024-01-20", downloads: 980 },
-    ],
-  },
-  {
-    name: "Project Reports",
-    description: "Progress reports and project documentation",
-    documents: [
-      { name: "Q4 2023 Project Progress Report", type: "PDF", size: "1.8 MB", date: "2024-01-30", downloads: 850 },
-      { name: "Infrastructure Development Update", type: "PDF", size: "1.1 MB", date: "2024-02-15", downloads: 720 },
-      { name: "Community Impact Assessment", type: "PDF", size: "950 KB", date: "2024-02-20", downloads: 640 },
+      { name: "Prestige and Premium Service Offerings with Timelines and Fees", type: "PDF", size: "1.5 MB", date: "2024-01-25", downloads: 1600, filename: "PRESTIGE AND PREMIUM SERVICE OFFERINGS WITH TIMELINES AND FEES.pdf" },
     ],
   },
   {
     name: "Policies & Guidelines",
     description: "Corporate policies and operational guidelines",
     documents: [
-      { name: "TDC Ghana Corporate Policy Manual", type: "PDF", size: "2.8 MB", date: "2024-01-05", downloads: 1100 },
-      { name: "Environmental Impact Guidelines", type: "PDF", size: "1.4 MB", date: "2024-01-05", downloads: 890 },
-      { name: "Procurement Guidelines", type: "PDF", size: "680 KB", date: "2024-01-10", downloads: 750 },
-      { name: "Quality Assurance Standards", type: "PDF", size: "920 KB", date: "2024-01-15", downloads: 620 },
-    ],
-  },
-  {
-    name: "Financial Information",
-    description: "Budget reports and financial transparency documents",
-    documents: [
-      { name: "2024 Budget Allocation Report", type: "PDF", size: "1.6 MB", date: "2024-02-01", downloads: 980 },
-      {
-        name: "Quarterly Financial Statement Q1 2024",
-        type: "PDF",
-        size: "1.2 MB",
-        date: "2024-04-15",
-        downloads: 720,
-      },
-      { name: "Project Funding Sources", type: "PDF", size: "580 KB", date: "2024-01-25", downloads: 650 },
+      { name: "Code of Business Conduct", type: "PDF", size: "750 KB", date: "2024-01-05", downloads: 1100, filename: "Code of Business Conduct.pdf" },
+      { name: "Right to Information Manual", type: "PDF", size: "920 KB", date: "2024-01-08", downloads: 890, filename: "Right to Information Manual.pdf" },
+      { name: "Whistleblowing Policy", type: "PDF", size: "580 KB", date: "2024-01-12", downloads: 720, filename: "Whistleblowing Policy.pdf" },
     ],
   },
 ]
 
 export default function DownloadsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-purple-800 to-purple-900 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold mb-4">Downloads & Resources</h1>
-            <p className="text-xl text-purple-100">
+    <div className="min-h-screen bg-background">
+      <section className="relative py-4 lg:py-4 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/bg-primary.jpg"
+            alt="TDC Ghana Building"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/90"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end h-[40vh]">
+          <div className="text-center mb-8 w-full">
+            <h1 className="text-4xl lg:text-5xl font-bold text-white font-serif mb-6">
+              Downloads & Resources
+            </h1>
+            <p className="text-xl text-gray-100 max-w-3xl mx-auto leading-relaxed">
               Access important documents, forms, reports, and resources from TDC Ghana Ltd.
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Search and Filter Section */}
-        <Card className="mb-8">
+        {/* <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Search className="w-5 h-5 mr-2" />
@@ -102,18 +88,19 @@ export default function DownloadsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="pdf">PDF Documents</SelectItem>
-                  <SelectItem value="forms">Forms</SelectItem>
-                  <SelectItem value="reports">Reports</SelectItem>
+                  <SelectItem value="forms">Forms & Applications</SelectItem>
+                  <SelectItem value="housing">Housing & Properties</SelectItem>
+                  <SelectItem value="services">Service Offerings</SelectItem>
+                  <SelectItem value="policies">Policies & Guidelines</SelectItem>
                 </SelectContent>
               </Select>
-              <Button className="bg-purple-800 hover:bg-purple-900">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Filter className="w-4 h-4 mr-2" />
                 Apply Filters
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Document Categories */}
         <div className="space-y-8">
@@ -131,8 +118,8 @@ export default function DownloadsPage() {
                       className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                     >
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                          <FileText className="w-6 h-6 text-purple-700" />
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <FileText className="w-6 h-6 text-primary" />
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-900">{doc.name}</h4>
@@ -149,11 +136,26 @@ export default function DownloadsPage() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => window.open(`/downloads/${doc.filename}`, '_blank')}
+                        >
                           <Eye className="w-4 h-4 mr-2" />
                           Preview
                         </Button>
-                        <Button size="sm" className="bg-purple-700 hover:bg-purple-800">
+                        <Button 
+                          size="sm" 
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                          onClick={() => {
+                            const link = document.createElement('a');
+                            link.href = `/downloads/${doc.filename}`;
+                            link.download = doc.filename;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
+                        >
                           <Download className="w-4 h-4 mr-2" />
                           Download
                         </Button>
@@ -167,7 +169,7 @@ export default function DownloadsPage() {
         </div>
 
         {/* Help Section */}
-        <Card className="mt-12">
+        {/* <Card className="mt-12">
           <CardHeader>
             <CardTitle>Need Help?</CardTitle>
           </CardHeader>
@@ -181,7 +183,7 @@ export default function DownloadsPage() {
               <Button variant="outline">Request Document</Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   )
