@@ -37,11 +37,25 @@ export default function ContactPage() {
       {/* <Header /> */}
       <main>
         {/* Hero Section */}
-        <section className="py-16 lg:py-24 bg-gradient-to-br from-primary/5 to-accent/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground font-serif mb-6">Contact Us</h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+        <section className="relative py-4 lg:py-4 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <img
+              src="/bg-primary.jpg"
+              alt="TDC Ghana Building"
+              className="w-full h-full object-cover object-center"
+            />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/90"></div>
+          </div>
+          
+          {/* Content */}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end h-[40vh]">
+            <div className="text-center mb-8 w-full">
+              <h1 className="text-4xl lg:text-5xl font-bold text-white font-serif mb-6">
+                Contact Us
+              </h1>
+              <p className="text-xl text-gray-100 max-w-3xl mx-auto leading-relaxed">
                 Get in touch with TDC Ghana Ltd for inquiries about housing projects, land development opportunities, or
                 general information about our services.
               </p>
