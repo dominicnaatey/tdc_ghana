@@ -203,7 +203,7 @@ export default function ContactPage() {
                           onChange={(e) =>
                             handleInputChange("name", e.target.value)
                           }
-                          className="bg-input border-1 border-gray-500"
+                          className="bg-gray-50 border-1 border-gray-500"
                         />
                       </div>
 
@@ -223,7 +223,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("email", e.target.value)
                             }
-                            className="bg-input border-1 border-gray-500"
+                            className="bg-gray-50 border-1 border-gray-500"
                           />
                         </div>
                         <div>
@@ -240,7 +240,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("phone", e.target.value)
                             }
-                            className="bg-input border-1 border-gray-500"
+                            className="bg-gray-50 border-1 border-gray-500"
                           />
                         </div>
                       </div>
@@ -279,7 +279,7 @@ export default function ContactPage() {
                           onChange={(e) =>
                             handleInputChange("message", e.target.value)
                           }
-                          className="bg-input border-1 border-gray-500 min-h-[12rem]"
+                          className="bg-gray-50 border-1 border-gray-500 min-h-[10rem]"
                           placeholder="Please provide details about your inquiry..."
                         />
                       </div>
@@ -297,8 +297,9 @@ export default function ContactPage() {
                 </Card>
               </div>
             </div>
+
             {/* Map Placeholder */}
-            <div className="mt-12">
+            <div className="mt-16">
               <div className="bg-gray-100 rounded-lg overflow-hidden shadow-lg border-5 border-gray-300">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.4558550255815!2d-0.007311099999999999!3d5.646992199999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf80ad2225bcdb%3A0x3324131c8dfae273!2sTDC%20GHANA%20LTD!5e0!3m2!1sen!2sgh!4v1758330053874!5m2!1sen!2sgh"
