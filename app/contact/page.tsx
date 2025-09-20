@@ -39,7 +39,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* <Header /> */}
       <main>
         {/* Hero Section */}
@@ -188,25 +188,26 @@ export default function ContactPage() {
                   </CardHeader>
                   <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-medium text-foreground mb-2"
+                        >
+                          Full Name *
+                        </label>
+                        <Input
+                          id="name"
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) =>
+                            handleInputChange("name", e.target.value)
+                          }
+                          className="bg-input border-1 border-gray-500"
+                        />
+                      </div>
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-foreground mb-2"
-                          >
-                            Full Name *
-                          </label>
-                          <Input
-                            id="name"
-                            type="text"
-                            required
-                            value={formData.name}
-                            onChange={(e) =>
-                              handleInputChange("name", e.target.value)
-                            }
-                            className="bg-input border-1 border-gray-500"
-                          />
-                        </div>
                         <div>
                           <label
                             htmlFor="email"
@@ -225,9 +226,6 @@ export default function ContactPage() {
                             className="bg-input border-1 border-gray-500"
                           />
                         </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <label
                             htmlFor="phone"
@@ -244,37 +242,6 @@ export default function ContactPage() {
                             }
                             className="bg-input border-1 border-gray-500"
                           />
-                        </div>
-                        <div>
-                          <label
-                            htmlFor="inquiryType"
-                            className="block text-sm font-medium text-foreground mb-2"
-                          >
-                            Inquiry Type *
-                          </label>
-                          <Select
-                            onValueChange={(value) =>
-                              handleInputChange("inquiryType", value)
-                            }
-                          >
-                            <SelectTrigger className="bg-input border-1 border-gray-500">
-                              <SelectValue placeholder="Select inquiry type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="general">
-                                General Inquiry
-                              </SelectItem>
-                              <SelectItem value="housing">
-                                Housing Projects
-                              </SelectItem>
-                              <SelectItem value="land">
-                                Land Development
-                              </SelectItem>
-                              <SelectItem value="project">
-                                Project Information
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
                         </div>
                       </div>
 
@@ -307,12 +274,12 @@ export default function ContactPage() {
                         <Textarea
                           id="message"
                           required
-                          rows={6}
+                          rows={16}
                           value={formData.message}
                           onChange={(e) =>
                             handleInputChange("message", e.target.value)
                           }
-                          className="bg-input border-1 border-gray-500"
+                          className="bg-input border-1 border-gray-500 min-h-[12rem]"
                           placeholder="Please provide details about your inquiry..."
                         />
                       </div>
