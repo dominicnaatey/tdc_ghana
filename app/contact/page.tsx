@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react"
 import { useState } from "react"
 
 export default function ContactPage() {
@@ -63,102 +63,75 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* Contact Information & Form */}
-        <section className="py-16 lg:py-24 bg-background">
+        {/* Contact Section */}
+        <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Information */}
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-bold text-foreground font-serif mb-6">Get In Touch</h2>
-                  <p className="text-muted-foreground leading-relaxed mb-8">
-                    We're here to help you with all your housing and land development needs. Reach out to us through any
-                    of the following channels, and our team will respond promptly.
-                  </p>
-                </div>
+              <div>
+                <h2 className="text-3xl font-bold text-gray-800 mb-8">Get in Touch</h2>
 
                 <div className="space-y-6">
-                  <Card className="border-border">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                          <MapPin className="h-6 w-6 text-primary-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-2">Head Office</h3>
-                          <p className="text-muted-foreground">
-                            TDC Ghana Ltd Headquarters
-                            <br />
-                            Tema Industrial Area
-                            <br />
-                            P.O. Box 1234, Tema
-                            <br />
-                            Greater Accra Region, Ghana
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="flex items-start space-x-4 group">
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-purple-200 transition-colors">
+                      <Mail className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-1">Email & Website</h3>
+                      <p className="text-gray-600">info@tdc.gov.gh</p>
+                      <p className="text-gray-600">www.tdc.gov.gh</p>
+                    </div>
+                  </div>
 
-                  <Card className="border-border">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Phone className="h-6 w-6 text-accent-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-2">Phone Numbers</h3>
-                          <p className="text-muted-foreground">
-                            Main Line: +233 (0) 303 202 104
-                            <br />
-                            Housing Inquiries: +233 (0) 303 202 105
-                            <br />
-                            Land Development: +233 (0) 303 202 106
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="flex items-start space-x-4 group">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-200 transition-colors">
+                      <Phone className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-1">Phone Numbers</h3>
+                      <p className="text-gray-600">+233 59 691 4432</p>
+                      <p className="text-gray-600">+233 50 489 5302</p>
+                      <p className="text-gray-600">+233 30 320 2731</p>
+                    </div>
+                  </div>
 
-                  <Card className="border-border">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Mail className="h-6 w-6 text-primary-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-2">Email Addresses</h3>
-                          <p className="text-muted-foreground">
-                            General: info@tdcghana.gov.gh
-                            <br />
-                            Housing: housing@tdcghana.gov.gh
-                            <br />
-                            Land: land@tdcghana.gov.gh
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="flex items-start space-x-4 group">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-200 transition-colors">
+                      <MessageCircle className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-1">WhatsApp</h3>
+                      <p className="text-gray-600">055 256 9887</p>
+                    </div>
+                  </div>
 
-                  <Card className="border-border">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Clock className="h-6 w-6 text-accent-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-2">Office Hours</h3>
-                          <p className="text-muted-foreground">
-                            Monday - Friday: 8:00 AM - 5:00 PM
-                            <br />
-                            Saturday: 9:00 AM - 2:00 PM
-                            <br />
-                            Sunday: Closed
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="flex items-start space-x-4 group">
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-red-200 transition-colors">
+                      <MapPin className="h-6 w-6 text-red-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-1">Office Address</h3>
+                      <p className="text-gray-600">
+                        TDC GHANA LTD
+                        <br />
+                        P. O. Box CO 46
+                        <br />
+                        Tema - Ghana
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4 group">
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-purple-200 transition-colors">
+                      <Clock className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-1">Office Hours</h3>
+                      <p className="text-gray-600">Monday - Friday: 8:00 AM - 5:00 PM</p>
+                      <p className="text-gray-600">Saturday: 9:00 AM - 2:00 PM</p>
+                      <p className="text-gray-600">Sunday: Closed</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -272,6 +245,21 @@ export default function ContactPage() {
                 </Card>
               </div>
             </div>
+            {/* Map Placeholder */}
+                <div className="mt-8">
+                  <div className="bg-gray-100 rounded-lg overflow-hidden shadow-lg">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.4558550255815!2d-0.007311099999999999!3d5.646992199999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf80ad2225bcdb%3A0x3324131c8dfae273!2sTDC%20GHANA%20LTD!5e0!3m2!1sen!2sgh!4v1758330053874!5m2!1sen!2sgh"
+                      width="100%"
+                      height="400"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="TDC GHANA LTD Location - P.O. Box CO 46, Tema, Ghana"
+                    ></iframe>
+                  </div>
+                </div>
           </div>
         </section>
       </main>
