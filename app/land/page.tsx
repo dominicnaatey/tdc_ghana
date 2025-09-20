@@ -1,187 +1,104 @@
-import { Suspense } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Skeleton } from "@/components/ui/skeleton"
-import { MapPin, Square, Search, Filter, ArrowRight, Ruler } from "lucide-react"
-import Link from "next/link"
-import { createServerClient } from "@/lib/supabase/server"
-
-async function getLandPlots() {
-  const supabase = createServerClient()
-
-  const { data: plots, error } = await supabase
-    .from("land_plots")
-    .select("*")
-    .eq("status", "available")
-    .order("created_at", { ascending: false })
-
-  if (error) {
-    console.error("Error fetching land plots:", error)
-    return []
-  }
-
-  return plots || []
-}
-
-function PlotCardSkeleton() {
-  return (
-    <Card className="overflow-hidden">
-      <div className="aspect-video">
-        <Skeleton className="w-full h-full" />
-      </div>
-      <CardHeader>
-        <Skeleton className="h-6 w-3/4 mb-2" />
-        <Skeleton className="h-4 w-full mb-2" />
-        <Skeleton className="h-6 w-1/2" />
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-between mb-4">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-4 w-20" />
-        </div>
-        <Skeleton className="h-10 w-full" />
-      </CardContent>
-    </Card>
-  )
-}
-
-async function LandPlotsList() {
-  const plots = await getLandPlots()
-
-  if (plots.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No land plots found</h3>
-        <p className="text-gray-600">Check back later for new land development opportunities.</p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {plots.map((plot) => (
-        <Card key={plot.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-          <div className="aspect-video overflow-hidden">
-            <img
-              src={plot.featured_image || "/placeholder.svg?height=300&width=400&query=land plot development site"}
-              alt={plot.title}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            />
-          </div>
-          <CardHeader>
-            <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary" className="bg-amber-100 text-amber-800">
-                {plot.status}
-              </Badge>
-              <Badge variant="outline">{plot.plot_type}</Badge>
-            </div>
-            <CardTitle className="line-clamp-1 hover:text-amber-700 transition-colors">
-              <Link href={`/land/${plot.slug}`}>{plot.title}</Link>
-            </CardTitle>
-            <div className="flex items-center text-sm text-gray-500">
-              <MapPin className="w-4 h-4 mr-1" />
-              {plot.location}
-            </div>
-            <div className="text-lg font-semibold text-amber-800">GHS {plot.price_per_sqm?.toLocaleString()}/sqm</div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-              <div className="flex items-center">
-                <Square className="w-4 h-4 mr-1" />
-                {plot.size_sqm} sqm
-              </div>
-              <div className="flex items-center">
-                <Ruler className="w-4 h-4 mr-1" />
-                {plot.dimensions}
-              </div>
-            </div>
-            <div className="text-sm text-gray-600 mb-4">
-              Total: GHS {((plot.size_sqm || 0) * (plot.price_per_sqm || 0)).toLocaleString()}
-            </div>
-            <Button className="w-full bg-amber-600 hover:bg-amber-700" asChild>
-              <Link href={`/land/${plot.slug}`}>
-                View Details <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
 
 export default function LandPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-amber-700 to-amber-800 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold mb-4">Land Development</h1>
-            <p className="text-xl text-amber-100">
-              Discover prime land opportunities for residential and commercial development across strategic locations in
-              Ghana.
+      <div className="bg-[#0D3562] border-b border-gray-100">
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl font-bold text-gray-100 mb-4">
+              Land Acquisition Guidelines
+            </h1>
+            <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
+              Guidelines for acquiring Serviced Residential or Commercial Plots on leasehold basis at Community 24, our Current Project Site, off the Tema - Accra motorway.
             </p>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Search and Filter Section */}
-        <Card className="mb-8">
+        <Card className="max-w-5xl mx-auto">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Search className="w-5 h-5 mr-2" />
-              Find Your Perfect Plot
+            <CardTitle className="text-2xl text-amber-800">
+              Land Acquisition Guidelines - Community 24
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-4">
-              <Input placeholder="Search by location..." className="bg-white" />
-              <Select>
-                <SelectTrigger className="bg-white">
-                  <SelectValue placeholder="Plot Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="residential">Residential</SelectItem>
-                  <SelectItem value="commercial">Commercial</SelectItem>
-                  <SelectItem value="mixed">Mixed Use</SelectItem>
-                  <SelectItem value="industrial">Industrial</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select>
-                <SelectTrigger className="bg-white">
-                  <SelectValue placeholder="Size Range" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0-500">Under 500 sqm</SelectItem>
-                  <SelectItem value="500-1000">500 - 1,000 sqm</SelectItem>
-                  <SelectItem value="1000-2000">1,000 - 2,000 sqm</SelectItem>
-                  <SelectItem value="2000+">Above 2,000 sqm</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button className="bg-amber-700 hover:bg-amber-800">
-                <Filter className="w-4 h-4 mr-2" />
-                Apply Filters
-              </Button>
+          <CardContent className="prose prose-lg max-w-none">
+            <div className="space-y-6 text-gray-700 leading-relaxed">
+              <p className="text-lg font-medium text-gray-900 mb-6">
+                The following are guidelines to acquiring Serviced Residential or Commercial Plots on leasehold basis at Community 24, our Current Project Site, off the Tema - Accra motorway.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">1</span>
+                  <p className="pt-1">
+                    Your parcel of land will be improved with a network of Tarred Roads, Drains and Gutters, Electricity and Water Supply.
+                  </p>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">2</span>
+                  <div className="pt-1">
+                    <p className="mb-2">
+                      An installment payment plan has been put in place to help you acquire the serviced plot:
+                    </p>
+                    <p className="ml-4 text-gray-600">
+                      A minimum 40% deposit of the selling price is required for the plot to be earmarked for each applicant.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">3</span>
+                  <p className="pt-1">
+                    Please note that the allocation will be on first-come-first-serve basis and noncompliance with the terms of payment will lead to a withdrawal of the plot reserved for you. You will also be subject to any new policy, rule or by-law that may be adopted and or passed by the Corporation.
+                  </p>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">4</span>
+                  <p className="pt-1">
+                    Offer and right of entry letters will only be issued to applicants who have completed payments.
+                  </p>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">5</span>
+                  <p className="pt-1">
+                    Refunds, whether on the basis of request or withdrawal of a plot reservation due to non-payment of the full price shall be made without interest and in the currency made. Original receipts must be attached to request.
+                  </p>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">6</span>
+                  <p className="pt-1">
+                    Kindly note that, after the processing of offer letters and site plans and the rights of entry, refunds will attract a 3% deduction.
+                  </p>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-semibold text-sm">7</span>
+                  <div className="pt-1">
+                    <p className="mb-2">
+                      Applicants should note that plots once acquired fully must be developed within two (2) years from the offer date.
+                    </p>
+                    <p className="ml-4 text-gray-600">
+                      Extensions may be granted on limited basis by applying to the Managing Director stating tangible reasons.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-8 p-6 bg-amber-50 rounded-lg border border-amber-200">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">Important Notice</h3>
+                <p className="text-amber-700">
+                  All applicants are advised to carefully read and understand these guidelines before proceeding with land acquisition. For further inquiries, please contact our office.
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
-
-        {/* Plots Grid */}
-        <Suspense
-          fallback={
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <PlotCardSkeleton key={i} />
-              ))}
-            </div>
-          }
-        >
-          <LandPlotsList />
-        </Suspense>
       </div>
     </div>
   )
