@@ -39,7 +39,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-100">
       {/* <Header /> */}
       <main>
         {/* Hero Section */}
@@ -180,7 +180,7 @@ export default function ContactPage() {
 
               {/* Contact Form */}
               <div>
-                <Card className="border-border">
+                <Card className="border-border bg-white drop-shadow-lg">
                   <CardHeader>
                     <CardTitle className="text-2xl font-bold text-foreground font-serif">
                       Send Us a Message
@@ -204,7 +204,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("name", e.target.value)
                             }
-                            className="bg-input border-border"
+                            className="bg-input border-1 border-gray-500"
                           />
                         </div>
                         <div>
@@ -222,7 +222,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("email", e.target.value)
                             }
-                            className="bg-input border-border"
+                            className="bg-input border-1 border-gray-500"
                           />
                         </div>
                       </div>
@@ -242,7 +242,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("phone", e.target.value)
                             }
-                            className="bg-input border-border"
+                            className="bg-input border-1 border-gray-500"
                           />
                         </div>
                         <div>
@@ -257,7 +257,7 @@ export default function ContactPage() {
                               handleInputChange("inquiryType", value)
                             }
                           >
-                            <SelectTrigger className="bg-input border-border">
+                            <SelectTrigger className="bg-input border-1 border-gray-500">
                               <SelectValue placeholder="Select inquiry type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -293,7 +293,7 @@ export default function ContactPage() {
                           onChange={(e) =>
                             handleInputChange("subject", e.target.value)
                           }
-                          className="bg-input border-border"
+                          className="bg-input border-1 border-gray-500"
                         />
                       </div>
 
@@ -312,7 +312,7 @@ export default function ContactPage() {
                           onChange={(e) =>
                             handleInputChange("message", e.target.value)
                           }
-                          className="bg-input border-border"
+                          className="bg-input border-1 border-gray-500"
                           placeholder="Please provide details about your inquiry..."
                         />
                       </div>
@@ -331,8 +331,8 @@ export default function ContactPage() {
               </div>
             </div>
             {/* Map Placeholder */}
-            <div className="mt-8">
-              <div className="bg-gray-100 rounded-lg overflow-hidden shadow-lg">
+            <div className="mt-12">
+              <div className="bg-gray-100 rounded-lg overflow-hidden shadow-lg border-5 border-gray-300">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.4558550255815!2d-0.007311099999999999!3d5.646992199999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf80ad2225bcdb%3A0x3324131c8dfae273!2sTDC%20GHANA%20LTD!5e0!3m2!1sen!2sgh!4v1758330053874!5m2!1sen!2sgh"
                   width="100%"
