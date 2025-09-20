@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from "@/components/ui/skeleton"
 import { MapPin, Bed, Bath, Square, Search, Filter, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { createServerClient } from "@/lib/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 
 interface HousingProject {
   id: number

@@ -51,9 +51,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/land" className="text-blue-100 hover:text-white transition-colors">
-                  Land Development
-                </Link>
+                <Link href="/serviced-plots" className="text-blue-100 hover:text-white transition-colors">
+            Serviced Plots
+          </Link>
               </li>
               <li>
                 <Link href="/projects" className="text-blue-100 hover:text-white transition-colors">

@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { MapPin, Bed, Bath, Square, ArrowLeft, Phone, Mail, Calendar, Users } from "lucide-react"
 import Link from "next/link"
-import { createServerClient } from "@/lib/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 
 async function getHousingProject(slug: string) {
-  const supabase = createServerClient()
+  const supabase = await createClient()
 
-  const { data: project, error } = await supabase.from("housing_projects").select("*").eq("slug", slug).single()
+  // Restructure query to fix TypeScript error
+  const query = supabase.from("housing_projects").select("*")
+  const { data: project, error } = await query.eq("slug", slug).single()
 
   if (error || !project) {
     return null
@@ -22,9 +24,10 @@ async function getHousingProject(slug: string) {
 export default async function HousingProjectPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const project = await getHousingProject(params.slug)
+  const { slug } = await params
+  const project = await getHousingProject(slug)
 
   if (!project) {
     notFound()

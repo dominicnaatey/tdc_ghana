@@ -1,5 +1,5 @@
 import { createClient } from "./client";
-import { createServerClient } from "./server";
+import { createClient as createServerClient } from "./server";
 
 export interface NewsItem {
   id?: number;
@@ -94,8 +94,15 @@ export interface ContactInquiry {
 class AdminDataProvider {
   private supabase;
 
-  constructor(isServer = false) {
-    this.supabase = isServer ? createServerClient() : createClient();
+  // Private constructor
+  private constructor(supabase: any) {
+    this.supabase = supabase;
+  }
+
+  // Factory method to create an instance asynchronously
+  static async create(isServer = false) {
+    const supabase = isServer ? await createClient() : createClient();
+    return new AdminDataProvider(supabase);
   }
 
   // News operations

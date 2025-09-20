@@ -10,7 +10,9 @@ import { createClient } from "@/lib/supabase/server"
 async function getLandPlot(slug: string) {
   const supabase = await createClient()
 
-  const { data: plot, error } = await supabase.from("land_plots").select("*").eq("slug", slug).single()
+  // Restructure query to fix TypeScript error
+  const query = supabase.from("land_plots").select("*")
+  const { data: plot, error } = await query.eq("slug", slug).single()
 
   if (error || !plot) {
     return null
@@ -22,9 +24,10 @@ async function getLandPlot(slug: string) {
 export default async function LandPlotPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const plot = await getLandPlot(params.slug)
+  const resolvedParams = await params
+  const plot = await getLandPlot(resolvedParams.slug)
 
   if (!plot) {
     notFound()
@@ -37,9 +40,9 @@ export default async function LandPlotPage({
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <Button variant="ghost" asChild>
-            <Link href="/land">
+            <Link href="/serviced-plots">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Land Plots
+              Back to Serviced Plots
             </Link>
           </Button>
         </div>

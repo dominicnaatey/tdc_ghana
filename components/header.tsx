@@ -26,7 +26,7 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "News", href: "/news" },
     { name: "Residential Houses", href: "/housing" },
-    { name: "Serviced Plots", href: "/land" },
+    { name: "Serviced Plots", href: "/serviced-plots" },
     { name: "Current Projects", href: "/projects" },
     { name: "Downloads", href: "/downloads" },
     { name: "Contact", href: "/contact" },
