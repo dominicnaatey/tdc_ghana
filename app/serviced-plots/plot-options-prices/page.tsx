@@ -1,6 +1,14 @@
+"use client"
+
 import Image from "next/image"
+import { useState } from "react"
+import Lightbox from "yet-another-react-lightbox"
+import "yet-another-react-lightbox/styles.css"
 
 export default function PlotOptionsPricesPage() {
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+
   const plotImages = [
     {
       id: 1,
@@ -19,23 +27,37 @@ export default function PlotOptionsPricesPage() {
     }
   ]
 
+  const lightboxSlides = plotImages.map(image => ({
+    src: image.src,
+    alt: image.alt
+  }))
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index)
+    setLightboxOpen(true)
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Title */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-green-50">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-            TDC Ghana Ltd offers serviced plots located in{" "}
-            <span className="text-blue-600">Tema Communities 25 and 26</span>
-          </h1>
+      <div className="bg-[#0D3562] border-b border-gray-100">
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-5xl mx-auto text-center">
+            <h1 className="text-5xl font-bold text-gray-100 mb-4">
+              TDC Ghana Ltd offers serviced plots located in Tema Communities 25 and 26
+            </h1>
+            <p className="text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+              Premium serviced plots with complete infrastructure including electricity, water, drainage, and paved roads in prime locations.
+            </p>
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* Main Images Section */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* First Large Image */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <div className="relative w-full h-[60vh] md:h-[70vh] lg:h-[80vh] rounded-lg overflow-hidden shadow-2xl">
               <Image
                 src={plotImages[0].src}
@@ -45,53 +67,64 @@ export default function PlotOptionsPricesPage() {
                 priority
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Two Images Side by Side */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden shadow-xl">
+            <div 
+              className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl transition-shadow duration-300"
+              onClick={() => openLightbox(0)}
+            >
+              <Image
+                src={plotImages[0].src}
+                alt={plotImages[0].alt}
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div 
+              className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl transition-shadow duration-300"
+              onClick={() => openLightbox(1)}
+            >
               <Image
                 src={plotImages[1].src}
                 alt={plotImages[1].alt}
                 fill
-                className="object-cover"
+                className="object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <div className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden shadow-xl">
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div 
+              className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden shadow-xl cursor-pointer hover:shadow-2xl transition-shadow duration-300"
+              onClick={() => openLightbox(2)}
+            >
               <Image
                 src={plotImages[2].src}
                 alt={plotImages[2].alt}
                 fill
-                className="object-cover"
+                className="object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Full Width Bottom Image */}
-      <section className="py-8">
-        <div className="w-full">
-          <div className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh]">
-            <Image
-              src={plotImages[0].src}
-              alt="TDC Ghana serviced plots panoramic view"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-              <div className="text-center text-white px-4">
-                <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">
-                  Premium Serviced Plots
-                </h2>
-                <p className="text-lg md:text-xl lg:text-2xl opacity-90">
-                  Tema Communities 25 & 26
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Lightbox Component */}
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        index={lightboxIndex}
+        slides={lightboxSlides}
+        styles={{
+          container: { backgroundColor: "rgba(0, 0, 0, 0.9)" },
+        }}
+        render={{
+          buttonPrev: lightboxIndex <= 0 ? () => null : undefined,
+          buttonNext: lightboxIndex >= plotImages.length - 1 ? () => null : undefined,
+        }}
+      />
+     
     </div>
   )
 }
