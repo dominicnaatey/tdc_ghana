@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+  const [isServicedPlotsDropdownOpen, setIsServicedPlotsDropdownOpen] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Cleanup timeout on unmount
@@ -26,7 +27,6 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "News", href: "/news" },
     { name: "Residential Houses", href: "/housing" },
-    { name: "Serviced Plots", href: "/serviced-plots" },
     { name: "Current Projects", href: "/projects" },
     { name: "Downloads", href: "/downloads" },
     { name: "Contact", href: "/contact" },
@@ -36,6 +36,13 @@ export default function Header() {
     { name: "About Us", href: "/about" },
     { name: "Board of Directors", href: "/board-of-directors" },
     { name: "Management", href: "/management" },
+  ];
+
+  const servicedPlotsSubmenuItems = [
+    { name: "Overview", href: "/serviced-plots" },
+    { name: "Residential & Commercial", href: "/serviced-plots/residential-commercial" },
+    { name: "Plot Options & Prices", href: "/serviced-plots/plot-options-prices" },
+    { name: "Why Choose TDC Plots", href: "/serviced-plots/why-choose-tdc" },
   ];
 
   const isActive = (href: string) => {
@@ -121,6 +128,53 @@ export default function Header() {
             </Dropdown>
             </div>
             
+            {/* Serviced Plots Dropdown */}
+            <div 
+              className="relative py-2 px-1"
+              onMouseEnter={() => {
+                if (hoverTimeout) {
+                  clearTimeout(hoverTimeout);
+                  setHoverTimeout(null);
+                }
+                setIsServicedPlotsDropdownOpen(true);
+              }}
+              onMouseLeave={() => {
+                const timeout = setTimeout(() => {
+                  setIsServicedPlotsDropdownOpen(false);
+                }, 50);
+                setHoverTimeout(timeout);
+              }}
+            >
+              <Dropdown isOpen={isServicedPlotsDropdownOpen} setIsOpen={setIsServicedPlotsDropdownOpen}>
+                <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
+                  isActive("/serviced-plots")
+                    ? "text-accent"
+                    : "text-gray-700 hover:text-accent"
+                }`}>
+                  <span>Serviced Plots</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
+                    isServicedPlotsDropdownOpen ? "rotate-180" : ""
+                  }`} />
+                </DropdownTrigger>
+              <DropdownContent align="start" className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0">
+                {servicedPlotsSubmenuItems.map((item) => (
+                  <DropdownClose key={item.name}>
+                    <Link
+                      href={item.href}
+                      className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                        isActive(item.href)
+                          ? "text-accent bg-gray-50"
+                          : "text-gray-700 hover:text-accent hover:bg-gray-50"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </DropdownClose>
+                ))}
+              </DropdownContent>
+            </Dropdown>
+            </div>
+            
             {/* Other Navigation Items */}
             {navigationItems.slice(1).map((item) => (
               <Link
@@ -171,6 +225,25 @@ export default function Header() {
               <div className="border-t border-gray-100 pt-4">
                 <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">About</div>
                 {aboutSubmenuItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`block pl-4 py-2 text-base font-medium transition-colors duration-200 ${
+                      isActive(item.href)
+                        ? "text-accent"
+                        : "text-gray-700 hover:text-accent"
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+              
+              {/* Serviced Plots Submenu for Mobile */}
+              <div className="border-t border-gray-100 pt-4">
+                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Serviced Plots</div>
+                {servicedPlotsSubmenuItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
