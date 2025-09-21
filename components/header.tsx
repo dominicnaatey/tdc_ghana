@@ -39,7 +39,7 @@ export default function Header() {
   ];
 
   const servicedPlotsSubmenuItems = [
-    { name: "Overview", href: "/serviced-plots" },
+    { name: "Serviced Plots", href: "/serviced-plots" },
     { name: "Residential & Commercial", href: "/serviced-plots/residential-commercial" },
     { name: "Plot Options & Prices", href: "/serviced-plots/plot-options-prices" },
     { name: "Why Choose TDC Plots", href: "/serviced-plots/why-choose-tdc" },
