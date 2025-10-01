@@ -15,160 +15,133 @@ const images: CarouselItem[] = [
   { 
     src: "/carousel/0.jpg",
     caption: {
-      title: "Modern Development",
-      description: "State-of-the-art residential and commercial properties",
-      position: "bottom-left"
+      description: "TDC Ghana Ltd – Real Estate Leaders",
+      position: "bottom-center"
     }
   },
   { 
     src: "/carousel/1.jpg",
     caption: {
-      title: "Modern Development",
-      description: "State-of-the-art residential and commercial properties",
-      position: "bottom-left"
+      description: "Engineer Donates Official Portraits to TDC",
+      position: "bottom-right"
     }
   },
   { 
-    src: "/carousel/2.jpg",
+    src: "/carousel/2.jpeg",
     caption: {
-      title: "Quality Construction",
-      description: "Built with premium materials and expert craftsmanship",
+      description: "Minister Adjei Inaugurates New TDC Board",
       position: "bottom-center"
     }
   },
   { 
     src: "/carousel/3.jpg",
     caption: {
-      title: "Prime Locations",
-      description: "Strategically located properties for maximum convenience",
+      description: "TDC Launches 24-Hour Services",
       position: "bottom-right"
     }
   },
   { 
-    src: "/carousel/4.jpg",
+    src: "/carousel/4.jpeg",
     caption: {
-      title: "Sustainable Living",
-      description: "Eco-friendly designs for a better tomorrow",
+      description: "TDC Introduces Premium Services",
       position: "bottom-left"
-    }
-  },
-  { 
-    src: "/carousel/5.jpg",
-    caption: {
-      title: "Community Focus",
-      description: "Building communities that bring people together",
-      position: "bottom-center"
     }
   },
   { 
     src: "/carousel/6.jpg",
     caption: {
-      title: "Investment Opportunity",
-      description: "Secure your future with our premium properties",
-      position: "bottom-right"
+      description: "TDC Expands 24/7 Service Access",
+      position: "bottom-left"
     }
   },
   { 
     src: "/carousel/7.jpg",
     caption: {
-      title: "Luxury Amenities",
-      description: "Experience comfort and convenience like never before",
+      description: "TDC Strengthens Customer Support",
       position: "bottom-left"
     }
   },
   { 
     src: "/carousel/8.jpg",
     caption: {
-      title: "Professional Excellence",
-      description: "Decades of experience in real estate development",
+      description: "TDC Holds National Prayer & Thanksgiving",
       position: "bottom-center"
     }
   },
   { 
-    src: "/carousel/9.jpg",
+    src: "/carousel/9.jpeg",
     caption: {
-      title: "Future Ready",
-      description: "Properties designed for tomorrow's lifestyle",
+      description: "TDC Board Inspects Project Sites",
       position: "bottom-right"
     }
   },
   { 
-    src: "/carousel/10.jpg",
+    src: "/carousel/10.jpeg",
     caption: {
-      title: "Trusted Partner",
-      description: "Your reliable partner in property investment",
+      description: "Board Members Review of Ongoing Works",
       position: "bottom-left"
     }
   },
   { 
-    src: "/carousel/11.jpg",
+    src: "/carousel/11.jpeg",
     caption: {
-      title: "Innovation",
-      description: "Cutting-edge design meets functional living",
+      description: "TDC Directors Assess Progress on Projects",
       position: "bottom-center"
     }
   },
   { 
-    src: "/carousel/12.jpg",
+    src: "/carousel/12.jpeg",
     caption: {
-      title: "Excellence",
-      description: "Setting new standards in property development",
+      description: "TDC Celebrates Workers on May Day",
       position: "bottom-right"
     }
   },
   { 
-    src: "/carousel/13.jpg",
+    src: "/carousel/13.jpeg",
     caption: {
-      title: "Growth",
-      description: "Expanding horizons in real estate development",
+      description: "Honouring Workers at May Day 2025",
       position: "bottom-left"
     }
   },
   { 
     src: "/carousel/14.jpg",
     caption: {
-      title: "Vision",
-      description: "Creating spaces that inspire and elevate",
+      description: "TDC Joins National May Day Festivities",
       position: "bottom-center"
-    }
-  },
-  { 
-    src: "/carousel/15.jpg",
-    caption: {
-      title: "Heritage",
-      description: "Building on a foundation of trust and quality",
-      position: "bottom-right"
     }
   },
   { 
     src: "/carousel/16.jpg",
     caption: {
-      title: "Progress",
-      description: "Advancing the future of urban development",
+      description: "TDC at International Building & Investment Expo 2025",
       position: "bottom-left"
     }
   },
   { 
     src: "/carousel/17.jpg",
     caption: {
-      title: "Commitment",
-      description: "Dedicated to delivering exceptional results",
+      description: "TDC MD Highlights Growth & Housing Projects",
       position: "bottom-center"
     }
   },
   { 
-    src: "/carousel/18.jpg",
+    src: "/carousel/18.jpeg",
     caption: {
-      title: "Success",
-      description: "Proven track record of successful projects",
+      description: "MD Announces Upcoming 24-Hour Service Launch",
       position: "bottom-right"
     }
   },
   { 
     src: "/carousel/19.jpg",
     caption: {
-      title: "Partnership",
-      description: "Building lasting relationships with our clients",
+      description: "Media Engagement: TDC’s Growth & Achievements",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/20.jpg",
+    caption: {
+      description: "Showcasing TDC’s Transformation Journey",
       position: "bottom-center"
     }
   }
