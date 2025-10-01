@@ -149,25 +149,28 @@ const images: CarouselItem[] = [
 
 const Carousel: React.FC = () => {
   const getPositionClasses = (position: string = 'bottom-center') => {
-    const baseClasses = "absolute z-20 px-4 py-3 max-w-md";
+    // Base classes with mobile-first approach: all captions at bottom-center on mobile
+    // Optimized for single-line display on mobile with wider max-width
+    const baseClasses = "absolute z-20 px-3 py-2 max-w-sm sm:px-4 sm:py-3 sm:max-w-md";
+    const mobilePosition = "bottom-3 left-1/2 transform -translate-x-1/2";
     
     switch (position) {
       case 'bottom-left':
-        return `${baseClasses} bottom-4 left-4`;
+        return `${baseClasses} ${mobilePosition} sm:bottom-4 sm:left-4 sm:transform-none sm:translate-x-0`;
       case 'bottom-right':
-        return `${baseClasses} bottom-4 right-4`;
+        return `${baseClasses} ${mobilePosition} sm:bottom-4 sm:right-4 sm:left-auto sm:transform-none sm:translate-x-0`;
       case 'bottom-center':
-        return `${baseClasses} bottom-4 left-1/2 transform -translate-x-1/2`;
+        return `${baseClasses} ${mobilePosition} sm:bottom-4`;
       case 'top-left':
-        return `${baseClasses} top-4 left-4`;
+        return `${baseClasses} ${mobilePosition} sm:top-4 sm:bottom-auto sm:left-4 sm:transform-none sm:translate-x-0`;
       case 'top-right':
-        return `${baseClasses} top-4 right-4`;
+        return `${baseClasses} ${mobilePosition} sm:top-4 sm:bottom-auto sm:right-4 sm:left-auto sm:transform-none sm:translate-x-0`;
       case 'top-center':
-        return `${baseClasses} top-4 left-1/2 transform -translate-x-1/2`;
+        return `${baseClasses} ${mobilePosition} sm:top-4 sm:bottom-auto`;
       case 'center':
-        return `${baseClasses} top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`;
+        return `${baseClasses} ${mobilePosition} sm:top-1/2 sm:bottom-auto sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2`;
       default:
-        return `${baseClasses} bottom-4 left-1/2 transform -translate-x-1/2`;
+        return `${baseClasses} ${mobilePosition} sm:bottom-4`;
     }
   };
 
@@ -235,14 +238,14 @@ const Carousel: React.FC = () => {
                 {/* Caption Overlay */}
                 {item.caption && (item.caption.title || item.caption.description) && (
                   <div className={getPositionClasses(item.caption.position)}>
-                    <div className="bg-black/70 backdrop-blur-sm rounded-lg py-2 px-4 text-white shadow-lg border border-white/10">
+                    <div className="bg-black/70 backdrop-blur-sm rounded-lg py-2 px-3 sm:py-2 sm:px-4 text-white shadow-lg border border-white/10">
                       {item.caption.title && (
-                        <h3 className="text-base md:text-base font-bold mb-2 text-white leading-tight">
+                        <h3 className="text-xs sm:text-sm md:text-base font-bold mb-1 sm:mb-2 text-white leading-tight truncate sm:whitespace-normal">
                           {item.caption.title}
                         </h3>
                       )}
                       {item.caption.description && (
-                        <p className="text-sm md:text-base text-gray-200 leading-relaxed">
+                        <p className="text-xs sm:text-xs md:text-base text-gray-200 leading-tight truncate sm:whitespace-normal sm:leading-relaxed">
                           {item.caption.description}
                         </p>
                       )}
