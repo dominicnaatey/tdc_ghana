@@ -3,17 +3,25 @@
 import React, { useState, useEffect } from "react";
 
 const images = [
-  "/carousel/1.jpeg",
+  "/carousel/1.jpg",
   "/carousel/2.jpg",
-  "/carousel/3.jpeg",
-  "/carousel/4.jpeg",
-  "/carousel/5.jpeg",
-  "/carousel/6.jpeg",
+  "/carousel/3.jpg",
+  "/carousel/4.jpg",
+  "/carousel/5.jpg",
+  "/carousel/6.jpg",
   "/carousel/7.jpg",
-  "/carousel/8.jpeg",
-  "/carousel/9.jpeg",
+  "/carousel/8.jpg",
+  "/carousel/9.jpg",
   "/carousel/10.jpg",
-  "/carousel/11.jpeg"
+  "/carousel/11.jpg",
+  "/carousel/12.jpg",
+  "/carousel/13.jpg",
+  "/carousel/14.jpg",
+  "/carousel/15.jpg",
+  "/carousel/16.jpg",
+  "/carousel/17.jpg",
+  "/carousel/18.jpg",
+  "/carousel/19.jpg"
 ];
 
 const Carousel: React.FC = () => {
