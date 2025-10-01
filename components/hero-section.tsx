@@ -69,7 +69,7 @@ export default function HeroSection() {
 
           {/* Video/Visual */}
           <div className="relative order-1 lg:order-2">
-            <div className=" overflow-hidden bg-card border border-border">
+            <div className="relative overflow-hidden bg-black border border-border aspect-video">
               {!videoError ? (
                 <MuxPlayer
                   playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
@@ -82,6 +82,9 @@ export default function HeroSection() {
                     {
                       width: "100%",
                       height: "100%",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
                       "--control-bar": "flex",
                       "--top-control-bar": "none",
                       "--center-controls": "none",
@@ -103,7 +106,7 @@ export default function HeroSection() {
                   }
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
                   <div className="text-center space-y-4">
                     <Building className="h-16 w-16 text-primary mx-auto" />
                     <div className="space-y-2">
