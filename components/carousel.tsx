@@ -235,9 +235,9 @@ const Carousel: React.FC = () => {
                 {/* Caption Overlay */}
                 {item.caption && (item.caption.title || item.caption.description) && (
                   <div className={getPositionClasses(item.caption.position)}>
-                    <div className="bg-black/70 backdrop-blur-sm rounded-lg p-4 text-white shadow-lg border border-white/10">
+                    <div className="bg-black/70 backdrop-blur-sm rounded-lg py-2 px-4 text-white shadow-lg border border-white/10">
                       {item.caption.title && (
-                        <h3 className="text-lg md:text-xl font-bold mb-2 text-white leading-tight">
+                        <h3 className="text-base md:text-base font-bold mb-2 text-white leading-tight">
                           {item.caption.title}
                         </h3>
                       )}
