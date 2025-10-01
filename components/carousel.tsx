@@ -2,29 +2,202 @@
 
 import React, { useState, useEffect } from "react";
 
-const images = [
-  "/carousel/1.jpg",
-  "/carousel/2.jpg",
-  "/carousel/3.jpg",
-  "/carousel/4.jpg",
-  "/carousel/5.jpg",
-  "/carousel/6.jpg",
-  "/carousel/7.jpg",
-  "/carousel/8.jpg",
-  "/carousel/9.jpg",
-  "/carousel/10.jpg",
-  "/carousel/11.jpg",
-  "/carousel/12.jpg",
-  "/carousel/13.jpg",
-  "/carousel/14.jpg",
-  "/carousel/15.jpg",
-  "/carousel/16.jpg",
-  "/carousel/17.jpg",
-  "/carousel/18.jpg",
-  "/carousel/19.jpg"
+interface CarouselItem {
+  src: string;
+  caption?: {
+    title?: string;
+    description?: string;
+    position?: 'bottom-left' | 'bottom-right' | 'bottom-center' | 'top-left' | 'top-right' | 'top-center' | 'center';
+  };
+}
+
+const images: CarouselItem[] = [
+  { 
+    src: "/carousel/0.jpg",
+    caption: {
+      title: "Modern Development",
+      description: "State-of-the-art residential and commercial properties",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/1.jpg",
+    caption: {
+      title: "Modern Development",
+      description: "State-of-the-art residential and commercial properties",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/2.jpg",
+    caption: {
+      title: "Quality Construction",
+      description: "Built with premium materials and expert craftsmanship",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/3.jpg",
+    caption: {
+      title: "Prime Locations",
+      description: "Strategically located properties for maximum convenience",
+      position: "bottom-right"
+    }
+  },
+  { 
+    src: "/carousel/4.jpg",
+    caption: {
+      title: "Sustainable Living",
+      description: "Eco-friendly designs for a better tomorrow",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/5.jpg",
+    caption: {
+      title: "Community Focus",
+      description: "Building communities that bring people together",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/6.jpg",
+    caption: {
+      title: "Investment Opportunity",
+      description: "Secure your future with our premium properties",
+      position: "bottom-right"
+    }
+  },
+  { 
+    src: "/carousel/7.jpg",
+    caption: {
+      title: "Luxury Amenities",
+      description: "Experience comfort and convenience like never before",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/8.jpg",
+    caption: {
+      title: "Professional Excellence",
+      description: "Decades of experience in real estate development",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/9.jpg",
+    caption: {
+      title: "Future Ready",
+      description: "Properties designed for tomorrow's lifestyle",
+      position: "bottom-right"
+    }
+  },
+  { 
+    src: "/carousel/10.jpg",
+    caption: {
+      title: "Trusted Partner",
+      description: "Your reliable partner in property investment",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/11.jpg",
+    caption: {
+      title: "Innovation",
+      description: "Cutting-edge design meets functional living",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/12.jpg",
+    caption: {
+      title: "Excellence",
+      description: "Setting new standards in property development",
+      position: "bottom-right"
+    }
+  },
+  { 
+    src: "/carousel/13.jpg",
+    caption: {
+      title: "Growth",
+      description: "Expanding horizons in real estate development",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/14.jpg",
+    caption: {
+      title: "Vision",
+      description: "Creating spaces that inspire and elevate",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/15.jpg",
+    caption: {
+      title: "Heritage",
+      description: "Building on a foundation of trust and quality",
+      position: "bottom-right"
+    }
+  },
+  { 
+    src: "/carousel/16.jpg",
+    caption: {
+      title: "Progress",
+      description: "Advancing the future of urban development",
+      position: "bottom-left"
+    }
+  },
+  { 
+    src: "/carousel/17.jpg",
+    caption: {
+      title: "Commitment",
+      description: "Dedicated to delivering exceptional results",
+      position: "bottom-center"
+    }
+  },
+  { 
+    src: "/carousel/18.jpg",
+    caption: {
+      title: "Success",
+      description: "Proven track record of successful projects",
+      position: "bottom-right"
+    }
+  },
+  { 
+    src: "/carousel/19.jpg",
+    caption: {
+      title: "Partnership",
+      description: "Building lasting relationships with our clients",
+      position: "bottom-center"
+    }
+  }
 ];
 
 const Carousel: React.FC = () => {
+  const getPositionClasses = (position: string = 'bottom-center') => {
+    const baseClasses = "absolute z-20 px-4 py-3 max-w-md";
+    
+    switch (position) {
+      case 'bottom-left':
+        return `${baseClasses} bottom-4 left-4`;
+      case 'bottom-right':
+        return `${baseClasses} bottom-4 right-4`;
+      case 'bottom-center':
+        return `${baseClasses} bottom-4 left-1/2 transform -translate-x-1/2`;
+      case 'top-left':
+        return `${baseClasses} top-4 left-4`;
+      case 'top-right':
+        return `${baseClasses} top-4 right-4`;
+      case 'top-center':
+        return `${baseClasses} top-4 left-1/2 transform -translate-x-1/2`;
+      case 'center':
+        return `${baseClasses} top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`;
+      default:
+        return `${baseClasses} bottom-4 left-1/2 transform -translate-x-1/2`;
+    }
+  };
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -66,7 +239,7 @@ const Carousel: React.FC = () => {
         <div className="relative w-full" data-carousel="static">
           {/* Carousel wrapper */}
           <div className="relative h-56 overflow-hidden rounded-lg md:h-140">
-            {images.map((src, index) => (
+            {images.map((item, index) => (
               <div
                 key={index}
                 className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
@@ -81,10 +254,28 @@ const Carousel: React.FC = () => {
                 }}
               >
                 <img
-                  src={src}
+                  src={item.src}
                   className="absolute block w-full h-full object-cover"
                   alt={`Slide ${index + 1}`}
                 />
+                
+                {/* Caption Overlay */}
+                {item.caption && (item.caption.title || item.caption.description) && (
+                  <div className={getPositionClasses(item.caption.position)}>
+                    <div className="bg-black/70 backdrop-blur-sm rounded-lg p-4 text-white shadow-lg border border-white/10">
+                      {item.caption.title && (
+                        <h3 className="text-lg md:text-xl font-bold mb-2 text-white leading-tight">
+                          {item.caption.title}
+                        </h3>
+                      )}
+                      {item.caption.description && (
+                        <p className="text-sm md:text-base text-gray-200 leading-relaxed">
+                          {item.caption.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
