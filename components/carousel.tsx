@@ -152,7 +152,7 @@ const Carousel: React.FC = () => {
     // Base classes with mobile-first approach: all captions at bottom-center on mobile
     // Optimized for single-line display on mobile with wider max-width
     const baseClasses = "absolute z-20 px-3 py-2 max-w-sm sm:px-4 sm:py-3 sm:max-w-md";
-    const mobilePosition = "bottom-3 left-1/2 transform -translate-x-1/2";
+    const mobilePosition = "bottom-0 left-1/2 transform -translate-x-1/2";
     
     switch (position) {
       case 'bottom-left':
