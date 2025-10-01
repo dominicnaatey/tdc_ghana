@@ -1,10 +1,42 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Home, Building } from "lucide-react";
+import { ArrowRight, Home, Building, Maximize, Minimize } from "lucide-react";
 import MuxPlayer from "@mux/mux-player-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function HeroSection() {
+  // Feature flag to enable/disable fullscreen functionality
+  const FULLSCREEN_ENABLED = false; // Set to true to reactivate fullscreen feature
+  
   const [videoError, setVideoError] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  // Handle fullscreen changes (disabled when FULLSCREEN_ENABLED is false)
+  useEffect(() => {
+    if (!FULLSCREEN_ENABLED) return;
+    
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  // Toggle fullscreen function (disabled when FULLSCREEN_ENABLED is false)
+  const toggleFullscreen = async () => {
+    if (!FULLSCREEN_ENABLED || !videoContainerRef.current) return;
+
+    try {
+      if (!isFullscreen) {
+        await videoContainerRef.current.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (error) {
+      console.error('Error toggling fullscreen:', error);
+    }
+  };
 
   return (
     <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 pt-10 pb-20 lg:py-32">
@@ -69,7 +101,29 @@ export default function HeroSection() {
 
           {/* Video/Visual */}
           <div className="relative order-1 lg:order-2">
-            <div className="relative overflow-hidden bg-black border border-border aspect-video">
+            <div 
+              ref={videoContainerRef}
+              className={`relative overflow-hidden bg-black border border-border transition-all duration-300 ${
+                FULLSCREEN_ENABLED && isFullscreen 
+                  ? 'fixed inset-0 z-50 w-screen h-screen aspect-auto' 
+                  : 'aspect-video'
+              }`}
+            >
+              {/* Expand/Collapse Button (hidden when FULLSCREEN_ENABLED is false) */}
+              {FULLSCREEN_ENABLED && (
+                <button
+                  onClick={toggleFullscreen}
+                  className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-lg transition-all duration-200 backdrop-blur-sm"
+                  aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                >
+                  {isFullscreen ? (
+                    <Minimize className="h-5 w-5" />
+                  ) : (
+                    <Maximize className="h-5 w-5" />
+                  )}
+                </button>
+              )}
+
               {!videoError ? (
                 <MuxPlayer
                   playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
