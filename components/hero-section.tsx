@@ -103,7 +103,7 @@ export default function HeroSection() {
           <div className="relative order-1 lg:order-2">
             <div 
               ref={videoContainerRef}
-              className={`relative overflow-hidden bg-black border border-border transition-all duration-300 ${
+              className={`relative overflow-hidden bg-black transition-all duration-300 ${
                 FULLSCREEN_ENABLED && isFullscreen 
                   ? 'fixed inset-0 z-50 w-screen h-screen aspect-auto' 
                   : 'aspect-video'
@@ -139,6 +139,7 @@ export default function HeroSection() {
                       position: "absolute",
                       top: 0,
                       left: 0,
+                      objectFit: "cover",
                       "--control-bar": "flex",
                       "--top-control-bar": "none",
                       "--center-controls": "none",
