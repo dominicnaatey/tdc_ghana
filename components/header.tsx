@@ -68,7 +68,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 ml-auto">
             {/* Home Link */}
             <Link
               href="/"
@@ -191,12 +191,7 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:flex">
-            <Button className="bg-accent hover:bg-[#DA7A0B] text-white transition-colors duration-200">
-              Get Started
-            </Button>
-          </div>
+          {/* CTA Button - removed as requested */}
 
           {/* Mobile Menu Button */}
           <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
@@ -275,9 +270,7 @@ export default function Header() {
                 </Link>
               ))}
               
-              <Button className="bg-accent hover:bg-[#DA7A0B] text-white transition-colors duration-200 mt-4">
-                Get Started
-              </Button>
+              {/* Mobile CTA Button - removed as requested */}
             </nav>
           </div>
         )}
