@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import LeadershipSection from "./leadership-section";
 
 interface CarouselItem {
   src: string;
@@ -210,6 +211,7 @@ const Carousel: React.FC = () => {
   };
 
   return (
+    <>
     <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-full" data-carousel="static">
@@ -312,7 +314,11 @@ const Carousel: React.FC = () => {
         </div>
       </div>
     </section>
-  );
+
+    {/* Leadership Section */}
+    <LeadershipSection />
+  </>
+);
 };
 
 export default Carousel;
