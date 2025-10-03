@@ -62,10 +62,18 @@ const LeadershipSection: React.FC<LeadershipSectionProps> = ({
           ))}
         </div>
 
-        <div className="max-w-6xl mx-auto text-lg text-muted-foreground leading-relaxed space-y-6">
-          {paragraphs.map((text, idx) => (
-            <p key={idx}>{text}</p>
-          ))}
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 p-8 md:p-12">
+            <div className="prose prose-lg dark:prose-invert max-w-none">
+              <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
+                {paragraphs.map((text, idx) => (
+                  <p key={idx} className="text-base md:text-lg leading-7 md:leading-8">
+                    {text}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
