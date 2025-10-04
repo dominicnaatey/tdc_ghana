@@ -213,7 +213,7 @@ const Carousel: React.FC = () => {
   return (
     <>
     <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 pt-8 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="relative w-full" data-carousel="static">
           {/* Carousel wrapper */}
           <div className="relative h-56 overflow-hidden rounded-lg md:h-140">
