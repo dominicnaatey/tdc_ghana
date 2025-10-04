@@ -32,7 +32,7 @@ export default function Gallery() {
 
   return (
     <main className="flex-grow bg-background-light dark:bg-background-dark font-display">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-12">
           <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-background-dark dark:text-background-light">
             GALLERY
@@ -50,16 +50,22 @@ export default function Gallery() {
               className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-              <Image
-                src={item.image}
-                alt={item.title}
-                width={600}
-                height={400}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
+
+              {/* Wrapper enforces 5:4 aspect ratio */}
+              <div className="relative aspect-[4/3] w-full">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
               <div className="absolute bottom-0 left-0 p-6">
-                <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                <p className="text-white/80 mt-1">{item.description}</p>
+                <div className="inline-block rounded-md bg-black/60 sm:bg-black/50 md:bg-black/40 px-4 py-3 backdrop-blur-[2px]">
+                  <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                  <p className="text-white/80 mt-1">{item.description}</p>
+                </div>
               </div>
             </div>
           ))}
