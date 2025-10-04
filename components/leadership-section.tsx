@@ -82,18 +82,22 @@ const LeadershipSection: React.FC<LeadershipSectionProps> = ({
 
 export default LeadershipSection;
 
-const LeaderCard: React.FC<{ leader: Leader }> = ({ leader }) => {
+const LeaderCard: React.FC<{ leader: Leader; widthPx?: number; aspectRatio?: string }> = ({ leader, widthPx = 320, aspectRatio = "4 / 5" }) => {
   const [hadError, setHadError] = useState(false);
+  // height is automatically computed by CSS from width and aspectRatio
 
   return (
     <div className="text-center">
       <div className="relative inline-block">
-        <div className="relative w-64 h-80 mx-auto rounded-lg overflow-hidden shadow-md ring-1 ring-black/5 dark:ring-white/10 hover:shadow-lg transition">
+        <div
+          className="relative mx-auto rounded-lg overflow-hidden shadow-md ring-1 ring-black/5 dark:ring-white/10 hover:shadow-lg transition"
+          style={{ width: widthPx, aspectRatio }}
+        >
           <Image
             src={hadError ? "/placeholder.svg" : leader.imageSrc}
             alt={`Portrait of ${leader.name}`}
             fill
-            sizes="(max-width: 768px) 256px, 256px"
+            sizes={`(max-width: 768px) ${widthPx}px, ${widthPx}px`}
             priority={false}
             quality={80}
             className="object-cover"
