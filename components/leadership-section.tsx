@@ -56,13 +56,13 @@ const LeadershipSection: React.FC<LeadershipSectionProps> = ({
           {title}
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-12">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 justify-items-center items-start mb-12">
           {leaders.map((leader) => (
             <LeaderCard leader={leader} key={leader.name} />
           ))}
         </div>
 
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 p-8 md:p-12">
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -82,16 +82,16 @@ const LeadershipSection: React.FC<LeadershipSectionProps> = ({
 
 export default LeadershipSection;
 
-const LeaderCard: React.FC<{ leader: Leader; widthPx?: number; aspectRatio?: string }> = ({ leader, widthPx = 320, aspectRatio = "4 / 5" }) => {
+const LeaderCard: React.FC<{ leader: Leader; widthPx?: number; aspectRatio?: string }> = ({ leader, widthPx = "full", aspectRatio = "4 / 5" }) => {
   const [hadError, setHadError] = useState(false);
   // height is automatically computed by CSS from width and aspectRatio
 
   return (
-    <div className="text-center">
-      <div className="relative inline-block">
+    <div className="text-center w-full">
+      <div className="relative w-full">
         <div
           className="relative mx-auto rounded-lg overflow-hidden shadow-md ring-1 ring-black/5 dark:ring-white/10 hover:shadow-lg transition"
-          style={{ width: widthPx, aspectRatio }}
+          style={{ width: '100%', aspectRatio }}
         >
           <Image
             src={hadError ? "/placeholder.svg" : leader.imageSrc}
