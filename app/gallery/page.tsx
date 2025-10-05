@@ -1,28 +1,33 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Gallery() {
   const items = [
     {
+      slug: "ghanaian-art",
       title: "Ghanaian Art",
       description: "A curated collection of contemporary and traditional art.",
       image:
         "https://lh3.googleusercontent.com/aida-public/AB6AXuDdnPCiYZotuXsN9taM1m4ERqeDId3dMX9tBJNqkhuCYupZoouAnOees9oimsA7YohP8q8ZzUA2rkK__T9krnF5wkMMSvzitNOZukawwn22sk0G9c3-Sm8nMqp9RKmCNSaeIdbHePIoKnBFJ8ejfev2B3b4fmtAt_CHs_Vo8h8NoopGfDArRHld3MruDO1oh_nLOYr5jSmfmxpRV8iFPtbwYeuuUIKVdoEzCemsZa19XHsgzWc7_zrGsF6xZmNXmG97WTdqkRBixRY",
     },
     {
+      slug: "cultural-heritage",
       title: "Cultural Heritage",
       description: "Celebrating the rich history and symbols of Ghana.",
       image:
         "https://lh3.googleusercontent.com/aida-public/AB6AXuBU7E4JtOXvL9VCRn-Y0cI7ZUB9HjUuWXJnFUgf0SNe-iuDMJgPwzMZHSpwYsgAWpzVGGYO59uHqFhRPId2El2w2mWUVWLSf9Kh0NzbqAaAlTqULgbr5Q_KNuv8Tx7qHrxpg_u2m_cVG0RvHQnWIvwqw6aIAEjdt5a69Jh57zeBYLKssYypX2A0Cx8O-A1Jj2mlb1-OL3-Ax-ntptx9Q73jqLJO1cZrp-pkD19BshPmpgmWMoh8IgeDayOknVvNfkHYPyE3pPdwc9k",
     },
     {
+      slug: "modern-designs",
       title: "Modern Designs",
       description: "Innovative designs inspired by Ghanaian aesthetics.",
       image:
         "https://lh3.googleusercontent.com/aida-public/AB6AXuDFrlTkA9b5JyfS1zhuB_8OI2WnoaX4xyNOKAX3D-HWgAJ33YaSDQoGgSJ0lS3JcBzsOwZsboX8YGyFSNA39D5HcK6ELiN-kiy5c8hquGW9mY_mUknAzl_6VAZm2l1OVtOcQktC4QS2K3TgonHl1YXexfwR07F3dDoI4qTwdT0WKNOftfuF8hc4WWPzobgoKuNb2I2RWV57SZI1dM9TQNFhtoQKFbpAQlKNdQZkHzSwh0B_6KWFOAifs-NGbvKFnCvKa8Sg8DHBQJw",
     },
     {
+      slug: "traditional-crafts",
       title: "Traditional Crafts",
       description: "Mastery of age-old techniques in crafts and textiles.",
       image:
@@ -45,13 +50,14 @@ export default function Gallery() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
           {items.map((item, idx) => (
-            <div
+            <Link
               key={idx}
+              href={`/gallery/${item.slug}`}
               className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
-              {/* Wrapper enforces 5:4 aspect ratio */}
+              {/* Wrapper enforces visual aspect ratio consistency */}
               <div className="relative aspect-[4/3] w-full">
                 <Image
                   src={item.image}
@@ -67,7 +73,7 @@ export default function Gallery() {
                   <p className="text-white/80 mt-1">{item.description}</p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
