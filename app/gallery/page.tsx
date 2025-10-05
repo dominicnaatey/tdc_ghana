@@ -6,32 +6,36 @@ import Link from "next/link";
 export default function Gallery() {
   const items = [
     {
-      slug: "ghanaian-art",
-      title: "Ghanaian Art",
-      description: "A curated collection of contemporary and traditional art.",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDdnPCiYZotuXsN9taM1m4ERqeDId3dMX9tBJNqkhuCYupZoouAnOees9oimsA7YohP8q8ZzUA2rkK__T9krnF5wkMMSvzitNOZukawwn22sk0G9c3-Sm8nMqp9RKmCNSaeIdbHePIoKnBFJ8ejfev2B3b4fmtAt_CHs_Vo8h8NoopGfDArRHld3MruDO1oh_nLOYr5jSmfmxpRV8iFPtbwYeuuUIKVdoEzCemsZa19XHsgzWc7_zrGsF6xZmNXmG97WTdqkRBixRY",
+      slug: "md-quarterly-durbar",
+      title: "The Managing Director Engages Staff at Quarterly Durbar",
+      description: "Photo album",
+      image: "/gallery/1/1.jpeg",
     },
     {
-      slug: "cultural-heritage",
-      title: "Cultural Heritage",
-      description: "Celebrating the rich history and symbols of Ghana.",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuBU7E4JtOXvL9VCRn-Y0cI7ZUB9HjUuWXJnFUgf0SNe-iuDMJgPwzMZHSpwYsgAWpzVGGYO59uHqFhRPId2El2w2mWUVWLSf9Kh0NzbqAaAlTqULgbr5Q_KNuv8Tx7qHrxpg_u2m_cVG0RvHQnWIvwqw6aIAEjdt5a69Jh57zeBYLKssYypX2A0Cx8O-A1Jj2mlb1-OL3-Ax-ntptx9Q73jqLJO1cZrp-pkD19BshPmpgmWMoh8IgeDayOknVvNfkHYPyE3pPdwc9k",
+      slug: "md-courtesy-call-community-7-imam",
+      title: "TDC MD Pays Courtesy Call on Tema Community 7 Imam",
+      description: "Photo album",
+      image: "/gallery/2/1.jpg",
     },
     {
-      slug: "modern-designs",
-      title: "Modern Designs",
-      description: "Innovative designs inspired by Ghanaian aesthetics.",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDFrlTkA9b5JyfS1zhuB_8OI2WnoaX4xyNOKAX3D-HWgAJ33YaSDQoGgSJ0lS3JcBzsOwZsboX8YGyFSNA39D5HcK6ELiN-kiy5c8hquGW9mY_mUknAzl_6VAZm2l1OVtOcQktC4QS2K3TgonHl1YXexfwR07F3dDoI4qTwdT0WKNOftfuF8hc4WWPzobgoKuNb2I2RWV57SZI1dM9TQNFhtoQKFbpAQlKNdQZkHzSwh0B_6KWFOAifs-NGbvKFnCvKa8Sg8DHBQJw",
+      slug: "housing-project-in-ho",
+      title: "TDC Ghana Ltd. To Begin Housing Project In HO",
+      description: "Photo album",
+      image: "/gallery/3/1.JPG",
     },
     {
-      slug: "traditional-crafts",
-      title: "Traditional Crafts",
-      description: "Mastery of age-old techniques in crafts and textiles.",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuAClESVRbVuQ3UGDm59UnIkpX2twzcJ96Bi_xeBI5D9DrkkZD3m4wj3H_nzPLaqT9m1wJvocWAHt7wOE_La3f7vwvKSQu0gVvsHta3PjRHgJw1VxqgJNA8zfLS7unL-8QPA4ZlrxkgRM-R-amsv3RJoOe6xbCOfYaDDF83VKrDzVU_RgVSBZFCRUCFFDuJ0bTuC6NnVkaABAx7F2Tu5iymExUPeKB57rLQpKfy6HwVtumXlsw_RjvijI5ZC0QxeUX9rjHOLoi7_Vf8",
+      slug: "mwhwr-budget-guidance-2025",
+      title:
+        "Ministry of Works, Housing and Water Resources Guides TDC Ghana Ltd. on 2025 Budget Preparation",
+      description: "Photo album",
+      image: "/gallery/4/1.JPG",
+    },
+    {
+      slug: "tdc-commitment-ibiexpo-2025",
+      title:
+        "TDC Ghana Ltd. Showcases Commitment to  Development at International Building, Infrastructure & Investment Expo 2025",
+      description: "Photo album",
+      image: "/gallery/5/1.jpg",
     },
   ];
 
