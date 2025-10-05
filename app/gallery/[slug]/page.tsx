@@ -33,7 +33,7 @@ export default function GalleryPage() {
   return (
     <main className="bg-background-light dark:bg-background-dark font-display min-h-screen">
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
+      <section className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12">
         <div className="relative rounded-lg overflow-hidden mb-8 h-[35vh]">
           <Image
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwnu5W_FbjsvMhS-PrghJMY6UoYOrRMtcqzBwCYMjrye5zhzFmMZI9yb_SgCiL5QoINT6c7jy4SEz2u-ekcxsGq5Zn9NsLlSjEhjVYSAD0Mswba7otKNVW1lbzV-zozqFV36pafmPJcL6CRpM3n4jJEA_kuJke9-ipV9lXxK4TXCDKNx4HZVjRNyTkBaKtMb8ZhU4D4XSJ9qwvAFqk2i77zrm4mg2JP2DwzwBbql8YQuVn8o0iMZuzMJWFJRGxU-fZIWz11nSQQzBe"
