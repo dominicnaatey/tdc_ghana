@@ -135,6 +135,16 @@ const managementMembers: ManagementMember[] = [
       "Board Member - Regency Engineering and Construction Limited (REC)",
     ],
   },
+  {
+    id: 9,
+    name: "Rhoden Dogbe",
+    position: "Head of Development",
+    bio: "",
+    image: "/management/9.jpg",
+    qualifications: [
+      "",
+    ],
+  },
   
 ];
 
