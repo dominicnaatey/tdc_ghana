@@ -127,3 +127,7 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+/* Lightbox visibility rules */
+.lightbox { display: none; }
+.lightbox:target { display: flex; }
