@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -12,6 +12,23 @@ interface GalleryLightboxProps {
 
 export default function LightboxGallery({ images }: GalleryLightboxProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  // Lock page scroll when lightbox is open
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    if (selectedIndex !== null) {
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+    } else {
+      html.style.overflow = "";
+      body.style.overflow = "";
+    }
+    return () => {
+      html.style.overflow = "";
+      body.style.overflow = "";
+    };
+  }, [selectedIndex]);
 
   const handleClose = () => setSelectedIndex(null);
   const handleNext = () => {
@@ -33,7 +50,7 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
   const isLast = selectedIndex !== null && selectedIndex >= images.length - 1;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
       {images.map((src, i) => (
         <div
           key={i}
