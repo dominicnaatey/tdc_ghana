@@ -16,12 +16,21 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
   const handleClose = () => setSelectedIndex(null);
   const handleNext = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((prev) => ((prev! + 1) % images.length));
+    setSelectedIndex((prev) => {
+      const idx = prev!;
+      if (idx >= images.length - 1) return idx; // stop at last image
+      return idx + 1;
+    });
   };
   const handlePrev = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((prev) => ((prev! - 1 + images.length) % images.length));
+    setSelectedIndex((prev) => {
+      const idx = prev!;
+      if (idx <= 0) return idx; // stop at first image
+      return idx - 1;
+    });
   };
+  const isLast = selectedIndex !== null && selectedIndex >= images.length - 1;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -47,14 +56,14 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+            className="fixed inset-0 z-50 bg-neutral-900/85 backdrop-blur-sm flex items-center justify-center"
           >
             <button
-              className="absolute top-6 right-6 p-2 rounded-md border border-white/30 text-white hover:bg-white/10 transition"
+              className="absolute top-6 right-6 p-3 rounded-md border border-white/40 text-white hover:bg-white/10 transition"
               onClick={handleClose}
               aria-label="Close lightbox"
             >
-              <X size={24} />
+              <X size={32} />
             </button>
 
             <div className="relative w-[90%] md:w-[70%] max-w-5xl aspect-[5/4] flex items-center justify-center">
@@ -69,7 +78,7 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
               )}
             </div>
 
-            <p className="absolute bottom-6 text-white text-sm font-medium tracking-wide">
+            <p className="absolute bottom-6 text-white text-xl font-medium tracking-wide">
               {selectedIndex + 1}/{images.length}
             </p>
 
@@ -80,7 +89,7 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
                     e.stopPropagation();
                     handlePrev();
                   }}
-                  className="absolute left-8 text-white/80 text-3xl select-none hover:text-white"
+                  className="absolute left-8 text-white/90 text-5xl select-none hover:text-white"
                   aria-label="Previous image"
                 >
                   ‹
@@ -90,8 +99,9 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
                     e.stopPropagation();
                     handleNext();
                   }}
-                  className="absolute right-8 text-white/80 text-3xl select-none hover:text-white"
+                  className={`absolute right-8 text-5xl select-none ${isLast ? "text-white/40 cursor-not-allowed" : "text-white/90 hover:text-white"}`}
                   aria-label="Next image"
+                  disabled={isLast}
                 >
                   ›
                 </button>
