@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import LeadershipSection from "./leadership-section";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 interface CarouselItem {
   src: string;
@@ -314,6 +317,20 @@ const Carousel: React.FC = () => {
         </div>
       </div>
     </section>
+
+    {/* CTA: View Gallery */}
+    <div className="bg-gradient-to-br from-primary/5 to-accent/5 pb-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="flex justify-center">
+          <Link href="/gallery" className="inline-block">
+            <Button className="px-6 py-3 text-sm md:text-base font-normal rounded-md shadow-md hover:shadow-lg transition-all cursor-pointer">
+              <span className="">View Gallery</span>
+              <ArrowRight className="ml-auto h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
 
     {/* Leadership Section */}
     <LeadershipSection />
