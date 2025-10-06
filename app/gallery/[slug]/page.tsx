@@ -127,7 +127,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
           {hero && (
             <Image src={hero} alt={album.title} fill className="object-cover" />
           )}
-          <div className="absolute inset-0 bg-black/70 blur-sm flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center">
             <h1 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold text-center px-4">
               {album.title}
             </h1>
