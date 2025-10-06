@@ -123,7 +123,7 @@ export default function ContactPage() {
                 {/* WhatsApp */}
                 <section className="mb-6">
                   <div className="flex items-start">
-                    <FontAwesomeIcon icon={faWhatsapp} className="mt-0.5 mr-2 shrink-0 text-[22px] text-[#25D366]"/>
+                    <FontAwesomeIcon icon={faWhatsapp} className="mt-0.5 mr-2 shrink-0 text-[20px] text-[#25D366]"/>
                     <div>
                       <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
                         WhatsApp
