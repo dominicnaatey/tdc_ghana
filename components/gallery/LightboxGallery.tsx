@@ -37,14 +37,14 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
       {images.map((src, i) => (
         <div
           key={i}
-          className="relative aspect-[5/4] cursor-pointer overflow-hidden rounded-lg"
+          className="relative aspect-[5/4] overflow-hidden rounded-lg"
           onClick={() => setSelectedIndex(i)}
         >
           <Image
             src={src}
             alt={`Gallery image ${i + 1}`}
             fill
-            className="object-cover transition-transform duration-300 hover:scale-105"
+            className="object-cover transition-transform duration-300 hover:scale-105 cursor-[zoom-in]"
           />
         </div>
       ))}
