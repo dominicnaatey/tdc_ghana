@@ -52,12 +52,16 @@ const managementMembers: ManagementMember[] = [
   },
    {
     id: 3,
-    name: "Lariba Abaduri-Weseh",
+    name: "Mrs. Cynthia Lariba Zotbah Abaduri-Weseh",
     position: "Head of Finance",
-    bio: "",
+    bio: "Mrs. Cynthia Lariba Zotbah Abaduri-Weseh is the Head of Finance of TDC Ghana Ltd, where she oversees corporate and project budgets, financial analysis, reporting and internal controls.<br><br>She is a Chartered Certified Accountant with over 20 years of experience spanning finance, accounting and estate management in the large-scale business, construction and real estate sectors. She has a proven track record of driving cost reduction, maximizing revenue and strengthening business continuity through expertise in budgeting, financial reporting, risk management, taxation, project evaluation, and cost control.<br><br>Cynthia holds a Post Chartered Diploma in Business Analytics, an MSc in Industrial Finance and Investment from KNUST, a BSc in Applied Accounting from Oxford Brookes University (UK). She is a fellow of the Association of Chartered Accountants (ACCA, UK) and a member of the Institute of Chartered Accountants Ghana.",
     image: "/management/3.jpg",
     qualifications: [
-      ""
+      "Fellow of the Association of Chartered Accountants (ACCA, UK)",
+      "Member of the Institute of Chartered Accountants, Ghana (ICAG)",
+      "Post Chartered Diploma in Business Analytics",
+      "MSc in Industrial Finance and Investment - Kwame Nkrumah University of Science and Technology (KNUST)",
+      "BSc in Applied Accounting - Oxford Brookes University (UK)"
     ],
   },
   {
