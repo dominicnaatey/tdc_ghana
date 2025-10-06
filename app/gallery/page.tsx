@@ -4,51 +4,51 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Gallery() {
-  const items = [
+  type GalleryItem = {
+    slug: string;
+    title: string;
+    image: string;
+    description?: string;
+  };
+  const items: GalleryItem[] = [
     {
       slug: "md-quarterly-durbar",
       title: "The Managing Director Engages Staff at Quarterly Durbar",
-      description: "Photo album",
       image: "/gallery/1/1.jpeg",
     },
     {
       slug: "md-courtesy-call-community-7-imam",
       title: "TDC MD Pays Courtesy Call on Tema Community 7 Imam",
-      description: "Photo album",
       image: "/gallery/2/1.jpg",
     },
     {
       slug: "housing-project-in-ho",
       title: "TDC Ghana Ltd. To Begin Housing Project In HO",
-      description: "Photo album",
       image: "/gallery/3/1.JPG",
     },
     {
       slug: "mwhwr-budget-guidance-2025",
       title:
         "Ministry of Works, Housing and Water Resources Guides TDC Ghana Ltd. on 2025 Budget Preparation",
-      description: "Photo album",
       image: "/gallery/4/1.JPG",
     },
     {
       slug: "tdc-commitment-ibiexpo-2025",
       title:
         "TDC Ghana Ltd. Showcases Commitment to  Development at International Building, Infrastructure & Investment Expo 2025",
-      description: "Photo album",
       image: "/gallery/5/1.jpg",
     },
   ];
 
   return (
-    <main className="flex-grow bg-background-light dark:bg-background-dark font-display">
+    <main className="flex-grow bg-background-light dark:bg-background-dark font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-12">
           <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-background-dark dark:text-background-light">
             GALLERY
           </h2>
           <p className="mt-4 text-lg text-background-dark/70 dark:text-background-light/70 max-w-2xl mx-auto">
-            Exploring the vibrant fusion of tradition and modernity in Ghanaian
-            design.
+            Showcasing TDC Ghana’s projects, people, and events.
           </p>
         </div>
 
@@ -72,9 +72,11 @@ export default function Gallery() {
               </div>
 
               <div className="absolute bottom-0 left-0 p-6">
-                <div className="inline-block rounded-md bg-black/60 sm:bg-black/50 md:bg-black/40 px-4 py-3 backdrop-blur-[2px]">
-                  <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                  <p className="text-white/80 mt-1">{item.description}</p>
+                <div className="inline-block rounded-md bg-black/70 sm:bg-black/50 md:bg-black/40 px-4 py-3 backdrop-blur-[2px]">
+                  <h3 className="text-base md:text-xl font-medium text-white">{item.title}</h3>
+                  {item.description && (
+                    <p className="text-white/80 mt-1">{item.description}</p>
+                  )}
                 </div>
               </div>
             </Link>
