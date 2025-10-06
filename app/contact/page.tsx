@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"
 import { useState } from "react";
 
 export default function ContactPage() {
@@ -83,7 +85,7 @@ export default function ContactPage() {
                 {/* Call us */}
                 <section className="mb-6">
                   <div className="flex items-start">
-                    <Phone className="h-5 w-5 mt-0.5 mr-2 shrink-0" />
+                    <Phone className="h-5 w-5 mt-0.5 mr-2 shrink-0 text-blue-500" />
                     <div>
                       <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
                         Call us
@@ -94,7 +96,7 @@ export default function ContactPage() {
                         href="tel:+233596914432"
                         className="hover:underline text-foreground"
                       >
-                        +233 59 691 4432
+                        +233 30 320 2731
                       </a>
                     </li>
                     <li>
@@ -110,7 +112,7 @@ export default function ContactPage() {
                         href="tel:+233303202731"
                         className="hover:underline text-foreground"
                       >
-                        +233 30 320 2731
+                        +233 59 691 4432 
                       </a>
                     </li>
                   </ul>
@@ -121,7 +123,7 @@ export default function ContactPage() {
                 {/* WhatsApp */}
                 <section className="mb-6">
                   <div className="flex items-start">
-                    <MessageCircle className="h-5 w-5 mt-0.5 mr-2 shrink-0" />
+                    <FontAwesomeIcon icon={faWhatsapp} className="mt-0.5 mr-2 shrink-0 text-[22px] text-[#25D366]"/>
                     <div>
                       <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
                         WhatsApp
@@ -143,7 +145,7 @@ export default function ContactPage() {
                 {/* Email */}
                 <section className="mb-6">
                   <div className="flex items-start">
-                    <Mail className="h-5 w-5 mt-0.5 mr-2 shrink-0" />
+                    <Mail className="h-5 w-5 mt-0.5 mr-2 shrink-0 text-red-600" />
                     <div>
                       <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
                         Email
@@ -163,7 +165,7 @@ export default function ContactPage() {
                 {/* Post Address */}
                 <section>
                   <div className="flex items-start">
-                    <MapPin className="h-5 w-5 mt-0.5 mr-2 shrink-0" />
+                    <MapPin className="h-5 w-5 mt-0.5 mr-2 shrink-0 text-gray-600" />
                     <div>
                       <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
                         Post Address
