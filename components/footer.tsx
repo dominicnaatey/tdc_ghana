@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin } from "lucide-react"
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react"
+import { TikTokIcon } from "@/assets/icons"
 
 export default function Footer() {
   return (
@@ -29,14 +30,23 @@ export default function Footer() {
               infrastructure initiatives that transform communities and improve lives.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors">
+              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Facebook">
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors">
+              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Twitter">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors">
+              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5" />
+              </Link>
+              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="YouTube">
+                <Youtube className="h-5 w-5" />
+              </Link>
+              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="TikTok">
+                <TikTokIcon className="h-5 w-5" />
+              </Link>
+              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Instagram">
+                <Instagram className="h-5 w-5" />
               </Link>
             </div>
           </div>
@@ -97,7 +107,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-blue-200 flex-shrink-0" />
-                <span className="text-blue-100 text-sm">++233 (0) 303 202 731</span>
+                <span className="text-blue-100 text-sm">+233 (0) 303 202 731</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-blue-200 flex-shrink-0" />

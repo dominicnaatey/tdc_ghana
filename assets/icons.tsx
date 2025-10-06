@@ -174,3 +174,23 @@ export function LockClosedIcon(props: IconProps) {
     </svg>
   );
 }
+
+// TikTok brand icon (custom minimal mark)
+export function TikTokIcon(props: IconProps) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      {...props}
+    >
+      <path d="M12 4v7" />
+      <path d="M12 4h3" />
+      <path d="M15 8a4 4 0 0 0 4 4" />
+      <circle cx="9" cy="16" r="3" />
+    </svg>
+  );
+}
