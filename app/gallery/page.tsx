@@ -44,7 +44,7 @@ export default function Gallery() {
     <main className="flex-grow bg-background-light dark:bg-background-dark font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-12">
-          <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-background-dark dark:text-background-light">
+          <h2 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
             GALLERY
           </h2>
           <p className="mt-4 text-lg text-background-dark/70 dark:text-background-light/70 max-w-2xl mx-auto">
