@@ -1,7 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react"
-import { TikTokIcon } from "@/assets/icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTiktok } from "@fortawesome/free-brands-svg-icons"
 
 export default function Footer() {
   return (
@@ -43,7 +44,7 @@ export default function Footer() {
                 <Youtube className="h-5 w-5" />
               </Link>
               <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="TikTok">
-                <TikTokIcon className="h-5 w-5" />
+                <FontAwesomeIcon icon={faTiktok} className="h-5 w-5" />
               </Link>
               <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
