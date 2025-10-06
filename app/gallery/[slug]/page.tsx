@@ -12,7 +12,7 @@ const albums: Record<string, AlbumDef> = {
     title: "The Managing Director Engages Staff at Quarterly Durbar",
     images: [
       "/gallery/1/1.jpeg",
-      "/gallery/1/2.JPG",
+      // "/gallery/1/2.JPG",
       "/gallery/1/3.JPG",
       "/gallery/1/4.JPG",
       "/gallery/1/5.JPG",
