@@ -113,8 +113,8 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
           {hero && (
             <Image src={hero} alt={album.title} fill className="object-cover" />
           )}
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <h1 className="text-white text-3xl font-bold text-center px-4">
+          <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+            <h1 className="text-white text-4xl font-bold text-center px-4">
               {album.title}
             </h1>
           </div>
@@ -128,7 +128,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </div>
 
         {/* Gallery Grid */}
-        <LightboxGallery images={rest} title={album.title} />
+        <LightboxGallery images={album.images} title={album.title} />
 
       </section>
     </main>
