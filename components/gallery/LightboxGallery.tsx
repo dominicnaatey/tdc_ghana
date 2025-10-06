@@ -59,7 +59,7 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
             className="fixed inset-0 z-50 bg-neutral-900/85 backdrop-blur-sm flex items-center justify-center"
           >
             <button
-              className="absolute top-6 right-6 p-3 rounded-md border border-white/40 text-white hover:bg-white/10 transition"
+              className="absolute top-6 right-6 p-3 rounded-md border border-white/40 text-white hover:bg-white/10 transition cursor-pointer"
               onClick={handleClose}
               aria-label="Close lightbox"
             >
@@ -89,7 +89,7 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
                     e.stopPropagation();
                     handlePrev();
                   }}
-                  className="absolute left-8 text-white/90 text-5xl select-none hover:text-white"
+                  className="absolute left-8 text-white/90 text-5xl select-none hover:text-white cursor-pointer"
                   aria-label="Previous image"
                 >
                   ‹
@@ -99,7 +99,7 @@ export default function LightboxGallery({ images }: GalleryLightboxProps) {
                     e.stopPropagation();
                     handleNext();
                   }}
-                  className={`absolute right-8 text-5xl select-none ${isLast ? "text-white/40 cursor-not-allowed" : "text-white/90 hover:text-white"}`}
+                  className={`absolute right-8 text-5xl select-none ${isLast ? "text-white/40 cursor-not-allowed" : "text-white/90 hover:text-white cursor-pointer"}`}
                   aria-label="Next image"
                   disabled={isLast}
                 >
