@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import LightboxGallery from "@/components/gallery/LightboxGallery";
 
 type AlbumDef = {
   title: string;
@@ -95,8 +96,9 @@ const albums: Record<string, AlbumDef> = {
   },
 };
 
-export default function AlbumPage({ params }: { params: { slug: string } }) {
-  const album = albums[params.slug];
+export default async function AlbumPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const album = albums[slug];
   if (!album) {
     notFound();
   }
@@ -126,15 +128,8 @@ export default function AlbumPage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {rest.map((src, index) => (
-            <div key={index} className="rounded-lg overflow-hidden">
-              <div className="relative aspect-[5/4] w-full">
-                <Image src={src} alt={`${album.title} ${index + 2}`} fill className="object-cover" />
-              </div>
-            </div>
-          ))}
-        </div>
+        <LightboxGallery images={rest} title={album.title} />
+
       </section>
     </main>
   );
