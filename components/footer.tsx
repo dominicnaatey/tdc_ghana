@@ -97,11 +97,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-blue-200 flex-shrink-0" />
-                <span className="text-blue-100 text-sm">+233 (0) 303 202 104</span>
+                <span className="text-blue-100 text-sm">++233 (0) 303 202 731</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-blue-200 flex-shrink-0" />
-                <span className="text-blue-100 text-sm">info@tdcghana.gov.gh</span>
+                <span className="text-blue-100 text-sm">info@tdc.gov.gh</span>
               </li>
             </ul>
           </div>
@@ -110,7 +110,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-blue-500/50 mt-8 pt-8 text-center">
           <p className="text-blue-100 text-sm">
-            © 2024 TDC Ghana Ltd. All rights reserved. |
+            © 2025 TDC Ghana Ltd. All rights reserved. |
             <Link href="/privacy" className="hover:text-white transition-colors ml-1">
               Privacy Policy
             </Link>{" "}
