@@ -36,6 +36,7 @@ export default function Header() {
     { name: "About Us", href: "/about" },
     { name: "Board of Directors", href: "/board-of-directors" },
     { name: "Management", href: "/management" },
+    { name: "Gallery", href: "/gallery" },
   ];
 
   const servicedPlotsSubmenuItems = [
