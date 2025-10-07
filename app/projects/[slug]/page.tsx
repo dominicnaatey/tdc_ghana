@@ -19,6 +19,7 @@ import {
 import Link from "next/link"
 import { getProjectBySlug } from "@/lib/data/sample-projects"
 import { format } from "date-fns"
+import LightboxGallery from "@/components/gallery/LightboxGallery"
 
 export default async function ProjectPage({
   params,
@@ -100,39 +101,8 @@ export default async function ProjectPage({
           <div className="lg:col-span-2 space-y-8">
             {/* Project Image */}
             <Card className="overflow-hidden">
-              {project.image_collection && project.image_collection.length > 1 ? (
-                // Booking.com style masonry layout
-                <div className="flex gap-2 h-96">
-                  {/* Main large image - left side */}
-                  <div className="flex-1">
-                    <img
-                      src={project.featured_image || "/placeholder.svg?height=500&width=800&query=development project"}
-                      alt={project.title}
-                      className="w-full h-full object-cover rounded-l-lg hover:opacity-90 transition-opacity duration-300"
-                    />
-                  </div>
-                  
-                  {/* Grid of smaller images - right side */}
-                  <div className="w-1/2 grid grid-cols-2 gap-2">
-                    {project.image_collection.slice(0, 4).map((image, index) => (
-                      <div key={index} className="relative overflow-hidden">
-                        <img
-                          src={image}
-                          alt={`${project.title} - Image ${index + 1}`}
-                          className="w-full h-full object-cover hover:opacity-90 transition-opacity duration-300"
-                        />
-                        {/* Show +X more overlay on last image if there are more photos */}
-                        {index === 3 && project.image_collection && project.image_collection.length > 4 && (
-                          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                            <span className="text-white font-semibold text-sm">
-                              +{project.image_collection.length - 4} photos
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {project.image_collection && project.image_collection.length > 0 ? (
+                <LightboxGallery images={project.image_collection} />
               ) : (
                 // Single featured image
                 <div className="aspect-video">
