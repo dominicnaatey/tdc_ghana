@@ -185,7 +185,7 @@ export const sampleProjects: Project[] = [
     completion_date: "2025-06-30",
     budget: 8000000,
     beneficiaries: 200,
-    featured_image: "/projects/project4/1.jpg",
+    featured_image: "/projects/project4/3.jpg",
     project_type: "Hospitality",
     featured: true,
     highlights: "TDC Airbnb Luxury Apartments redefine comfort and elegance, offering guests a stylish retreat with modern amenities, top-tier security, and a serene environment—perfect for both short and long stays in Tema.",
