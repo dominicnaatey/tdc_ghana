@@ -139,7 +139,7 @@ const managementMembers: ManagementMember[] = [
     id: 9,
     name: "Rhoden Dogbe",
     position: "Head of Development",
-    bio: "",
+    bio: "Rhoden Dzifa Komi Dogbe is a distinguished Geodetic Engineer, licensed surveyor, and an ordained Reverend Minister with over 20 years of experience in engineering, Christian ministry, and leadership development. He currently serves as Head of Development at TDC Ghana Limited, and a Reverend Minister at the Global Evangelical Church.<br><br>He holds a B.Sc. in Geodetic Engineering and an MPhil in Geographic Information Systems from KNUST. He recently earned a Master of Arts in Global Leadership and a Certificate in Christian Studies from Gordon-Conwell Theological Seminary (USA). His professional development includes multiple theological and leadership certifications from respected institutions, including the Haggai Institute, Global Theological Seminary, and Word of Faith Bible Institute.<br><br>Rhoden has progressed through various roles at TDC Ghana Ltd., from National Service Person to Supervising Geodetic Engineer, contributing significantly to urban development projects. In parallel, he has served in key church leadership roles.<br><br>His career reflects a unique integration of technical expertise, theological depth, and transformational leadership, earning him recognition in both professional and faith-based communities.",
     image: "/management/9.jpg",
     qualifications: [
       "",
