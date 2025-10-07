@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { MapPin, Calendar, Users, ArrowRight, CheckCircle } from "lucide-react"
+import { MapPin, Calendar, Users, DollarSign } from "lucide-react"
 import Link from "next/link"
 import { sampleProjects } from "@/lib/data/sample-projects"
+import { format } from "date-fns"
 
 async function getDevelopmentProjects() {
   // Use sample projects data instead of Supabase
@@ -49,69 +50,60 @@ async function ProjectsList() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project) => (
-        <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-          <div className="aspect-video overflow-hidden">
-            <img
-              src={project.featured_image || "/placeholder.svg?height=300&width=400&query=development project"}
-              alt={project.title}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            />
-          </div>
-          <CardHeader>
-            <div className="flex items-center justify-between mb-2">
-              <Badge
-                variant={
-                  project.status === "completed" ? "default" : project.status === "ongoing" ? "secondary" : "outline"
-                }
-                className={
-                  project.status === "completed"
-                    ? "bg-green-100 text-green-800"
-                    : project.status === "ongoing"
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-gray-100 text-gray-800"
-                }
-              >
-                {project.status === "completed" && <CheckCircle className="w-3 h-3 mr-1" />}
-                {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {project.project_type}
-              </Badge>
-            </div>
-            <CardTitle className="text-lg mb-2 line-clamp-2">{project.title}</CardTitle>
-            <p className="text-sm text-gray-600 line-clamp-3 mb-3">{project.description}</p>
-          </CardHeader>
-          <CardContent>
+        <Link key={project.id} href={`/projects/${project.slug}`} className="group">
+          <article className="space-y-4">
+            {project.featured_image && (
+              <div className="aspect-[2/1] overflow-hidden rounded-md">
+                <img
+                  src={project.featured_image || "/placeholder.svg"}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            )}
+
             <div className="space-y-3">
-              <div className="flex items-center text-sm text-gray-600">
-                <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span className="truncate">{project.location}</span>
+              <h3 className="font-bold text-lg text-black group-hover:text-gray-700 transition-colors line-clamp-2 leading-tight">
+                {project.title}
+              </h3>
+
+              {/* Project Details */}
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center space-x-4 text-xs text-gray-500">
+                  <div className="flex items-center space-x-1">
+                    <MapPin className="w-3 h-3" />
+                    <span className="truncate max-w-20">{project.location.split(',')[0]}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{format(new Date(project.start_date), "MMM yyyy")}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Users className="w-3 h-3" />
+                    <span>{(project.beneficiaries / 1000).toFixed(0)}K</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Badge className={
+                    project.status === "completed" 
+                      ? "bg-green-100 text-green-800 text-xs" 
+                      : project.status === "ongoing" 
+                      ? "bg-blue-100 text-blue-800 text-xs" 
+                      : "bg-yellow-100 text-yellow-800 text-xs"
+                  }>
+                    {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                  </Badge>
+                </div>
               </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span>
-                  {new Date(project.start_date).toLocaleDateString()} -{" "}
-                  {new Date(project.completion_date).toLocaleDateString()}
-                </span>
-              </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <Users className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span>{project.beneficiaries.toLocaleString()} beneficiaries</span>
-              </div>
-              <div className="pt-2">
-                <p className="text-sm font-semibold text-gray-900 mb-3">
-                  Budget: ${project.budget.toLocaleString()}
-                </p>
-                <Link href={`/projects/${project.slug}`}>
-                  <Button className="w-full group">
-                    View Details
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
+
+              {/* Budget */}
+              <div className="flex items-center space-x-1 text-sm font-semibold text-primary">
+                <DollarSign className="w-4 h-4" />
+                <span>GHS {(project.budget / 1000000).toFixed(0)}M</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </article>
+        </Link>
       ))}
     </div>
   )
@@ -134,7 +126,7 @@ export default function ProjectsPage() {
 
       <div className="container max-w-7xl mx-auto px-4 py-12">
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-black mb-2">25+</div>
@@ -159,7 +151,7 @@ export default function ProjectsPage() {
               <div className="text-sm text-gray-600">Completed Projects</div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Projects Grid */}
         <Suspense
