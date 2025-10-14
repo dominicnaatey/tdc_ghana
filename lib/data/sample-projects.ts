@@ -306,7 +306,37 @@ export const sampleProjects: Project[] = [
     id: 9,
     title: "ITALIAN FLAT",
     slug: "italian-flat",
-    description: "Harbor View Residences – Tema Community 2 (Italian Flat): A 10-storey landmark offering modern architecture, coastal serenity, and city convenience near Tema Harbor. Striking façade with flowing balconies and expansive glass panels. Each floor hosts two premium 3-bedroom apartments (308.2 sqm per level) with grand living spaces opening to sea-facing balconies, ensuite master suites, fully fitted kitchens, and private dining areas. Prime accessibility, security, and investment appeal.",
+    description: `Luxury Living Overlooking the Seaport
+
+Rising elegantly in the heart of Tema Community 2, just a stone’s throw from the bustling harbor, Harbor View Residences offers a rare blend of modern architecture, coastal serenity, and city convenience. This 10-storey landmark residential development is designed for discerning homeowners and investors who value comfort, prestige, and panoramic views of the Tema seaport and the Atlantic coastline.
+
+Architectural Elegance
+
+With its striking façade of flowing balconies, bold red accents, and expansive glass panels, the building is not just a home but a statement of modern luxury. Its design captures abundant natural light and maximizes scenic vistas, making every apartment a front-row seat to the beauty of the sea and harbor skyline.
+
+Spacious & Functional Layouts
+
+Each floor hosts two premium 3-bedroom apartments (total floor area: 308.2 sqm per level), intelligently planned to balance privacy, comfort, and style.
+
+Key apartment highlights:
+- Grand Living Spaces: 35 sqm living rooms opening to wide sea-facing balconies.
+- Master Suites: Luxurious 18+ sqm ensuite bedrooms offering ultimate relaxation.
+- Modern Kitchens: Fully fitted 12 sqm kitchens with adjoining storage for efficiency.
+- Private Dining Areas: Perfect for family meals or entertaining guests.
+
+Lifestyle & Location
+
+Residents will enjoy:
+- Uninterrupted Harbor & Ocean Views — wake up to the breathtaking sight of ships, the coastline, and fresh ocean breezes.
+- Prime Accessibility — minutes from Tema Harbor, business hubs, schools, and recreational centers.
+- Secure & Comfortable Living — with central stair halls, dual staircases, and well-planned circulation for convenience and safety.
+
+Investment Appeal
+
+Tema’s rapidly growing demand for upscale residential housing, especially in proximity to the harbor, makes Harbor View Residences a high-potential investment opportunity. Investors can expect strong returns through both rental yields and capital appreciation, as the project’s location ensures enduring value.
+
+Harbor View Residences: Where Modern Luxury Meets Coastal Living.
+Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views in Tema Community 2.`,
     location: "Tema Community 2, Greater Accra Region",
     status: "planning",
     start_date: "2024-01-01",
@@ -316,6 +346,15 @@ export const sampleProjects: Project[] = [
     featured_image: "/projects/project9/comm 2 habour view apt 3ds/3.png",
     project_type: "Housing",
     featured: false,
+    facilities: [
+      "Sea-facing balconies",
+      "Ensuite master suites (18+ sqm)",
+      "Fully fitted kitchens (12 sqm) with storage",
+      "Private dining areas",
+      "Central stair halls",
+      "Dual staircases",
+      "Well-planned circulation for safety and convenience"
+    ],
     image_collection: [
       "/projects/project9/FLOOR PLAN/2.jpg",
       "/projects/project9/FLOOR PLAN/3.jpg",
