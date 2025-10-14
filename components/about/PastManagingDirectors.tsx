@@ -20,12 +20,20 @@ export default function PastManagingDirectors() {
           </h2>
         </div>
 
-        <div className="max-w-7xl mx-auto text-center mb-10">
+        <div className="max-w-6xl mx-auto text-center mb-10">
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Over the years, TDC Ghana Limited has been guided by a succession of visionary leaders whose stewardship helped shape the Corporation’s strategic direction and operational excellence. Each Managing Director contributed to the growth, transformation, and sustainability of TDC, steering the organization through different developmental phases and national housing priorities.
+            Over the years, TDC Ghana Limited has been guided by a succession of
+            visionary leaders whose stewardship helped shape the Corporation’s
+            strategic direction and operational excellence. Each Managing
+            Director contributed to the growth, transformation, and
+            sustainability of TDC, steering the organization through different
+            developmental phases and national housing priorities.
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed mt-6">
-            This section provides a historical record of individuals who have served as Managing Directors of TDC Ghana Limited. Their leadership and commitment have played key roles in maintaining TDC’s mandate of developing and managing planned urban communities in Ghana.
+            This section provides a historical record of individuals who have
+            served as Managing Directors of TDC Ghana Limited. Their leadership
+            and commitment have played key roles in maintaining TDC’s mandate of
+            developing and managing planned urban communities in Ghana.
           </p>
         </div>
 
@@ -33,14 +41,14 @@ export default function PastManagingDirectors() {
           {images.map((src, idx) => (
             <div
               key={src}
-              className="relative w-full aspect-square rounded-lg overflow-hidden bg-muted"
+              className="relative w-full aspect-square rounded-lg overflow-hidden bg-muted flex items-center justify-center"
             >
               <Image
                 src={src}
                 alt={`Past Managing Director ${idx + 1}`}
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover w-full h-full"
+                className="object-contain w-full h-full"
                 priority={idx < 3}
               />
             </div>
