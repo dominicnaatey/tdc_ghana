@@ -1,4 +1,16 @@
+import Image from "next/image";
+
 export default function PastManagingDirectors() {
+  const images = [
+    "/pastmds/1.jpg",
+    "/pastmds/2.jpg",
+    "/pastmds/3.jpg",
+    "/pastmds/4.jpg",
+    "/pastmds/5.jpg",
+    "/pastmds/6.jpg",
+    "/pastmds/7.jpg",
+  ];
+
   return (
     <section className="py-16 lg:py-24 bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -7,13 +19,23 @@ export default function PastManagingDirectors() {
             PAST MANAGING DIRECTORS OF TDC GHANA LIMITED
           </h2>
         </div>
-        <div className="max-w-4xl mx-auto">
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Over the decades, the leadership of TDC Ghana Limited has been shaped by dedicated Managing Directors whose vision, discipline, and public service have strengthened the company’s role in Ghana’s urban development. Their stewardship advanced housing delivery, land administration, and infrastructure planning across Tema and beyond—laying the foundation for sustainable, well-managed communities that continue to serve generations.
-          </p>
-          <p className="text-lg text-muted-foreground leading-relaxed mt-6">
-            These past leaders fostered institutional resilience, upheld accountability, and prioritized stakeholder value—championing projects that enhanced public trust and national development. Their contributions remain integral to TDC’s legacy, inspiring continued excellence in real estate management and community transformation.
-          </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {images.map((src, idx) => (
+            <div
+              key={src}
+              className="relative w-full h-64 rounded-lg overflow-hidden bg-muted"
+            >
+              <Image
+                src={src}
+                alt={`Past Managing Director ${idx + 1}`}
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover"
+                priority={idx < 3}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>
