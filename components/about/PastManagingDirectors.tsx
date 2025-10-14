@@ -12,15 +12,15 @@ export default function PastManagingDirectors() {
   ];
 
   return (
-    <section className="py-16 lg:py-24 bg-card">
+    <section className="py-16 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
+        <div className="max-w-5xl mx-auto text-center mb-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-card-foreground font-serif">
             PAST MANAGING DIRECTORS OF TDC GHANA LIMITED
           </h2>
         </div>
 
-        <div className="max-w-4xl mx-auto mb-10">
+        <div className="max-w-7xl mx-auto text-center mb-10">
           <p className="text-lg text-muted-foreground leading-relaxed">
             Over the years, TDC Ghana Limited has been guided by a succession of visionary leaders whose stewardship helped shape the Corporation’s strategic direction and operational excellence. Each Managing Director contributed to the growth, transformation, and sustainability of TDC, steering the organization through different developmental phases and national housing priorities.
           </p>
