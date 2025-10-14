@@ -6,6 +6,7 @@ import MissionVisionValues from "@/components/about/MissionVisionValues"
 import RespectValues from "@/components/about/RespectValues";
 import LeadershipTeam from "@/components/about/LeadershipTeam"
 import Achievements from "@/components/about/Achievements"
+import PastManagingDirectors from "@/components/about/PastManagingDirectors"
 
 export default function AboutPage() {
   return (
@@ -15,6 +16,7 @@ export default function AboutPage() {
         <AboutHero />
         <BackgroundHistory />
         <MissionVisionValues />
+        <PastManagingDirectors />
         <RespectValues />
         {/* <LeadershipTeam /> */}
         <Achievements />
