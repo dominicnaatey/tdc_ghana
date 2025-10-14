@@ -24,7 +24,7 @@ export default function PastManagingDirectors() {
           {images.map((src, idx) => (
             <div
               key={src}
-              className="relative w-full h-64 rounded-lg overflow-hidden bg-muted"
+              className="relative w-full aspect-square rounded-lg overflow-hidden bg-muted"
             >
               <Image
                 src={src}
