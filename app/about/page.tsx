@@ -16,9 +16,8 @@ export default function AboutPage() {
         <AboutHero />
         <BackgroundHistory />
         <MissionVisionValues />
-        <PastManagingDirectors />
         <RespectValues />
-        {/* <LeadershipTeam /> */}
+        <PastManagingDirectors />
         <Achievements />
       </main>
       {/* <Footer /> */}
