@@ -5,35 +5,42 @@ import { Separator } from "@/components/ui/separator"
 import { CalendarDays, Clock, ArrowLeft, Share2, Heart, MessageCircle, Bookmark, Twitter, Facebook, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
-import { getNewsBySlug, sampleNews, NewsArticle } from "@/lib/data/sample-news"
+import { findNewsBySlug, listNews } from "@/lib/api/news"
+import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news"
 
-function getNewsArticle(slug: string) {
-  return getNewsBySlug(slug)
-}
-
-function getRelatedNewsArticles(currentId: number, category: string): NewsArticle[] {
-  // Get the 2 most recent articles (excluding the current article)
-  return sampleNews
-    .filter((article: NewsArticle) => 
-      article.id !== currentId && 
-      article.status === 'published'
-    )
-    .sort((a: NewsArticle, b: NewsArticle) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
-    .slice(0, 2);
-}
-
-export default function NewsArticlePage({
+export default async function NewsArticlePage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const article = getNewsArticle(params.slug)
-
-  if (!article) {
-    notFound()
+  const { slug } = await params;
+  let article: any = null;
+  try {
+    article = await findNewsBySlug(slug);
+  } catch (e) {
+    // swallow network error and fallback to local sample data
   }
-
-  const relatedNews = getRelatedNewsArticles(article.id, article.category)
+  
+  if (!article) {
+    article = getNewsBySlug(slug) as any;
+  }
+  
+  if (!article) {
+    notFound();
+  }
+  
+  let relatedNews: any[] = [];
+  try {
+    const relatedPayload = await listNews({ page: 1, per_page: 4, sort: 'published_at', order: 'desc' });
+    relatedNews = relatedPayload.data.filter((n) => n.id !== (article as any).id).slice(0, 2);
+  } catch (e) {
+    // fallback to local sample data for related items
+    relatedNews = sampleNews.filter((n) => n.slug !== (article as any).slug).slice(0, 2) as any[];
+  }
+  
+  const author = (article as any).author ?? 'TDC Ghana Editorial';
+  const categoryLabel = (article as any).category ?? 'General';
+  const image = (article as any).featured_image ?? (article as any).featured_image_path ?? null;
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "Source Serif Pro, serif" }}>
@@ -66,15 +73,15 @@ export default function NewsArticlePage({
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
                 <span className="text-lg font-semibold text-gray-600">
-                  {article.author.charAt(0)}
+                  {author.charAt(0)}
                 </span>
               </div>
               <div>
-                <div className="font-medium text-black">{article.author}</div>
+                <div className="font-medium text-black">{author}</div>
                 <div className="flex items-center text-sm text-gray-500 space-x-4">
                   <span>{format(new Date(article.published_at), "MMM d, yyyy")}</span>
                   <span>•</span>
-                  <span>{article.read_time} min read</span>
+                  <span>{(article.read_time ?? 5)} min read</span>
                 </div>
               </div>
             </div>
@@ -110,10 +117,10 @@ export default function NewsArticlePage({
         </header>
 
         {/* Featured Image */}
-        {article.featured_image && (
+        {image && (
           <div className="mb-12">
             <img
-              src={article.featured_image || "/placeholder.svg"}
+              src={image || "/placeholder.svg"}
               alt={article.title}
               className="w-full h-auto rounded-lg"
               style={{ maxHeight: "500px", objectFit: "cover" }}
@@ -168,11 +175,11 @@ export default function NewsArticlePage({
             <div className="flex items-start space-x-4">
               <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-xl font-semibold text-gray-600">
-                  {article.author.charAt(0)}
+                  {author.charAt(0)}
                 </span>
               </div>
               <div>
-                <h3 className="font-semibold text-lg text-black mb-2">{article.author}</h3>
+                <h3 className="font-semibold text-lg text-black mb-2">{author}</h3>
                 <p className="text-gray-600 mb-3">
                   Senior journalist and content writer at TDC Ghana, specializing in technology, business, and development stories.
                 </p>
@@ -195,10 +202,10 @@ export default function NewsArticlePage({
               {relatedNews.slice(0, 4).map((related) => (
                 <Link key={related.id} href={`/news/${related.slug}`} className="group">
                   <article className="space-y-4">
-                    {related.featured_image && (
+                    {( (related as any).featured_image ?? (related as any).featured_image_path) && (
                       <div className="aspect-[2/1] overflow-hidden rounded-md">
                         <img
-                          src={related.featured_image || "/placeholder.svg"}
+                          src={( (related as any).featured_image ?? (related as any).featured_image_path ) || "/placeholder.svg"}
                           alt={related.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -248,7 +255,7 @@ export default function NewsArticlePage({
               <p className="text-gray-600 mb-4">No related articles found in the same category.</p>
               <p className="text-sm text-gray-500">This might be because:</p>
               <ul className="text-sm text-gray-500 mt-2">
-                <li>• No other articles exist in the "{article.category}" category</li>
+                <li>• No other articles exist in the "{categoryLabel}" category</li>
                 <li>• All articles in this category are drafts</li>
                 <li>• The current article is the only published article in this category</li>
               </ul>

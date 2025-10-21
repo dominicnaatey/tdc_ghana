@@ -11,11 +11,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow, format } from "date-fns";
-import { getPublishedNews } from "@/lib/data/sample-news";
+import { listNews } from "@/lib/api/news";
 
-function getNews() {
-  return getPublishedNews();
-}
+// Removed: now fetching from REST API inside NewsList
 
 function NewsCardSkeleton() {
   return (
@@ -100,7 +98,7 @@ function NewsCard({ article }: { article: any }) {
                 <span className="text-gray-300">·</span>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{article.read_time} min read</span>
+                  <span>{(article.read_time ?? 5)} min read</span>
                 </div>
               </div>
             </div>
@@ -110,7 +108,7 @@ function NewsCard({ article }: { article: any }) {
             <Link href={`/news/${article.slug}`} className="block">
               <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
                 <img
-                  src={article.featured_image || "/placeholder.svg"}
+                  src={(article.featured_image || article.featured_image_path || "/placeholder.svg")}
                   alt={article.title}
                   className="w-full h-full object-cover opacity-90 transition-opacity"
                   style={{ borderRadius: "1px" }}
@@ -130,7 +128,7 @@ function NewsCard({ article }: { article: any }) {
           {article.featured_image && (
             <div className="aspect-[2/1] overflow-hidden rounded-md">
               <img
-                src={article.featured_image || "/placeholder.svg"}
+                src={(article.featured_image || article.featured_image_path || "/placeholder.svg")}
                 alt={article.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -179,33 +177,40 @@ function NewsCard({ article }: { article: any }) {
 }
 
 function NewsList() {
-  const allNews = getNews();
-  const [displayedNews, setDisplayedNews] = useState(allNews.slice(0, 5));
+  const [displayedNews, setDisplayedNews] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(allNews.length > 5);
+  const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const desktopObserverRef = useRef<HTMLDivElement>(null);
   const mobileObserverRef = useRef<HTMLDivElement>(null);
 
+  const loadPage = useCallback(async (p: number) => {
+    try {
+      setIsLoading(true);
+      const payload = await listNews({ page: p, per_page: 10, sort: 'published_at', order: 'desc' });
+      setDisplayedNews((prev) => (p === 1 ? payload.data : [...prev, ...payload.data]));
+      setLastPage(payload.meta.last_page);
+      setHasMore(p < payload.meta.last_page);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch news');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadPage(1);
+  }, [loadPage]);
+
   const loadMoreNews = useCallback(() => {
     if (isLoading || !hasMore) return;
-
-    setIsLoading(true);
-
-    // Simulate loading delay
-    setTimeout(() => {
-      const currentLength = displayedNews.length;
-      const nextBatch = allNews.slice(currentLength, currentLength + 5);
-
-      if (nextBatch.length > 0) {
-        setDisplayedNews((prev) => [...prev, ...nextBatch]);
-        setHasMore(currentLength + nextBatch.length < allNews.length);
-      } else {
-        setHasMore(false);
-      }
-
-      setIsLoading(false);
-    }, 800);
-  }, [allNews, displayedNews.length, isLoading, hasMore]);
+    const next = page + 1;
+    setPage(next);
+    loadPage(next);
+  }, [page, hasMore, isLoading, loadPage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -228,7 +233,7 @@ function NewsList() {
     return () => observer.disconnect();
   }, [loadMoreNews, hasMore, isLoading]);
 
-  if (allNews.length === 0) {
+  if (displayedNews.length === 0 && !isLoading) {
     return (
       <div
         className="text-center py-16"
@@ -265,7 +270,7 @@ function NewsList() {
         {hasMore && <div ref={desktopObserverRef} className="h-10" />}
 
         {/* End message */}
-        {!hasMore && displayedNews.length > 5 && (
+        {!hasMore && displayedNews.length > 0 && (
           <div className="text-center py-8 text-gray-500">
             <p>You've reached the end of our stories</p>
           </div>
@@ -291,7 +296,7 @@ function NewsList() {
         {hasMore && <div ref={mobileObserverRef} className="h-10" />}
 
         {/* End message */}
-        {!hasMore && displayedNews.length > 5 && (
+        {!hasMore && displayedNews.length > 0 && (
           <div className="text-center py-8 text-gray-500">
             <p>You've reached the end of our stories</p>
           </div>
