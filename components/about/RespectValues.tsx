@@ -5,10 +5,10 @@ export default function RespectValues() {
     <section className="py-16 bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Core Values</h2>
-          <p className="text-lg text-gray-600 mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">We live by the acronym <span className="text-accent">SPICE-IT</span></h2>
+          {/* <p className="text-lg text-gray-600 mb-12">
             We live by the acronym <strong>RESPECT</strong>
-          </p>
+          </p> */}
         </div>
         
         <div className="flex flex-wrap justify-center items-start gap-8 lg:gap-12">

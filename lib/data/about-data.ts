@@ -49,12 +49,12 @@ export const newObjects2017 = [
 ];
 
 export const respectValues = [
-  { letter: "R", value: "Responsibility" },
-  { letter: "E", value: "Eco-Friendliness" },
-  { letter: "S", value: "Service Excellence" },
+  { letter: "S", value: "Sustainability" },
   { letter: "P", value: "Professionalism" },
-  { letter: "E", value: "Equal Opportunity" },
-  { letter: "C", value: "Collaboration" },
+  { letter: "I", value: "Innovation" },
+  { letter: "C", value: "Community-Centricity" },
+  { letter: "E", value: "Excellence" },
+  { letter: "I", value: "Integrity" },
   { letter: "T", value: "Transparency" }
 ];
 
