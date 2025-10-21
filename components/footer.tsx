@@ -31,22 +31,22 @@ export default function Footer() {
               infrastructure initiatives that transform communities and improve lives.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Facebook">
+              <Link href="https://www.facebook.com/tdcghanaltd/" className="text-blue-100 hover:text-white transition-colors" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Twitter">
+              <Link href="https://x.com/tdcghanaltd?lang=en" className="text-blue-100 hover:text-white transition-colors" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="LinkedIn">
+              <Link href="https://www.linkedin.com/company/tdcghanaltd/posts/?feedView=all" className="text-blue-100 hover:text-white transition-colors" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="YouTube">
+              <Link href="https://www.youtube.com/" className="text-blue-100 hover:text-white transition-colors" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
                 <Youtube className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="TikTok">
+              <Link href="https://www.tiktok.com/@tdcghanaltd" className="text-blue-100 hover:text-white transition-colors" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
                 <FontAwesomeIcon icon={faTiktok} className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-blue-100 hover:text-white transition-colors" aria-label="Instagram">
+              <Link href="https://www.instagram.com/tdcghanaltd/?hl=en" className="text-blue-100 hover:text-white transition-colors" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                 <Instagram className="h-5 w-5" />
               </Link>
             </div>
