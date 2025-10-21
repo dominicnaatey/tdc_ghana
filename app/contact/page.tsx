@@ -153,9 +153,15 @@ export default function ContactPage() {
                       <p className="text-base">
                         <a
                           href="mailto:info@tdc.gov.gh"
-                          className="hover:underline text-foreground"
+                          className="block hover:underline text-foreground"
                         >
                           info@tdc.gov.gh
+                        </a>
+                        <a
+                          href="mailto:info@tdc.gov.gh"
+                          className="block hover:underline text-foreground"
+                        >
+                          marketing@tdc.gov.gh
                         </a>
                       </p>
                     </div>
