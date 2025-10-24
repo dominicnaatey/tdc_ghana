@@ -68,7 +68,7 @@ function MobileNewsCardSkeleton() {
 function NewsCard({ article }: { article: any }) {
   // Normalize image URL: prefer same-origin proxy; cleanup bad prefixes
   const resolveImageSrc = (a: any) => {
-    let raw = (a?.featured_image ?? a?.featured_image_path ?? "").trim();
+    let raw = (a?.featured_image_path ?? a?.featured_image ?? "").trim();
     if (!raw) return "/placeholder.svg";
     if (/^https?:\/\//i.test(raw)) return raw;
 
