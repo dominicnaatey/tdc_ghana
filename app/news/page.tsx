@@ -66,6 +66,19 @@ function MobileNewsCardSkeleton() {
 }
 
 function NewsCard({ article }: { article: any }) {
+  // Normalize image URL: prefer absolute; fallback to placeholder
+  const resolveImageSrc = (a: any) => {
+    const raw = a?.featured_image ?? a?.featured_image_path ?? "";
+    if (!raw) return "/placeholder.svg";
+    if (/^https?:\/\//.test(raw)) return raw;
+    const base = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+    try {
+      return new URL(raw, base || (typeof window !== "undefined" ? window.location.origin : undefined)).toString();
+    } catch {
+      return `${base}${raw}`;
+    }
+  };
+
   return (
     <>
       {/* Desktop Layout */}
@@ -104,18 +117,19 @@ function NewsCard({ article }: { article: any }) {
             </div>
           </Link>
 
-          {article.featured_image && (
-            <Link href={`/news/${article.slug}`} className="block">
-              <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
-                <img
-                  src={(article.featured_image || article.featured_image_path || "/placeholder.svg")}
-                  alt={article.title}
-                  className="w-full h-full object-cover opacity-90 transition-opacity"
-                  style={{ borderRadius: "1px" }}
-                />
-              </div>
-            </Link>
-          )}
+          {/* Always render with fallback to placeholder */}
+          <Link href={`/news/${article.slug}`} className="block">
+            <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
+              <img
+                src={resolveImageSrc(article)}
+                alt={article.title}
+                className="w-full h-full object-cover opacity-90 transition-opacity"
+                style={{ borderRadius: "1px" }}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </Link>
         </div>
       </article>
 
@@ -125,15 +139,16 @@ function NewsCard({ article }: { article: any }) {
         className="group md:hidden block mb-8"
       >
         <article className="space-y-4">
-          {article.featured_image && (
-            <div className="aspect-[2/1] overflow-hidden rounded-md">
-              <img
-                src={(article.featured_image || article.featured_image_path || "/placeholder.svg")}
-                alt={article.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          )}
+          {/* Always render with fallback to placeholder */}
+          <div className="aspect-[2/1] overflow-hidden rounded-md">
+            <img
+              src={resolveImageSrc(article)}
+              alt={article.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
 
           <div className="space-y-3">
             <h3 className="font-bold text-lg text-black group-hover:text-gray-700 transition-colors line-clamp-2 leading-tight">
