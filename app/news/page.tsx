@@ -86,6 +86,11 @@ function NewsCard({ article }: { article: any }) {
     if (!path.startsWith("/")) path = "/" + path;
     path = path.replace(/\/{2,}/g, "/");
 
+    // map '/posts/*' to '/storage/posts/*' (actual public path on remote)
+    if (path.startsWith("/posts/")) {
+      path = "/storage" + path;
+    }
+
     // build against same-origin to leverage Next rewrites
     const origin = typeof window !== "undefined" ? window.location.origin : (process.env.NEXT_PUBLIC_API_BASE_URL ?? "");
     try {
