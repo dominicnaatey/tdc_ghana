@@ -18,8 +18,8 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      { source: "/api/posts", destination: "http://127.0.0.1:8000/api/posts" },
-      { source: "/api/posts/:path*", destination: "http://127.0.0.1:8000/api/posts/:path*" },
+      { source: "/api/posts", destination: "https://admin.eurochamghana.eu/api/posts" },
+      { source: "/api/posts/:path*", destination: "https://admin.eurochamghana.eu/api/posts/:path*" },
     ];
   },
 }
