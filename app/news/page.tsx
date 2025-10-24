@@ -66,16 +66,32 @@ function MobileNewsCardSkeleton() {
 }
 
 function NewsCard({ article }: { article: any }) {
-  // Normalize image URL: prefer absolute; fallback to placeholder
+  // Normalize image URL: prefer same-origin proxy; cleanup bad prefixes
   const resolveImageSrc = (a: any) => {
-    const raw = a?.featured_image ?? a?.featured_image_path ?? "";
+    let raw = (a?.featured_image ?? a?.featured_image_path ?? "").trim();
     if (!raw) return "/placeholder.svg";
-    if (/^https?:\/\//.test(raw)) return raw;
-    const base = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+    if (/^https?:\/\//i.test(raw)) return raw;
+
+    let path = raw.replace(/\\/g, "/");
+
+    // drop route prefix like 'news/'
+    path = path.replace(/^news\//, "");
+    path = path.replace(/^\/news\//, "/");
+
+    // fix 'news/posts/...'
+    path = path.replace(/^news\/posts\//, "posts/");
+    path = path.replace(/^\/news\/posts\//, "/posts/");
+
+    // ensure leading slash and collapse duplicates
+    if (!path.startsWith("/")) path = "/" + path;
+    path = path.replace(/\/{2,}/g, "/");
+
+    // build against same-origin to leverage Next rewrites
+    const origin = typeof window !== "undefined" ? window.location.origin : (process.env.NEXT_PUBLIC_API_BASE_URL ?? "");
     try {
-      return new URL(raw, base || (typeof window !== "undefined" ? window.location.origin : undefined)).toString();
+      return new URL(path, origin || "http://localhost:3001").toString();
     } catch {
-      return `${base}${raw}`;
+      return `${origin || ""}${path}`;
     }
   };
 
