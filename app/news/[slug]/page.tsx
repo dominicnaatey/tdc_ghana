@@ -42,6 +42,70 @@ export default async function NewsArticlePage({
   const categoryLabel = (article as any).category ?? 'General';
   const image = (article as any).featured_image ?? (article as any).featured_image_path ?? null;
 
+  // Server-safe image URL normalizer (keeps same-origin to leverage Next rewrites)
+  const resolveImageSrc = (a: any) => {
+    let raw = (a?.featured_image_path ?? a?.featured_image ?? "").trim();
+    if (!raw) return "/placeholder.svg";
+
+    // If absolute URL, convert known admin.eurochamghana.eu storage paths to relative
+    if (/^https?:\/\//i.test(raw)) {
+      try {
+        const u = new URL(raw);
+        if (/admin\.eurochamghana\.eu$/i.test(u.hostname)) {
+          const m = u.pathname.match(/\/(storage\/.*)$/);
+          if (m) return '/' + m[1].replace(/^\/+/, '');
+        }
+      } catch {}
+      return raw; // keep other absolute URLs as-is
+    }
+
+    let path = raw.replace(/\\/g, "/");
+
+    // drop route prefix like 'news/'
+    path = path.replace(/^news\//, "");
+    path = path.replace(/^\/news\//, "/");
+
+    // fix 'news/posts/...'
+    path = path.replace(/^news\/posts\//, "posts/");
+    path = path.replace(/^\/news\/posts\//, "/posts/");
+
+    // ensure leading slash and collapse duplicates
+    if (!path.startsWith("/")) path = "/" + path;
+    path = path.replace(/\/{2,}/g, "/");
+
+    // map '/posts/*' to '/storage/posts/*' (actual public path on remote)
+    if (path.startsWith("/posts/")) {
+      path = "/storage" + path;
+    }
+
+    return path; // relative path for same-origin rewrites
+  };
+
+  // Normalize rich HTML content image sources similarly
+  const normalizeContent = (html: string): string => {
+    if (!html) return '';
+    let out = html;
+    // admin host absolute storage -> relative
+    out = out.replace(/src=["']\s*https?:\/\/[^"']*admin\.eurochamghana\.eu\/(storage\/[^"]+)["']/gi, 'src="/$1"');
+    // news/posts -> posts
+    out = out.replace(/src=["']\s*news\/posts\/([^"']+)["']/gi, 'src="/posts/$1"');
+    out = out.replace(/src=["']\s*\/news\/posts\/([^"']+)["']/gi, 'src="/posts/$1"');
+    // map posts -> storage/posts
+    out = out.replace(/src=["']\s*posts\/([^"']+)["']/gi, 'src="/storage/posts/$1"');
+    out = out.replace(/src=["']\s*\/posts\/([^"']+)["']/gi, 'src="/storage/posts/$1"');
+    // drop leading 'news/'
+    out = out.replace(/src=["']\s*news\/([^"']+)["']/gi, 'src="/$1"');
+    out = out.replace(/src=["']\s*\/news\/([^"']+)["']/gi, 'src="/$1"');
+    // ensure storage has leading slash
+    out = out.replace(/src=["']\s*storage\/([^"']+)["']/gi, 'src="/storage/$1"');
+    // collapse double slashes
+    out = out.replace(/src=["']\s*(\/{2,})([^"']+)["']/gi, 'src="/$2"');
+    return out;
+  };
+
+  const imageSrc = resolveImageSrc(article);
+  const normalizedContent = normalizeContent(String((article as any).content ?? ''));
+
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "Source Serif Pro, serif" }}>
       {/* Header Navigation */}
@@ -117,21 +181,21 @@ export default async function NewsArticlePage({
         </header>
 
         {/* Featured Image */}
-        {image && (
-          <div className="mb-12">
-            <img
-              src={image || "/placeholder.svg"}
-              alt={article.title}
-              className="w-full h-auto rounded-lg"
-              style={{ maxHeight: "500px", objectFit: "cover" }}
-            />
-          </div>
-        )}
+        <div className="mb-12">
+          <img
+            src={imageSrc}
+            alt={article.title}
+            className="w-full h-auto rounded-lg"
+            style={{ maxHeight: "500px", objectFit: "cover" }}
+            loading="eager"
+            decoding="async"
+          />
+        </div>
 
         {/* Article Content */}
         <div className="prose prose-lg max-w-none mb-12">
           <div 
-            dangerouslySetInnerHTML={{ __html: article.content }} 
+            dangerouslySetInnerHTML={{ __html: normalizedContent }} 
             className="text-gray-800 leading-relaxed"
             style={{ 
               fontSize: "20px", 
@@ -202,12 +266,14 @@ export default async function NewsArticlePage({
               {relatedNews.slice(0, 4).map((related) => (
                 <Link key={related.id} href={`/news/${related.slug}`} className="group">
                   <article className="space-y-4">
-                    {( (related as any).featured_image ?? (related as any).featured_image_path) && (
+                    { ( (related as any).featured_image ?? (related as any).featured_image_path ) && (
                       <div className="aspect-[2/1] overflow-hidden rounded-md">
                         <img
-                          src={( (related as any).featured_image ?? (related as any).featured_image_path ) || "/placeholder.svg"}
+                          src={resolveImageSrc(related)}
                           alt={related.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     )}
@@ -264,5 +330,5 @@ export default async function NewsArticlePage({
         </div>
       </section>
     </div>
-  )
+  );
 }
