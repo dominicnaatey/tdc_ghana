@@ -196,12 +196,7 @@ export default async function NewsArticlePage({
         <div className="prose prose-lg max-w-none mb-12">
           <div 
             dangerouslySetInnerHTML={{ __html: normalizedContent }} 
-            className="text-gray-800 leading-relaxed"
-            style={{ 
-              fontSize: "20px", 
-              lineHeight: "1.6",
-              fontFamily: "Source Serif Pro, serif"
-            }}
+            className="text-gray-800 leading-[1.6] text-lg md:text-xl font-serif"
           />
         </div>
 
