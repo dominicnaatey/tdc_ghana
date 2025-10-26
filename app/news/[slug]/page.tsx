@@ -124,7 +124,7 @@ export default async function NewsArticlePage({
       <article className="max-w-4xl mx-auto px-4 py-12">
         {/* Article Header */}
         <header className="mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight" style={{ fontFamily: 'Sohne, sans-serif' }}>
+          <h1 className="text-2xl md:text-4xl font-bold mb-6 leading-tight" style={{ fontFamily: 'Sohne, sans-serif' }}>
             {article.title}
           </h1>
           
