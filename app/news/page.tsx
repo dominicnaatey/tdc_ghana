@@ -100,6 +100,23 @@ function NewsCard({ article }: { article: any }) {
     }
   };
 
+  // Fallback excerpt: use content text when excerpt missing
+  const getExcerpt = (a: any) => {
+    const raw = (a?.excerpt ?? "").trim();
+    if (raw) return raw;
+    const html = String(a?.content ?? "");
+    const text = html
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&#x27;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+    const words = text.split(" ").slice(0, 24).join(" ");
+    return words && words.length < text.length ? words + "…" : words;
+  };
+
   return (
     <>
       {/* Desktop Layout */}
@@ -117,7 +134,7 @@ function NewsCard({ article }: { article: any }) {
                 {article.title}
               </h2>
               <p className="text-gray-600 line-clamp-2 text-base leading-relaxed mb-4">
-                {article.excerpt}
+                {getExcerpt(article)}
               </p>
 
               <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -176,7 +193,7 @@ function NewsCard({ article }: { article: any }) {
               {article.title}
             </h3>
             <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
-              {article.excerpt}
+              {getExcerpt(article)}
             </p>
 
             {/* Engagement and Date */}
