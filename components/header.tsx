@@ -65,6 +65,9 @@ export default function Header() {
                 alt="TDC Ghana Logo"
                 className="h-12 w-auto"
               />
+              <span className="text-base md:text-lg font-semibold text-gray-900 whitespace-nowrap">
+                TDC Ghana Ltd.
+              </span>
             </div>
           </Link>
 
