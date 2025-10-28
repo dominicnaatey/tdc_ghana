@@ -222,6 +222,45 @@ export const sampleProjects: Project[] = [
   }
   ,
   {
+    id: 11,
+    title: "Ho Residential Housing Project",
+    slug: "ho-residential-housing",
+    description: `TDC Ghana Ltd. has announced plans to commence a residential housing project and related developments in Ho, the Volta Regional capital, marking the beginning of its nationwide expansion beyond Tema.
+
+This initiative represents a significant milestone for the company, which until 2017 was legally restricted to operating within the 63-square-mile Tema Acquisition Area. Following a revision of its mandate, TDC can now operate across the country, with the Ho project serving as the first practical step in implementing this expanded role.
+
+As part of preparations, a joint delegation from TDC and its sector ministry, the Ministry of Works, Housing and Water Resources, paid a courtesy call on Togbe Afede XIV, Agbogbomefia of the Asogli State. The visit was to formally brief him on the project and seek his blessing and guidance ahead of commencement.
+
+TDC Managing Director, Mr. Courage K. M. Nunekpeku, confirmed that the Ministry has allocated part of its land stock in Ho to the company for the construction of modern residential accommodation. “We believe it is time to extend our experience nationwide. Volta Region is our starting point, and we intend to move quickly to commence work this year,” he said.
+
+Togbe Afede XIV warmly welcomed the initiative, describing housing as a necessity across all regions. He underscored the project’s potential to ease the housing deficit, create employment opportunities, and attract investment into the Volta Region. He further expressed delight that the announcement coincides with President Mahama’s “Big Push” initiative, noting its great significance for the people of the region.
+
+During the visit, TDC made a donation to support the Asogli State Educational Fund and the upcoming Yam Festival.
+
+The Ho project is expected to pave the way for TDC’s broader nationwide housing programme, aimed at reducing Ghana’s housing deficit and promoting inclusive urban development. Alongside the Volta Region, TDC has earmarked the Ashanti, Western, Central, and Eastern regions for the first phase of its expansion.`,
+    location: "Ho, Volta Region",
+    status: "planning",
+    start_date: "2025-01-01",
+    completion_date: "2027-12-31",
+    budget: 0,
+    beneficiaries: 0,
+    featured_image: "/projects/project11/1.jpg",
+    project_type: "Housing",
+    featured: false,
+    image_collection: [
+      "/projects/project11/2.jpg",
+      "/projects/project11/3.jpg",
+      "/projects/project11/4.jpg",
+      "/projects/project11/5.jpg",
+      "/projects/project11/6.jpg",
+      "/projects/project11/7.jpg",
+      "/projects/project11/8.jpg",
+      "/projects/project11/9.jpg",
+      "/projects/project11/10.jpg",
+    ]
+  }
+  ,
+  {
     id: 5,
     title: "KPONE AFFORDABLE comm 26 new",
     slug: "kpone-affordable-comm-26-new",
