@@ -61,7 +61,7 @@ export default function HeroSection() {
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                Explore Housing Projects
+                Current Projects
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button
@@ -69,7 +69,7 @@ export default function HeroSection() {
                 variant="outline"
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
               >
-                View Available Land
+                Contact Us
               </Button>
             </div>
 
