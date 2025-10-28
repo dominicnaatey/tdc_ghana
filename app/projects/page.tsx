@@ -96,11 +96,7 @@ async function ProjectsList() {
                 </div>
               </div>
 
-              {/* Budget */}
-              <div className="flex items-center space-x-1 text-sm font-semibold text-primary">
-                <DollarSign className="w-4 h-4" />
-                <span>GHS {(project.budget / 1000000).toFixed(0)}M</span>
-              </div>
+              {/* Pricing hidden */}
             </div>
           </article>
         </Link>
