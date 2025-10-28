@@ -4,13 +4,20 @@ export interface Project {
   slug: string;
   description: string;
   location: string;
-  status: 'completed' | 'ongoing' | 'planning';
+  status: "completed" | "ongoing" | "planning";
   start_date: string;
   completion_date: string;
   budget: number;
   beneficiaries: number;
   featured_image: string;
-  project_type: 'Infrastructure' | 'Housing' | 'Community' | 'Industrial' | 'Energy' | 'Utilities' | 'Hospitality';
+  project_type:
+    | "Infrastructure"
+    | "Housing"
+    | "Community"
+    | "Industrial"
+    | "Energy"
+    | "Utilities"
+    | "Hospitality";
   featured: boolean;
   facilities?: string[];
   features?: string[];
@@ -47,7 +54,8 @@ export const sampleProjects: Project[] = [
     id: 1,
     title: "TDC Towers",
     slug: "tdc-towers",
-    description: "TDC Towers is a 7-storey commercial building located in Tema, Community 2 between the Aggrey and Lumumba Roads and just opposite the Tema Community 2 Police Station. The structure, which is L-shaped, sits at the edge of Salifu Dagati Extension Street, facing the police station and parts of the Tema Harbour.",
+    description:
+      "TDC Towers is a 7-storey commercial building located in Tema, Community 2 between the Aggrey and Lumumba Roads and just opposite the Tema Community 2 Police Station. The structure, which is L-shaped, sits at the edge of Salifu Dagati Extension Street, facing the police station and parts of the Tema Harbour.",
     location: "Tema, Greater Accra Region",
     status: "ongoing",
     start_date: "2023-03-01",
@@ -69,7 +77,7 @@ export const sampleProjects: Project[] = [
       "Backup Generator of 2000 K.V.A",
       "24 hour security service",
       "Fire alarms and extinguishers available",
-      "Telephone, Cable & Fibre Optics available"
+      "Telephone, Cable & Fibre Optics available",
     ],
     features: [
       "Open plan Office space",
@@ -77,7 +85,7 @@ export const sampleProjects: Project[] = [
       "1st to 2nd floor available for retail and restaurant",
       "450 seater conference facility",
       "Cafeteria available on the 7th floor",
-      "Cafeteria/Restaurant space to complement Conference Facility"
+      "Cafeteria/Restaurant space to complement Conference Facility",
     ],
     image_collection: [
       "/projects/project1/2.jpg",
@@ -86,13 +94,14 @@ export const sampleProjects: Project[] = [
       "/projects/project1/5.jpg",
       "/projects/project1/6.jpg",
       "/projects/project1/7.jpg",
-    ]
+    ],
   },
   {
     id: 2,
     title: "Community 26 Kpone Affordable Housing Project",
     slug: "community-26-kpone-affordable-housing",
-    description: "TDC Ghana Ltd is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale. This project offers various apartment types designed to meet diverse housing needs at affordable prices.",
+    description:
+      "TDC Ghana Ltd is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale. This project offers various apartment types designed to meet diverse housing needs at affordable prices.",
     location: "Kpone, Greater Accra Region",
     status: "ongoing",
     start_date: "2024-01-01",
@@ -102,50 +111,49 @@ export const sampleProjects: Project[] = [
     featured_image: "/projects/project3/1.jpg",
     project_type: "Housing",
     featured: true,
-    announcement: "TDC Ghana Ltd, is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale.",
+    announcement:
+      "TDC Ghana Ltd, is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale.",
     apartment_types: [
       {
         type: "Studio",
-        floor_area_sqm: 30.485
+        floor_area_sqm: 30.485,
       },
       {
         type: "1 Bedroom",
-        floor_area_sqm: 42.9
+        floor_area_sqm: 42.9,
       },
       {
         type: "1 Bedroom (Special)",
-        floor_area_sqm: 60.837
+        floor_area_sqm: 60.837,
       },
       {
         type: "2 Bedrooms",
-        floor_area_sqm: 79.644
-      }
+        floor_area_sqm: 79.644,
+      },
     ],
     note: "Applicants will be expected to pay before an apartment can be earmarked.",
     payment_details: {
       bank: "Ghana Commercial Bank",
       account_number: "1071130001798",
-      currency: "CEDI"
+      currency: "CEDI",
     },
     contact: {
-      mobile: [
-        "+233504895302",
-        "+233596914432"
-      ],
+      mobile: ["+233504895302", "+233596914432"],
       telephone: "+233303202731",
-      whatsapp: "+233552569887"
+      whatsapp: "+233552569887",
     },
     image_collection: [
       "/projects/project3/2.jpg",
       "/projects/project3/3.jpg",
       "/projects/project3/4.jpg",
-    ]
+    ],
   },
   {
     id: 3,
     title: "Site 3 Apartment for Sale",
     slug: "site-3-apartment-for-sale",
-    description: "With the successful completion of phase-I of TDC Development Company Limited's first 8-storey block of (2-Bedroom) Apartments, the Corporation is commencing the phase-II project comprising 4 blocks of 8-storey 3-bedroom apartments at Site 3, Community 1 Tema. This prime location is off the Tema Stadium Road, opposite the TDC Head Office.",
+    description:
+      "With the successful completion of phase-I of TDC Development Company Limited's first 8-storey block of (2-Bedroom) Apartments, the Corporation is commencing the phase-II project comprising 4 blocks of 8-storey 3-bedroom apartments at Site 3, Community 1 Tema. This prime location is off the Tema Stadium Road, opposite the TDC Head Office.",
     location: "Site 3, Community 1, Tema",
     landmark: "Opposite TDC Head Office, off Tema Stadium Road",
     status: "ongoing",
@@ -158,7 +166,8 @@ export const sampleProjects: Project[] = [
     featured: true,
     phase_info: {
       phase_1: "First 8-storey block of 2-Bedroom Apartments completed.",
-      phase_2: "Four blocks of 8-storey 3-Bedroom Apartments under development."
+      phase_2:
+        "Four blocks of 8-storey 3-Bedroom Apartments under development.",
     },
     key_features: [
       "Spacious Sitting Rooms and Bedrooms (Net floor area is 218 sq.m)",
@@ -169,18 +178,17 @@ export const sampleProjects: Project[] = [
       "Access Control (With Audio / Video communication to Apartments)",
       "Fully Fitted Kitchen (With Cooker Unit and Refrigerator)",
       "Children's Playground",
-      "Supermarkets and Retail Stores provided"
+      "Supermarkets and Retail Stores provided",
     ],
-    image_collection: [
-      "/projects/project2/2.jpg",
-      "/projects/project2/3.jpg",
-    ]
+    image_collection: ["/projects/project2/2.jpg", "/projects/project2/3.jpg"],
   },
   {
     id: 4,
-    title: "Luxury 3-Bedroom Airbnb Apartment Now Available in Tema – Comfort, Security, and Style Await!",
+    title:
+      "Luxury 3-Bedroom Airbnb Apartment Now Available in Tema – Comfort, Security, and Style Await!",
     slug: "site-3-luxury-3-bedroom-airbnb",
-    description: "Experience luxury living at its finest with TDC Ghana Ltd’s exclusive Airbnb offering—a stunning 3-bedroom apartment located in Tema, Ghana. This beautifully designed apartment features a state-of-the-art kitchen, elegant living and dining areas, a lavish master suite, and two additional spacious bedrooms for your comfort.",
+    description:
+      "Experience luxury living at its finest with TDC Ghana Ltd’s exclusive Airbnb offering—a stunning 3-bedroom apartment located in Tema, Ghana. This beautifully designed apartment features a state-of-the-art kitchen, elegant living and dining areas, a lavish master suite, and two additional spacious bedrooms for your comfort.",
     location: "Site 3, Tema",
     status: "ongoing",
     start_date: "2024-01-01",
@@ -190,7 +198,8 @@ export const sampleProjects: Project[] = [
     featured_image: "/projects/project4/1.JPG",
     project_type: "Hospitality",
     featured: true,
-    highlights: "TDC Airbnb Luxury Apartments redefine comfort and elegance, offering guests a stylish retreat with modern amenities, top-tier security, and a serene environment—perfect for both short and long stays in Tema.",
+    highlights:
+      "TDC Airbnb Luxury Apartments redefine comfort and elegance, offering guests a stylish retreat with modern amenities, top-tier security, and a serene environment—perfect for both short and long stays in Tema.",
     apartment_type: "3-Bedroom",
     category: "Airbnb / Short-Stay",
     features: [
@@ -200,7 +209,7 @@ export const sampleProjects: Project[] = [
       "Elevator access",
       "Paved car park",
       "Secured gated community",
-      "Dedicated laundry area"
+      "Dedicated laundry area",
     ],
     image_collection: [
       "/projects/project4/2.JPG",
@@ -218,53 +227,14 @@ export const sampleProjects: Project[] = [
       "/projects/project4/13.JPG",
       "/projects/project4/14.JPG",
       "/projects/project4/15.JPG",
-    ]
-  }
-  ,
-  {
-    id: 11,
-    title: "Ho Residential Housing Project",
-    slug: "ho-residential-housing",
-    description: `TDC Ghana Ltd. has announced plans to commence a residential housing project and related developments in Ho, the Volta Regional capital, marking the beginning of its nationwide expansion beyond Tema.
-
-This initiative represents a significant milestone for the company, which until 2017 was legally restricted to operating within the 63-square-mile Tema Acquisition Area. Following a revision of its mandate, TDC can now operate across the country, with the Ho project serving as the first practical step in implementing this expanded role.
-
-As part of preparations, a joint delegation from TDC and its sector ministry, the Ministry of Works, Housing and Water Resources, paid a courtesy call on Togbe Afede XIV, Agbogbomefia of the Asogli State. The visit was to formally brief him on the project and seek his blessing and guidance ahead of commencement.
-
-TDC Managing Director, Mr. Courage K. M. Nunekpeku, confirmed that the Ministry has allocated part of its land stock in Ho to the company for the construction of modern residential accommodation. “We believe it is time to extend our experience nationwide. Volta Region is our starting point, and we intend to move quickly to commence work this year,” he said.
-
-Togbe Afede XIV warmly welcomed the initiative, describing housing as a necessity across all regions. He underscored the project’s potential to ease the housing deficit, create employment opportunities, and attract investment into the Volta Region. He further expressed delight that the announcement coincides with President Mahama’s “Big Push” initiative, noting its great significance for the people of the region.
-
-During the visit, TDC made a donation to support the Asogli State Educational Fund and the upcoming Yam Festival.
-
-The Ho project is expected to pave the way for TDC’s broader nationwide housing programme, aimed at reducing Ghana’s housing deficit and promoting inclusive urban development. Alongside the Volta Region, TDC has earmarked the Ashanti, Western, Central, and Eastern regions for the first phase of its expansion.`,
-    location: "Ho, Volta Region",
-    status: "planning",
-    start_date: "2025-01-01",
-    completion_date: "2027-12-31",
-    budget: 0,
-    beneficiaries: 0,
-    featured_image: "/projects/project11/1.jpg",
-    project_type: "Housing",
-    featured: false,
-    image_collection: [
-      "/projects/project11/2.jpg",
-      "/projects/project11/3.jpg",
-      "/projects/project11/4.jpg",
-      "/projects/project11/5.jpg",
-      "/projects/project11/6.jpg",
-      "/projects/project11/7.jpg",
-      "/projects/project11/8.jpg",
-      "/projects/project11/9.jpg",
-      "/projects/project11/10.jpg",
-    ]
-  }
-  ,
+    ],
+  },
   {
     id: 5,
     title: "KPONE AFFORDABLE comm 26 new",
     slug: "kpone-affordable-comm-26-new",
-    description: "Affordable housing development at Community 26, Kpone, providing accessible residential units with practical amenities.",
+    description:
+      "Affordable housing development at Community 26, Kpone, providing accessible residential units with practical amenities.",
     location: "Kpone, Greater Accra Region",
     status: "ongoing",
     start_date: "2024-01-01",
@@ -274,16 +244,14 @@ The Ho project is expected to pave the way for TDC’s broader nationwide housin
     featured_image: "/projects/project5/1.jpg",
     project_type: "Housing",
     featured: false,
-    image_collection: [
-      "/projects/project5/2.jpg",
-      "/projects/project5/3.jpg",
-    ]
+    image_collection: ["/projects/project5/2.jpg", "/projects/project5/3.jpg"],
   },
   {
     id: 6,
     title: "15TH STOREY APARTMENT site 3",
     slug: "15th-storey-apartment-site-3",
-    description: "15 Storey Apartments, Site 3: The building skins 27 apartments per block (26 two-bedroom and 1 executive 3-bedroom penthouse). Features include a modern façade with glass and concrete, two 8-passenger lifts, basement parking and utility storage, water storage, recreational space on the 13th floor, rooftop water storage, spacious ensuite rooms, open-plan living and dining with city views, two emergency staircases, and an executive penthouse on the 14th–15th floors with family area and roof terrace. Location – Site 3, Community 1, Tema.",
+    description:
+      "15 Storey Apartments, Site 3: The building skins 27 apartments per block (26 two-bedroom and 1 executive 3-bedroom penthouse). Features include a modern façade with glass and concrete, two 8-passenger lifts, basement parking and utility storage, water storage, recreational space on the 13th floor, rooftop water storage, spacious ensuite rooms, open-plan living and dining with city views, two emergency staircases, and an executive penthouse on the 14th–15th floors with family area and roof terrace. Location – Site 3, Community 1, Tema.",
     location: "Site 3, Community 1, Tema",
     status: "ongoing",
     start_date: "2024-01-01",
@@ -300,13 +268,14 @@ The Ho project is expected to pave the way for TDC’s broader nationwide housin
       "/projects/project6/site 3, 15 storey 3d/1.jpg",
       "/projects/project6/site 3, 15 storey 3d/2.jpg",
       "/projects/project6/site 3, 15 storey 3d/3.png",
-    ]
+    ],
   },
   {
     id: 7,
     title: "EVENT CENTER",
     slug: "event-center",
-    description: "Purpose-built event center concept with flexible spaces for conferences, ceremonies, and community functions.",
+    description:
+      "Purpose-built event center concept with flexible spaces for conferences, ceremonies, and community functions.",
     location: "Tema, Greater Accra Region",
     status: "planning",
     start_date: "2024-01-01",
@@ -316,16 +285,14 @@ The Ho project is expected to pave the way for TDC’s broader nationwide housin
     featured_image: "/projects/project7/1.jpg",
     project_type: "Community",
     featured: false,
-    image_collection: [
-      "/projects/project7/2.jpg",
-      "/projects/project7/3.jpg",
-    ]
+    image_collection: ["/projects/project7/2.jpg", "/projects/project7/3.jpg"],
   },
   {
     id: 8,
     title: "kaizer Flat",
     slug: "kaizer-flat",
-    description: "Kaizer Flat: High-rise residential development with multiple symmetrical towers and expansive balconies around a centralized vertical core. Typical floor plan arranged in a quad-unit configuration around dual staircases and twin lifts, designed for accessibility, safety, and structural efficiency.",
+    description:
+      "Kaizer Flat: High-rise residential development with multiple symmetrical towers and expansive balconies around a centralized vertical core. Typical floor plan arranged in a quad-unit configuration around dual staircases and twin lifts, designed for accessibility, safety, and structural efficiency.",
     location: "Tema, Greater Accra Region",
     status: "planning",
     start_date: "2024-01-01",
@@ -341,7 +308,7 @@ The Ho project is expected to pave the way for TDC’s broader nationwide housin
       "/projects/project8/kaizer 3ds/1.jpg",
       "/projects/project8/kaizer 3ds/2.png",
       "/projects/project8/kaizer 3ds/3.png",
-    ]
+    ],
   },
   {
     id: 9,
@@ -394,7 +361,7 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
       "Private dining areas",
       "Central stair halls",
       "Dual staircases",
-      "Well-planned circulation for safety and convenience"
+      "Well-planned circulation for safety and convenience",
     ],
     image_collection: [
       "/projects/project9/FLOOR PLAN/2.jpg",
@@ -402,13 +369,14 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
       "/projects/project9/comm 2 habour view apt 3ds/1.png",
       "/projects/project9/comm 2 habour view apt 3ds/2.png",
       "/projects/project9/comm 2 habour view apt 3ds/3.png",
-    ]
+    ],
   },
   {
     id: 10,
     title: "TDC CLUB HOUSE",
     slug: "tdc-club-house",
-    description: "The TDC Clubhouse is a premier lifestyle and leisure destination designed to offer members and guests a perfect blend of comfort, recreation, and luxury. Nestled in a serene environment at Community 6, Tema in the Greater Accra Region, the clubhouse provides an inviting atmosphere for relaxation, socialization, and wellness. At the heart of the facility is a well-appointed guesthouse with elegant and comfortable accommodations. The restaurant serves a diverse menu of local and international cuisine prepared by skilled chefs and complemented by exceptional service. A versatile pavilion / multi-purpose space provides an ideal venue for corporate functions, private celebrations, and community gatherings with modern amenities. For sports and fitness enthusiasts, the clubhouse features a tennis court, squash court, fully equipped gym, and a swimming pool—promoting an active, healthy lifestyle. Guests can also unwind at the spa, which offers rejuvenating treatments designed to refresh both body and mind. Additional facilities and services are thoughtfully integrated to enhance the overall experience, making the TDC Clubhouse a vibrant hub for leisure, wellness, and community living.",
+    description:
+      "The TDC Clubhouse is a premier lifestyle and leisure destination designed to offer members and guests a perfect blend of comfort, recreation, and luxury. Nestled in a serene environment at Community 6, Tema in the Greater Accra Region, the clubhouse provides an inviting atmosphere for relaxation, socialization, and wellness. At the heart of the facility is a well-appointed guesthouse with elegant and comfortable accommodations. The restaurant serves a diverse menu of local and international cuisine prepared by skilled chefs and complemented by exceptional service. A versatile pavilion / multi-purpose space provides an ideal venue for corporate functions, private celebrations, and community gatherings with modern amenities. For sports and fitness enthusiasts, the clubhouse features a tennis court, squash court, fully equipped gym, and a swimming pool—promoting an active, healthy lifestyle. Guests can also unwind at the spa, which offers rejuvenating treatments designed to refresh both body and mind. Additional facilities and services are thoughtfully integrated to enhance the overall experience, making the TDC Clubhouse a vibrant hub for leisure, wellness, and community living.",
     location: "Community 6, Tema, Greater Accra Region",
     status: "planning",
     start_date: "2024-01-01",
@@ -425,7 +393,7 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
       "Commercial area",
       "Back of House – Administration and general services",
       "Parking area",
-      "Landscape areas"
+      "Landscape areas",
     ],
     features: [
       "Elegant guesthouse accommodations in a serene setting",
@@ -434,7 +402,7 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
       "Fully equipped gym and swimming pool",
       "Tennis court and squash court",
       "Professional spa and wellness treatments",
-      "Community-focused leisure and wellness hub"
+      "Community-focused leisure and wellness hub",
     ],
     image_collection: [
       "/projects/project10/2.jpg",
@@ -443,27 +411,68 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
       "/projects/project10/5.jpg",
       "/projects/project10/6.jpg",
       "/projects/project10/7.jpg",
-    ]
-  }
+    ],
+  },
+
+  {
+    id: 11,
+    title: "Ho Residential Housing Project",
+    slug: "ho-residential-housing",
+    description: `TDC Ghana Ltd. has announced plans to commence a residential housing project and related developments in Ho, the Volta Regional capital, marking the beginning of its nationwide expansion beyond Tema.
+
+This initiative represents a significant milestone for the company, which until 2017 was legally restricted to operating within the 63-square-mile Tema Acquisition Area. Following a revision of its mandate, TDC can now operate across the country, with the Ho project serving as the first practical step in implementing this expanded role.
+
+As part of preparations, a joint delegation from TDC and its sector ministry, the Ministry of Works, Housing and Water Resources, paid a courtesy call on Togbe Afede XIV, Agbogbomefia of the Asogli State. The visit was to formally brief him on the project and seek his blessing and guidance ahead of commencement.
+
+TDC Managing Director, Mr. Courage K. M. Nunekpeku, confirmed that the Ministry has allocated part of its land stock in Ho to the company for the construction of modern residential accommodation. “We believe it is time to extend our experience nationwide. Volta Region is our starting point, and we intend to move quickly to commence work this year,” he said.
+
+Togbe Afede XIV warmly welcomed the initiative, describing housing as a necessity across all regions. He underscored the project’s potential to ease the housing deficit, create employment opportunities, and attract investment into the Volta Region. He further expressed delight that the announcement coincides with President Mahama’s “Big Push” initiative, noting its great significance for the people of the region.
+
+During the visit, TDC made a donation to support the Asogli State Educational Fund and the upcoming Yam Festival.
+
+The Ho project is expected to pave the way for TDC’s broader nationwide housing programme, aimed at reducing Ghana’s housing deficit and promoting inclusive urban development. Alongside the Volta Region, TDC has earmarked the Ashanti, Western, Central, and Eastern regions for the first phase of its expansion.`,
+    location: "Ho, Volta Region",
+    status: "planning",
+    start_date: "2025-01-01",
+    completion_date: "2027-12-31",
+    budget: 0,
+    beneficiaries: 0,
+    featured_image: "/projects/project11/1.jpg",
+    project_type: "Housing",
+    featured: false,
+    image_collection: [
+      "/projects/project11/2.jpg",
+      "/projects/project11/3.jpg",
+      "/projects/project11/4.jpg",
+      "/projects/project11/5.jpg",
+      "/projects/project11/6.jpg",
+      "/projects/project11/7.jpg",
+      "/projects/project11/8.jpg",
+      "/projects/project11/9.jpg",
+      "/projects/project11/10.jpg",
+    ],
+  },
 ];
 
 // Helper functions
 export function getActiveProjects() {
-  return sampleProjects.filter(project => project.status === 'ongoing');
+  return sampleProjects.filter((project) => project.status === "ongoing");
 }
 
 export function getFeaturedProjects() {
-  return sampleProjects.filter(project => project.featured);
+  return sampleProjects.filter((project) => project.featured);
 }
 
 export function getProjectBySlug(slug: string) {
-  return sampleProjects.find(project => project.slug === slug);
+  return sampleProjects.find((project) => project.slug === slug);
 }
 
 export function getProjectsByType(type: string) {
-  return sampleProjects.filter(project => project.project_type === type);
+  return sampleProjects.filter((project) => project.project_type === type);
 }
 
-export function getProjectsByStatus(status: 'completed' | 'ongoing' | 'planning') {
-  return sampleProjects.filter(project => project.status === status);
+export function getProjectsByStatus(
+  status: "completed" | "ongoing" | "planning"
+) {
+  return sampleProjects.filter((project) => project.status === status);
 }
