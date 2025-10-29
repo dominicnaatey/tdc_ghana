@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Home, Building, Maximize, Minimize } from "lucide-react";
 import MuxPlayer from "@mux/mux-player-react";
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 
 export default function HeroSection() {
   // Feature flag to enable/disable fullscreen functionality
@@ -58,18 +59,22 @@ export default function HeroSection() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
+                asChild
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                Current Projects
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <Link href="/projects">
+                  Current Projects
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
               <Button
+                asChild
                 size="lg"
                 variant="outline"
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
               >
-                Contact Us
+                <Link href="/contact">Contact Us</Link>
               </Button>
             </div>
 
