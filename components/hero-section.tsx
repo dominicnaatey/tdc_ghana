@@ -47,7 +47,7 @@ export default function HeroSection() {
           <div className="space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
               <h1 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
-                Leaders in real 
+                Leaders in Real 
                 <span className="text-primary block">Estates Business</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
