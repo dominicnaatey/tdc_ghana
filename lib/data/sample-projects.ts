@@ -138,7 +138,7 @@ export const sampleProjects: Project[] = [
       currency: "CEDI",
     },
     contact: {
-      mobile: ["+233504895302", "+233596914432"],
+      mobile: ["+233596914432", "+233504895302", "+233303202731"],
       telephone: "+233303202731",
       whatsapp: "+233552569887",
     },

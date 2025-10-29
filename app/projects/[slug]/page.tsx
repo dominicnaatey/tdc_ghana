@@ -289,12 +289,12 @@ export default async function ProjectPage({
                         Call: {mobile}
                       </Button>
                     ))}
-                    {project.contact.telephone && (
+                    {/* {project.contact.telephone && (
                       <Button variant="outline" className="w-full" size="lg">
                         <Phone className="w-4 h-4 mr-2" />
                         Tel: {project.contact.telephone}
                       </Button>
-                    )}
+                    )} */}
                     {project.contact.whatsapp && (
                       <Button variant="outline" className="w-full bg-green-50 hover:bg-green-100 text-green-700 border-green-200" size="lg">
                         <Phone className="w-4 h-4 mr-2" />
@@ -314,10 +314,10 @@ export default async function ProjectPage({
                     </Button>
                   </>
                 )}
-                <Button variant="outline" className="w-full" size="lg">
+                {/* <Button variant="outline" className="w-full" size="lg">
                   <Calendar className="w-4 h-4 mr-2" />
                   Schedule Site Visit
-                </Button>
+                </Button> */}
               </CardContent>
             </Card>
 
