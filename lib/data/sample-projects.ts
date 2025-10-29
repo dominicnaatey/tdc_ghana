@@ -57,7 +57,7 @@ export const sampleProjects: Project[] = [
     description:
       "TDC Towers is a 7-storey commercial building located in Tema, Community 2 between the Aggrey and Lumumba Roads and just opposite the Tema Community 2 Police Station. The structure, which is L-shaped, sits at the edge of Salifu Dagati Extension Street, facing the police station and parts of the Tema Harbour.",
     location: "Tema, Greater Accra Region",
-    status: "ongoing",
+    status: "completed",
     start_date: "2023-03-01",
     completion_date: "2026-02-28",
     budget: 85000000,
@@ -103,7 +103,7 @@ export const sampleProjects: Project[] = [
     description:
       "TDC Ghana Ltd is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale. This project offers various apartment types designed to meet diverse housing needs at affordable prices.",
     location: "Kpone, Greater Accra Region",
-    status: "ongoing",
+    status: "completed",
     start_date: "2024-01-01",
     completion_date: "2025-12-31",
     budget: 15000000,
@@ -192,7 +192,7 @@ export const sampleProjects: Project[] = [
     description:
       "Experience luxury living at its finest with TDC Ghana Ltd’s exclusive Airbnb offering—a stunning 3-bedroom apartment located in Tema, Ghana. This beautifully designed apartment features a state-of-the-art kitchen, elegant living and dining areas, a lavish master suite, and two additional spacious bedrooms for your comfort.",
     location: "Site 3, Tema",
-    status: "ongoing",
+    status: "completed",
     start_date: "2024-01-01",
     completion_date: "2025-06-30",
     budget: 8000000,
@@ -255,7 +255,7 @@ export const sampleProjects: Project[] = [
     description:
       "15 Storey Apartments, Site 3: The building skins 27 apartments per block (26 two-bedroom and 1 executive 3-bedroom penthouse). Features include a modern façade with glass and concrete, two 8-passenger lifts, basement parking and utility storage, water storage, recreational space on the 13th floor, rooftop water storage, spacious ensuite rooms, open-plan living and dining with city views, two emergency staircases, and an executive penthouse on the 14th–15th floors with family area and roof terrace. Location – Site 3, Community 1, Tema.",
     location: "Site 3, Community 1, Tema",
-    status: "ongoing",
+    status: "planning",
     start_date: "2024-01-01",
     completion_date: "2026-12-31",
     budget: 0,
