@@ -146,6 +146,8 @@ export const sampleProjects: Project[] = [
       "/projects/project3/2.jpg",
       "/projects/project3/3.jpg",
       "/projects/project3/4.jpg",
+      "/projects/project5/2.jpg", 
+      "/projects/project5/3.jpg"
     ],
   },
   {
