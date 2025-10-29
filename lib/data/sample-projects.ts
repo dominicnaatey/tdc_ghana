@@ -103,7 +103,7 @@ export const sampleProjects: Project[] = [
     description:
       "TDC Ghana Ltd is pleased to announce that units of the Community 26 Kpone Affordable Housing Project are available for sale. This project offers various apartment types designed to meet diverse housing needs at affordable prices.",
     location: "Kpone, Greater Accra Region",
-    status: "completed",
+    status: "ongoing",
     start_date: "2024-01-01",
     completion_date: "2025-12-31",
     budget: 15000000,
@@ -158,7 +158,7 @@ export const sampleProjects: Project[] = [
       "With the successful completion of phase-I of TDC Development Company Limited's first 8-storey block of (2-Bedroom) Apartments, the Corporation is commencing the phase-II project comprising 4 blocks of 8-storey 3-bedroom apartments at Site 3, Community 1 Tema. This prime location is off the Tema Stadium Road, opposite the TDC Head Office.",
     location: "Site 3, Community 1, Tema",
     landmark: "Opposite TDC Head Office, off Tema Stadium Road",
-    status: "ongoing",
+    status: "completed",
     start_date: "2024-01-01",
     completion_date: "2026-12-31",
     budget: 50000000,
