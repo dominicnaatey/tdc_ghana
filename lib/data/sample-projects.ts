@@ -258,10 +258,11 @@ export const sampleProjects: Project[] = [
     completion_date: "2026-12-31",
     budget: 0,
     beneficiaries: 0,
-    featured_image: "/projects/project6/FLOOR PLANS/1.jpg",
+    featured_image: "/projects/project6/site 3, 15 storey 3d/1.jpg",
     project_type: "Housing",
     featured: false,
     image_collection: [
+      "/projects/project6/FLOOR PLANS/1.jpg",
       "/projects/project6/FLOOR PLANS/2.jpg",
       "/projects/project6/FLOOR PLANS/3.jpg",
       "/projects/project6/FLOOR PLANS/4.jpg",
