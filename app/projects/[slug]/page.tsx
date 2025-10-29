@@ -322,7 +322,7 @@ export default async function ProjectPage({
             </Card>
 
             {/* Project Stats */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Project Statistics</CardTitle>
               </CardHeader>
@@ -348,10 +348,10 @@ export default async function ProjectPage({
                   <div className="text-sm text-gray-600">Project Duration (Months)</div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Related Projects */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Related Projects</CardTitle>
               </CardHeader>
@@ -365,7 +365,8 @@ export default async function ProjectPage({
                   </Button>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
+
           </div>
         </div>
       </div>
