@@ -78,10 +78,10 @@ async function ProjectsList() {
                     <Calendar className="w-3 h-3" />
                     <span>{format(new Date(project.start_date), "MMM yyyy")}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
+                  {/* <div className="flex items-center space-x-1">
                     <Users className="w-3 h-3" />
                     <span>{(project.beneficiaries / 1000).toFixed(0)}K</span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex items-center space-x-2">
                   <Badge className={
