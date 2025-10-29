@@ -416,7 +416,7 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
 
   {
     id: 11,
-    title: "Ho Residential Housing Project",
+    title: "Oxygen City Housing Project in Ho",
     slug: "ho-residential-housing",
     description: `TDC Ghana Ltd. has announced plans to commence a residential housing project and related developments in Ho, the Volta Regional capital, marking the beginning of its nationwide expansion beyond Tema.
 
