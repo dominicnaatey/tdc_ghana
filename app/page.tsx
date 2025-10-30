@@ -7,6 +7,7 @@ import HeroSection from "@/components/hero-section"
 import FeaturedProjects from "@/components/featured-projects"
 import NewsSection from "@/components/news-section"
 import Carousel from "@/components/carousel"
+import HoCarousel from "@/components/ho-carousel"
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <main>
         <HeroSection />
         <Carousel />
+        <HoCarousel />
         <FeaturedProjects />
         <NewsSection />
       </main>
