@@ -3,14 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Dropdown, DropdownContent, DropdownTrigger, DropdownClose } from "@/components/ui/dropdown";
+import {
+  Dropdown,
+  DropdownContent,
+  DropdownTrigger,
+  DropdownClose,
+} from "@/components/ui/dropdown";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
-  const [isServicedPlotsDropdownOpen, setIsServicedPlotsDropdownOpen] = useState(false);
+  const [isServicedPlotsDropdownOpen, setIsServicedPlotsDropdownOpen] =
+    useState(false);
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Cleanup timeout on unmount
@@ -41,8 +47,14 @@ export default function Header() {
 
   const servicedPlotsSubmenuItems = [
     { name: "Serviced Plots", href: "/serviced-plots" },
-    { name: "Residential & Commercial", href: "/serviced-plots/residential-commercial" },
-    { name: "Plot Options & Prices", href: "/serviced-plots/plot-options-prices" },
+    {
+      name: "Residential & Commercial",
+      href: "/serviced-plots/residential-commercial",
+    },
+    {
+      name: "Plot Options & Prices",
+      href: "/serviced-plots/plot-options-prices",
+    },
     { name: "Why Choose TDC Plots", href: "/serviced-plots/why-choose-tdc" },
   ];
 
@@ -84,10 +96,10 @@ export default function Header() {
             >
               Home
             </Link>
-            
+
             {/* About Dropdown */}
-            <div 
-              className="relative py-2 px-1"
+            <div
+              className="relative py-2 px-1 group"
               onMouseEnter={() => {
                 if (hoverTimeout) {
                   clearTimeout(hoverTimeout);
@@ -98,42 +110,70 @@ export default function Header() {
               onMouseLeave={() => {
                 const timeout = setTimeout(() => {
                   setIsAboutDropdownOpen(false);
-                }, 50);
+                }, 150); // slightly longer delay prevents flicker
                 setHoverTimeout(timeout);
               }}
             >
-              <Dropdown isOpen={isAboutDropdownOpen} setIsOpen={setIsAboutDropdownOpen}>
-                <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
-                  isActive("/about") || isActive("/board-of-directors") || isActive("/management")
-                    ? "text-accent"
-                    : "text-gray-700 hover:text-accent"
-                }`}>
+              <Dropdown
+                isOpen={isAboutDropdownOpen}
+                setIsOpen={setIsAboutDropdownOpen}
+              >
+                <DropdownTrigger
+                  className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
+                    isActive("/about") ||
+                    isActive("/board-of-directors") ||
+                    isActive("/management")
+                      ? "text-accent"
+                      : "text-gray-700 hover:text-accent"
+                  }`}
+                >
                   <span>About</span>
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
-                    isAboutDropdownOpen ? "rotate-180" : ""
-                  }`} />
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      isAboutDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </DropdownTrigger>
-              <DropdownContent align="start" className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px] !mt-0">
-                {aboutSubmenuItems.map((item) => (
-                  <DropdownClose key={item.name}>
-                    <Link
-                      href={item.href}
-                      className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                        isActive(item.href)
-                          ? "text-accent bg-gray-50"
-                          : "text-gray-700 hover:text-accent hover:bg-gray-50"
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </DropdownClose>
-                ))}
-              </DropdownContent>
-            </Dropdown>
+
+                {isAboutDropdownOpen && (
+                  <div
+                    className="absolute left-0 top-full mt-1 bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px] z-50"
+                    onMouseEnter={() => {
+                      // Keep it open while hovering dropdown
+                      if (hoverTimeout) {
+                        clearTimeout(hoverTimeout);
+                        setHoverTimeout(null);
+                      }
+                      setIsAboutDropdownOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      const timeout = setTimeout(() => {
+                        setIsAboutDropdownOpen(false);
+                      }, 150);
+                      setHoverTimeout(timeout);
+                    }}
+                  >
+                    {aboutSubmenuItems.map((item) => (
+                      <DropdownClose key={item.name}>
+                        <Link
+                          href={item.href}
+                          className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                            isActive(item.href)
+                              ? "text-accent bg-gray-50"
+                              : "text-gray-700 hover:text-accent hover:bg-gray-50"
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      </DropdownClose>
+                    ))}
+                  </div>
+                )}
+              </Dropdown>
             </div>
-            
+
             {/* Serviced Plots Dropdown */}
-            <div 
+            <div
               className="relative py-2 px-1"
               onMouseEnter={() => {
                 if (hoverTimeout) {
@@ -149,36 +189,46 @@ export default function Header() {
                 setHoverTimeout(timeout);
               }}
             >
-              <Dropdown isOpen={isServicedPlotsDropdownOpen} setIsOpen={setIsServicedPlotsDropdownOpen}>
-                <DropdownTrigger className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
-                  isActive("/serviced-plots")
-                    ? "text-accent"
-                    : "text-gray-700 hover:text-accent"
-                }`}>
+              <Dropdown
+                isOpen={isServicedPlotsDropdownOpen}
+                setIsOpen={setIsServicedPlotsDropdownOpen}
+              >
+                <DropdownTrigger
+                  className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
+                    isActive("/serviced-plots")
+                      ? "text-accent"
+                      : "text-gray-700 hover:text-accent"
+                  }`}
+                >
                   <span>Serviced Plots</span>
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
-                    isServicedPlotsDropdownOpen ? "rotate-180" : ""
-                  }`} />
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      isServicedPlotsDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </DropdownTrigger>
-              <DropdownContent align="start" className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0">
-                {servicedPlotsSubmenuItems.map((item) => (
-                  <DropdownClose key={item.name}>
-                    <Link
-                      href={item.href}
-                      className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                        isActive(item.href)
-                          ? "text-accent bg-gray-50"
-                          : "text-gray-700 hover:text-accent hover:bg-gray-50"
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </DropdownClose>
-                ))}
-              </DropdownContent>
-            </Dropdown>
+                <DropdownContent
+                  align="start"
+                  className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0"
+                >
+                  {servicedPlotsSubmenuItems.map((item) => (
+                    <DropdownClose key={item.name}>
+                      <Link
+                        href={item.href}
+                        className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                          isActive(item.href)
+                            ? "text-accent bg-gray-50"
+                            : "text-gray-700 hover:text-accent hover:bg-gray-50"
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    </DropdownClose>
+                  ))}
+                </DropdownContent>
+              </Dropdown>
             </div>
-            
+
             {/* Other Navigation Items */}
             {navigationItems.slice(1).map((item) => (
               <Link
@@ -198,8 +248,16 @@ export default function Header() {
           {/* CTA Button - removed as requested */}
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-            {isMenuOpen ? <X className="h-6 w-6 text-gray-700" /> : <Menu className="h-6 w-6 text-gray-700" />}
+          <button
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-gray-700" />
+            ) : (
+              <Menu className="h-6 w-6 text-gray-700" />
+            )}
           </button>
         </div>
 
@@ -219,10 +277,12 @@ export default function Header() {
               >
                 Home
               </Link>
-              
+
               {/* About Submenu for Mobile */}
               <div className="border-t border-gray-100 pt-4">
-                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">About</div>
+                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  About
+                </div>
                 {aboutSubmenuItems.map((item) => (
                   <Link
                     key={item.name}
@@ -238,10 +298,12 @@ export default function Header() {
                   </Link>
                 ))}
               </div>
-              
+
               {/* Serviced Plots Submenu for Mobile */}
               <div className="border-t border-gray-100 pt-4">
-                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Serviced Plots</div>
+                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  Serviced Plots
+                </div>
                 {servicedPlotsSubmenuItems.map((item) => (
                   <Link
                     key={item.name}
@@ -257,7 +319,7 @@ export default function Header() {
                   </Link>
                 ))}
               </div>
-              
+
               {/* Other Navigation Items */}
               {navigationItems.slice(1).map((item) => (
                 <Link
@@ -273,7 +335,7 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
-              
+
               {/* Mobile CTA Button - removed as requested */}
             </nav>
           </div>
