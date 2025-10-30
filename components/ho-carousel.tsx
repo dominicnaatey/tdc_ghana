@@ -46,9 +46,9 @@ const HoCarousel: React.FC = () => {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 pt-8 pb-12">
+    <section className="relative bg-gradient-to-br from-primary/5 to-accent/5 py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
+        <h2 className="max-w-4xl mx-auto text-3xl lg:text-4xl font-bold text-center text-foreground font-serif mb-8">
           TDC Ghana Ltd. to Begin Housing Project in Ho.
         </h2>
         <div className="relative w-full" data-carousel="static">
