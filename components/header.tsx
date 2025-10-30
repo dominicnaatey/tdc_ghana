@@ -10,23 +10,24 @@ import {
   DropdownClose,
 } from "@/components/ui/dropdown";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isServicedPlotsDropdownOpen, setIsServicedPlotsDropdownOpen] =
     useState(false);
-  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<number | null>(null);
 
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (hoverTimeout) {
-        clearTimeout(hoverTimeout);
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
       }
     };
-  }, [hoverTimeout]);
+  }, []);
   const pathname = usePathname();
 
   const navigationItems = [
@@ -99,19 +100,18 @@ export default function Header() {
 
             {/* About Dropdown */}
             <div
-              className="relative py-2 px-1 group"
+              className="relative py-2 px-1"
               onMouseEnter={() => {
-                if (hoverTimeout) {
-                  clearTimeout(hoverTimeout);
-                  setHoverTimeout(null);
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current);
+                  hoverTimeoutRef.current = null;
                 }
                 setIsAboutDropdownOpen(true);
               }}
               onMouseLeave={() => {
-                const timeout = setTimeout(() => {
+                hoverTimeoutRef.current = window.setTimeout(() => {
                   setIsAboutDropdownOpen(false);
-                }, 150); // slightly longer delay prevents flicker
-                setHoverTimeout(timeout);
+                }, 150);
               }}
             >
               <Dropdown
@@ -135,40 +135,29 @@ export default function Header() {
                   />
                 </DropdownTrigger>
 
-                {isAboutDropdownOpen && (
-                  <div
-                    className="absolute left-0 top-full mt-1 bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px] z-50"
-                    onMouseEnter={() => {
-                      // Keep it open while hovering dropdown
-                      if (hoverTimeout) {
-                        clearTimeout(hoverTimeout);
-                        setHoverTimeout(null);
-                      }
-                      setIsAboutDropdownOpen(true);
-                    }}
-                    onMouseLeave={() => {
-                      const timeout = setTimeout(() => {
-                        setIsAboutDropdownOpen(false);
-                      }, 150);
-                      setHoverTimeout(timeout);
-                    }}
-                  >
-                    {aboutSubmenuItems.map((item) => (
-                      <DropdownClose key={item.name}>
-                        <Link
-                          href={item.href}
-                          className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                            isActive(item.href)
-                              ? "text-accent bg-gray-50"
-                              : "text-gray-700 hover:text-accent hover:bg-gray-50"
-                          }`}
-                        >
-                          {item.name}
-                        </Link>
-                      </DropdownClose>
-                    ))}
-                  </div>
-                )}
+                <div
+                  className={`absolute left-0 top-full mt-1 bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px] z-50 transition-all duration-200 ease-out transform origin-top ${
+                    isAboutDropdownOpen
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }`}
+                  aria-hidden={!isAboutDropdownOpen}
+                >
+                  {aboutSubmenuItems.map((item) => (
+                    <DropdownClose key={item.name}>
+                      <Link
+                        href={item.href}
+                        className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                          isActive(item.href)
+                            ? "text-accent bg-gray-50"
+                            : "text-gray-700 hover:text-accent hover:bg-gray-50"
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    </DropdownClose>
+                  ))}
+                </div>
               </Dropdown>
             </div>
 
@@ -176,17 +165,16 @@ export default function Header() {
             <div
               className="relative py-2 px-1"
               onMouseEnter={() => {
-                if (hoverTimeout) {
-                  clearTimeout(hoverTimeout);
-                  setHoverTimeout(null);
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current);
+                  hoverTimeoutRef.current = null;
                 }
                 setIsServicedPlotsDropdownOpen(true);
               }}
               onMouseLeave={() => {
-                const timeout = setTimeout(() => {
+                hoverTimeoutRef.current = window.setTimeout(() => {
                   setIsServicedPlotsDropdownOpen(false);
-                }, 50);
-                setHoverTimeout(timeout);
+                }, 120);
               }}
             >
               <Dropdown
@@ -209,7 +197,11 @@ export default function Header() {
                 </DropdownTrigger>
                 <DropdownContent
                   align="start"
-                  className="bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0"
+                  className={`bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0 transition-all duration-200 ease-out transform origin-top ${
+                    isServicedPlotsDropdownOpen
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }`}
                 >
                   {servicedPlotsSubmenuItems.map((item) => (
                     <DropdownClose key={item.name}>
