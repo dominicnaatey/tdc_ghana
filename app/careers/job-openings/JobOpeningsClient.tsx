@@ -1,175 +1,136 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { MapPin, Briefcase, Building2, CalendarDays, Filter, ArrowRight } from "lucide-react"
-import Link from "next/link"
+import React, { useState } from "react"
 
-type Job = {
-  id: string
+interface Job {
   title: string
-  department: string
+  company: string
   location: string
-  type: "Full-time" | "Part-time" | "Contract" | "Internship"
-  description: string
-  postedDate: string
-  applyUrl: string
+  type: string
+  industry: string
 }
 
 const jobs: Job[] = [
-  {
-    id: "1",
-    title: "Software Engineer",
-    department: "IT",
-    location: "Tema, Ghana",
-    type: "Full-time",
-    description: "Build and maintain internal tools and public-facing systems. Collaborate with cross-functional teams to deliver high-quality software.",
-    postedDate: "2025-10-15",
-    applyUrl: "mailto:hr@tdcghana.com?subject=Application%20-%20Software%20Engineer",
-  },
-  {
-    id: "2",
-    title: "Project Manager",
-    department: "Projects",
-    location: "Accra, Ghana",
-    type: "Contract",
-    description: "Lead planning and execution of housing and land development projects. Ensure timely delivery and stakeholder communication.",
-    postedDate: "2025-10-10",
-    applyUrl: "mailto:hr@tdcghana.com?subject=Application%20-%20Project%20Manager",
-  },
-  {
-    id: "3",
-    title: "Communications Officer",
-    department: "Corporate Affairs",
-    location: "Tema, Ghana",
-    type: "Full-time",
-    description: "Drive corporate communications, manage press releases, and support brand initiatives across channels.",
-    postedDate: "2025-10-07",
-    applyUrl: "mailto:hr@tdcghana.com?subject=Application%20-%20Communications%20Officer",
-  },
+  { title: "Senior Product Designer", company: "Innovate Inc.", location: "San Francisco, CA", type: "Full-time", industry: "Design" },
+  { title: "Frontend Developer", company: "Tech Solutions Ltd.", location: "New York, NY (Remote)", type: "Remote", industry: "Technology" },
+  { title: "Marketing Manager", company: "Creative Minds Agency", location: "London, UK", type: "Full-time", industry: "Marketing" },
+  { title: "Backend Engineer", company: "Cloudify Systems", location: "Accra, Ghana", type: "Full-time", industry: "Software" },
 ]
 
-export default function JobOpeningsClient() {
+export default function JobListingsSection() {
   const [query, setQuery] = useState("")
-  const [department, setDepartment] = useState<string | undefined>(undefined)
-  const [location, setLocation] = useState<string | undefined>(undefined)
-  const [jobType, setJobType] = useState<string | undefined>(undefined)
+  const [selectedLocation, setSelectedLocation] = useState("")
+  const [selectedType, setSelectedType] = useState("")
+  const [selectedIndustry, setSelectedIndustry] = useState("")
 
-  const departments = useMemo(() => Array.from(new Set(jobs.map(j => j.department))), [])
-  const locations = useMemo(() => Array.from(new Set(jobs.map(j => j.location))), [])
-  const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"]
-
-  const filteredJobs = useMemo(() => {
-    return jobs.filter((job) => {
-      const matchesQuery = query.trim().length === 0 || job.title.toLowerCase().includes(query.toLowerCase()) || job.description.toLowerCase().includes(query.toLowerCase())
-      const matchesDept = !department || job.department === department
-      const matchesLocation = !location || job.location === location
-      const matchesType = !jobType || job.type === jobType
-      return matchesQuery && matchesDept && matchesLocation && matchesType
-    })
-  }, [query, department, location, jobType])
+  const filteredJobs = jobs.filter(
+    (job) =>
+      (job.title.toLowerCase().includes(query.toLowerCase()) ||
+        job.company.toLowerCase().includes(query.toLowerCase()) ||
+        job.location.toLowerCase().includes(query.toLowerCase())) &&
+      (selectedLocation ? job.location.includes(selectedLocation) : true) &&
+      (selectedType ? job.type === selectedType : true) &&
+      (selectedIndustry ? job.industry === selectedIndustry : true)
+  )
 
   return (
-    <div className="min-h-screen bg-white">
-      <section className="px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl lg:text-4xl font-bold text-foreground font-serif mb-6 text-center">Careers at TDC Ghana</h1>
-          <p className="text-gray-600 text-center max-w-3xl mx-auto mb-10">Browse open roles and find your next opportunity. Use the filters to refine by department, location, and job type, then apply directly.</p>
+    <section className="w-full py-16 md:py-20 lg:py-24 px-6 sm:px-10 lg:px-20 bg-bg-subtle">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <h2 className="text-3xl font-bold text-center mb-10 text-text-gray">
+          Explore Open Positions
+        </h2>
 
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center text-xl"><Filter className="w-5 h-5 mr-2" /> Filter Jobs</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-4">
-                <div className="md:col-span-2">
-                  <label htmlFor="job-search" className="sr-only">Search jobs</label>
-                  <Input id="job-search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search jobs..." aria-label="Search jobs" className="bg-white" />
+        {/* Search + Filters */}
+        <div className="bg-white p-4 rounded-xl shadow-sm mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Search Input */}
+            <div className="md:col-span-2">
+              <label className="flex flex-col w-full">
+                <div className="flex items-center rounded-lg bg-gray-100">
+                  <div className="text-gray-500 flex items-center justify-center pl-4">
+                    <span className="material-symbols-outlined">search</span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search by job title, skill, or company"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="form-input flex-1 border-none bg-gray-100 h-12 px-4 rounded-lg text-sm text-text-gray focus:outline-none focus:ring-2 focus:ring-primary-blue/50"
+                  />
                 </div>
+              </label>
+            </div>
 
-                <Select onValueChange={(val) => setDepartment(val)}>
-                  <SelectTrigger className="bg-white" aria-label="Filter by department">
-                    <SelectValue placeholder="Department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">All Departments</SelectItem>
-                    {departments.map((d) => (
-                      <SelectItem key={d} value={d}>{d}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <button className="w-full h-12 px-5 bg-primary-blue text-white text-base font-bold rounded-lg hover:bg-opacity-90 transition">
+              Find Jobs
+            </button>
+          </div>
 
-                <Select onValueChange={(val) => setLocation(val)}>
-                  <SelectTrigger className="bg-white" aria-label="Filter by location">
-                    <SelectValue placeholder="Location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">All Locations</SelectItem>
-                    {locations.map((l) => (
-                      <SelectItem key={l} value={l}>{l}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+          {/* Filter Chips */}
+          <div className="flex gap-3 pt-4 overflow-x-auto">
+            {/* Location */}
+            <select
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
+            >
+              <option value="">Location</option>
+              <option value="San Francisco">San Francisco, CA</option>
+              <option value="New York">New York, NY</option>
+              <option value="London">London, UK</option>
+              <option value="Accra">Accra, Ghana</option>
+            </select>
 
-                <Select onValueChange={(val) => setJobType(val)}>
-                  <SelectTrigger className="bg-white" aria-label="Filter by job type">
-                    <SelectValue placeholder="Job Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
-                    {jobTypes.map((t) => (
-                      <SelectItem key={t} value={t}>{t}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
+            {/* Job Type */}
+            <select
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
+            >
+              <option value="">Job Type</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Remote">Remote</option>
+            </select>
 
-          <div className="space-y-6">
-            {filteredJobs.length === 0 && (
-              <Card>
-                <CardContent className="py-8 text-center text-gray-600">No jobs match your filters. Try adjusting them.</CardContent>
-              </Card>
-            )}
-
-            {filteredJobs.map((job) => (
-              <Card key={job.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <CardTitle className="text-2xl font-bold text-gray-900">{job.title}</CardTitle>
-                      <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                        <span className="flex items-center"><Building2 className="w-4 h-4 mr-1" /> {job.department}</span>
-                        <span className="flex items-center"><MapPin className="w-4 h-4 mr-1" /> {job.location}</span>
-                        <span className="flex items-center"><Briefcase className="w-4 h-4 mr-1" /> {job.type}</span>
-                        <span className="flex items-center"><CalendarDays className="w-4 h-4 mr-1" /> Posted {job.postedDate}</span>
-                      </div>
-                    </div>
-                    <Badge className="bg-primary text-primary-foreground">Open</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 mb-4">{job.description}</p>
-                  <div className="flex items-center justify-between">
-                    <Link href={job.applyUrl} aria-label={`Apply for ${job.title}`}>
-                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                        Apply Now
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </Link>
-                    <Button variant="outline" className="bg-transparent" aria-label="View job details">Details</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {/* Industry */}
+            <select
+              onChange={(e) => setSelectedIndustry(e.target.value)}
+              className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
+            >
+              <option value="">Industry</option>
+              <option value="Technology">Technology</option>
+              <option value="Design">Design</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Software">Software</option>
+            </select>
           </div>
         </div>
-      </section>
-    </div>
+
+        {/* Job Cards */}
+        {filteredJobs.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredJobs.map((job) => (
+              <div
+                key={job.title}
+                className="bg-white p-6 rounded-xl border border-border-gray hover:shadow-lg transition-shadow"
+              >
+                <h3 className="text-lg font-bold text-text-gray">{job.title}</h3>
+                <p className="text-gray-600 text-sm mt-1">{job.company}</p>
+
+                <div className="flex items-center text-gray-500 mt-4 text-sm gap-2">
+                  <span className="material-symbols-outlined text-base">location_on</span>
+                  <span>{job.location}</span>
+                </div>
+
+                <button className="w-full mt-6 h-10 px-4 bg-primary-blue/10 text-primary-blue text-sm font-bold rounded-lg hover:bg-primary-blue/20 transition">
+                  View Details
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500 mt-8">No matching jobs found.</p>
+        )}
+      </div>
+    </section>
   )
 }
