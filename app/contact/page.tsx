@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"
+import { faWhatsapp, faFacebook, faTwitter, faInstagram, faLinkedin, faYoutube, faTiktok } from "@fortawesome/free-brands-svg-icons"
 import { useState } from "react";
 
 export default function ContactPage() {
@@ -181,6 +181,78 @@ export default function ContactPage() {
                         <p>P. O. Box CO 46</p>
                         <p>Tema - Ghana</p>
                       </address>
+                      {/* Social Icons */}
+                      <div className="mt-4">
+                        <h3 className="text-sm font-semibold font-serif text-foreground mb-2">Connect with us</h3>
+                        <div className="flex items-center gap-3">
+                          {/* Facebook */}
+                          <a
+                            href="https://www.facebook.com/tdcghanaltd/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Facebook"
+                            className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-gray-50 transition"
+                          >
+                            <span className="sr-only">Facebook</span>
+                            <FontAwesomeIcon icon={faFacebook} className="text-[#1877F2] text-[18px]" />
+                          </a>
+                          {/* X/Twitter */}
+                          <a
+                            href="https://x.com/tdcghanaltd?lang=en"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Twitter"
+                            className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-gray-50 transition"
+                          >
+                            <span className="sr-only">Twitter</span>
+                            <FontAwesomeIcon icon={faTwitter} className="text-black text-[18px]" />
+                          </a>
+                          {/* LinkedIn */}
+                          <a
+                            href="https://www.linkedin.com/company/tdcghanaltd/posts/?feedView=all"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="LinkedIn"
+                            className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-gray-50 transition"
+                          >
+                            <span className="sr-only">LinkedIn</span>
+                            <FontAwesomeIcon icon={faLinkedin} className="text-[#0A66C2] text-[18px]" />
+                          </a>
+                          {/* YouTube */}
+                          <a
+                            href="https://www.youtube.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="YouTube"
+                            className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-gray-50 transition"
+                          >
+                            <span className="sr-only">YouTube</span>
+                            <FontAwesomeIcon icon={faYoutube} className="text-[#FF0000] text-[18px]" />
+                          </a>
+                          {/* TikTok */}
+                          <a
+                            href="https://www.tiktok.com/@tdcghanaltd"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="TikTok"
+                            className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-gray-50 transition"
+                          >
+                            <span className="sr-only">TikTok</span>
+                            <FontAwesomeIcon icon={faTiktok} className="text-black text-[18px]" />
+                          </a>
+                          {/* Instagram */}
+                          <a
+                            href="https://www.instagram.com/tdcghanaltd/?hl=en"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram"
+                            className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:bg-gray-50 transition"
+                          >
+                            <span className="sr-only">Instagram</span>
+                            <FontAwesomeIcon icon={faInstagram} className="text-[#E4405F] text-[18px]" />
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </section>
