@@ -40,7 +40,7 @@ export default function Footer() {
               <Link href="https://www.linkedin.com/company/tdcghanaltd/posts/?feedView=all" className="text-blue-100 hover:text-white transition-colors" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link href="https://www.youtube.com/" className="text-blue-100 hover:text-white transition-colors" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.youtube.com/@TDCGHANALTD" className="text-blue-100 hover:text-white transition-colors" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
                 <Youtube className="h-5 w-5" />
               </Link>
               <Link href="https://www.tiktok.com/@tdcghanaltd" className="text-blue-100 hover:text-white transition-colors" aria-label="TikTok" target="_blank" rel="noopener noreferrer">

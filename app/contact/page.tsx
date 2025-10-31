@@ -220,7 +220,7 @@ export default function ContactPage() {
                           </a>
                           {/* YouTube */}
                           <a
-                            href="https://www.youtube.com/"
+                            href="https://www.youtube.com/@TDCGHANALTD"
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="YouTube"
