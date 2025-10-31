@@ -34,7 +34,7 @@ export default function JobListingsSection() {
   )
 
   return (
-    <section className="w-full py-16 md:py-20 lg:py-24 px-6 sm:px-10 lg:px-20 bg-bg-subtle">
+    <section className="w-full py-16 md:py-20 lg:py-24 px-6 sm:px-10 lg:px-20 bg-gray-100">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <h2 className="text-3xl font-bold text-center mb-10 text-text-gray">
