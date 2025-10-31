@@ -11,10 +11,9 @@ interface Job {
 }
 
 const jobs: Job[] = [
-  { title: "Senior Product Designer", company: "Innovate Inc.", location: "San Francisco, CA", type: "Full-time", industry: "Design" },
-  { title: "Frontend Developer", company: "Tech Solutions Ltd.", location: "New York, NY (Remote)", type: "Remote", industry: "Technology" },
-  { title: "Marketing Manager", company: "Creative Minds Agency", location: "London, UK", type: "Full-time", industry: "Marketing" },
-  { title: "Backend Engineer", company: "Cloudify Systems", location: "Accra, Ghana", type: "Full-time", industry: "Software" },
+  { title: "Marketing Manager", company: "TDC Ghana", location: "Accra, Ghana", type: "Full-time", industry: "Marketing" },
+  { title: "Secretary", company: "TDC Ghana", location: "Tema, Ghana", type: "Full-time", industry: "Administration" },
+  { title: "Civil Engineer", company: "TDC Ghana", location: "Tema, Ghana", type: "Full-time", industry: "Engineering" },
 ]
 
 export default function JobListingsSection() {
@@ -75,10 +74,8 @@ export default function JobListingsSection() {
               className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
             >
               <option value="">Location</option>
-              <option value="San Francisco">San Francisco, CA</option>
-              <option value="New York">New York, NY</option>
-              <option value="London">London, UK</option>
               <option value="Accra">Accra, Ghana</option>
+              <option value="Tema">Tema, Ghana</option>
             </select>
 
             {/* Job Type */}
@@ -97,10 +94,9 @@ export default function JobListingsSection() {
               className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
             >
               <option value="">Industry</option>
-              <option value="Technology">Technology</option>
-              <option value="Design">Design</option>
               <option value="Marketing">Marketing</option>
-              <option value="Software">Software</option>
+              <option value="Administration">Administration</option>
+              <option value="Engineering">Engineering</option>
             </select>
           </div>
         </div>
