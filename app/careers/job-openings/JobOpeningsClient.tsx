@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
 
 interface Job {
   title: string
@@ -69,35 +70,38 @@ export default function JobListingsSection() {
           {/* Filter Chips */}
           <div className="flex gap-3 pt-4 overflow-x-auto">
             {/* Location */}
-            <select
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
-            >
-              <option value="">Location</option>
-              <option value="Accra">Accra, Ghana</option>
-              <option value="Tema">Tema, Ghana</option>
-            </select>
+            <Select value={selectedLocation} onValueChange={(val) => setSelectedLocation(val)}>
+              <SelectTrigger size="sm" className="bg-white rounded-full">
+                <SelectValue placeholder="Location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Accra">Accra, Ghana</SelectItem>
+                <SelectItem value="Tema">Tema, Ghana</SelectItem>
+              </SelectContent>
+            </Select>
 
             {/* Job Type */}
-            <select
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
-            >
-              <option value="">Job Type</option>
-              <option value="Full-time">Full-time</option>
-              <option value="Remote">Remote</option>
-            </select>
+            <Select value={selectedType} onValueChange={(val) => setSelectedType(val)}>
+              <SelectTrigger size="sm" className="bg-white rounded-full">
+                <SelectValue placeholder="Job Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Full-time">Full-time</SelectItem>
+                <SelectItem value="Remote">Remote</SelectItem>
+              </SelectContent>
+            </Select>
 
             {/* Industry */}
-            <select
-              onChange={(e) => setSelectedIndustry(e.target.value)}
-              className="h-8 px-4 bg-gray-200 text-sm rounded-full hover:bg-gray-300 transition-colors"
-            >
-              <option value="">Industry</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Administration">Administration</option>
-              <option value="Engineering">Engineering</option>
-            </select>
+            <Select value={selectedIndustry} onValueChange={(val) => setSelectedIndustry(val)}>
+              <SelectTrigger size="sm" className="bg-white rounded-full">
+                <SelectValue placeholder="Industry" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Marketing">Marketing</SelectItem>
+                <SelectItem value="Administration">Administration</SelectItem>
+                <SelectItem value="Engineering">Engineering</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
