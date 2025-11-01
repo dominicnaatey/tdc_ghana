@@ -17,6 +17,7 @@ export default function Header() {
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isServicedPlotsDropdownOpen, setIsServicedPlotsDropdownOpen] =
     useState(false);
+  const [isCareersDropdownOpen, setIsCareersDropdownOpen] = useState(false);
   const hoverTimeoutRef = useRef<number | null>(null);
 
   // Cleanup timeout on unmount
@@ -33,7 +34,7 @@ export default function Header() {
   const navigationItems = [
     { name: "Home", href: "/" },
     { name: "News", href: "/news" },
-    { name: "Residential Houses", href: "/housing" },
+    // Replaced Residential Houses with Careers dropdown; keep other items
     { name: "Current Projects", href: "/projects" },
     { name: "Downloads", href: "/downloads" },
     { name: "Contact", href: "/contact" },
@@ -135,13 +136,13 @@ export default function Header() {
                   />
                 </DropdownTrigger>
 
-                <div
-                  className={`absolute left-0 top-full mt-1 bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[180px] z-50 transition-all duration-200 ease-out transform origin-top ${
+                <DropdownContent
+                  align="start"
+                  className={`bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0 transition-all duration-200 ease-out transform origin-top ${
                     isAboutDropdownOpen
                       ? "opacity-100 scale-100"
                       : "opacity-0 scale-95 pointer-events-none"
                   }`}
-                  aria-hidden={!isAboutDropdownOpen}
                 >
                   {aboutSubmenuItems.map((item) => (
                     <DropdownClose key={item.name}>
@@ -157,7 +158,7 @@ export default function Header() {
                       </Link>
                     </DropdownClose>
                   ))}
-                </div>
+                </DropdownContent>
               </Dropdown>
             </div>
 
@@ -222,19 +223,103 @@ export default function Header() {
             </div>
 
             {/* Other Navigation Items */}
-            {navigationItems.slice(1).map((item) => (
+            {navigationItems
+              .slice(1)
+              .filter((item) => item.name !== "Contact")
+              .map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`text-sm font-medium transition-colors duration-200 ${
+                    isActive(item.href)
+                      ? "text-accent"
+                      : "text-gray-700 hover:text-accent"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+
+            {/* Careers Dropdown (positioned before Contact) */}
+            <div
+              className="relative py-2 px-1"
+              onMouseEnter={() => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current);
+                  hoverTimeoutRef.current = null;
+                }
+                setIsCareersDropdownOpen(true);
+              }}
+              onMouseLeave={() => {
+                hoverTimeoutRef.current = window.setTimeout(() => {
+                  setIsCareersDropdownOpen(false);
+                }, 120);
+              }}
+            >
+              <Dropdown isOpen={isCareersDropdownOpen} setIsOpen={setIsCareersDropdownOpen}>
+                <DropdownTrigger
+                  className={`flex items-center space-x-1 text-sm font-medium transition-colors duration-200 ${
+                    isActive("/careers")
+                      ? "text-accent"
+                      : "text-gray-700 hover:text-accent"
+                  }`}
+                >
+                  <span>Careers</span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      isCareersDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </DropdownTrigger>
+                <DropdownContent
+                  align="start"
+                  className={`bg-white border border-gray-200 shadow-lg rounded-md py-2 min-w-[200px] !mt-0 transition-all duration-200 ease-out transform origin-top ${
+                    isCareersDropdownOpen
+                      ? "opacity-100 scale-100"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }`}
+                >
+                  <DropdownClose>
+                    <Link
+                      href="/careers/job-openings"
+                      className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                        isActive("/careers/job-openings")
+                          ? "text-accent bg-gray-50"
+                          : "text-gray-700 hover:text-accent hover:bg-gray-50"
+                      }`}
+                    >
+                      Job Openings
+                    </Link>
+                  </DropdownClose>
+                  <DropdownClose>
+                    <Link
+                      href="/careers/consultancy-service"
+                      className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                        isActive("/careers/consultancy-service")
+                          ? "text-accent bg-gray-50"
+                          : "text-gray-700 hover:text-accent hover:bg-gray-50"
+                      }`}
+                    >
+                      Consultancy Service
+                    </Link>
+                  </DropdownClose>
+                </DropdownContent>
+              </Dropdown>
+            </div>
+
+            {/* Contact Link (last) */}
+            {navigationItems.find((i) => i.name === "Contact") && (
               <Link
-                key={item.name}
-                href={item.href}
+                href={navigationItems.find((i) => i.name === "Contact")!.href}
                 className={`text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.href)
+                  isActive("/contact")
                     ? "text-accent"
                     : "text-gray-700 hover:text-accent"
                 }`}
               >
-                {item.name}
+                Contact
               </Link>
-            ))}
+            )}
           </nav>
 
           {/* CTA Button - removed as requested */}
@@ -253,10 +338,10 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 bg-white">
-            <nav className="flex flex-col space-y-4 px-4 py-6">
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <div className="md:hidden border-t border-gray-200 bg-white">
+              <nav className="flex flex-col space-y-4 px-4 py-6">
               {/* Home Link */}
               <Link
                 href="/"
@@ -312,21 +397,63 @@ export default function Header() {
                 ))}
               </div>
 
-              {/* Other Navigation Items */}
-              {navigationItems.slice(1).map((item) => (
+              {/* Other Navigation Items before Contact */}
+              {navigationItems
+                .slice(1)
+                .filter((item) => item.name !== "Contact")
+                .map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`text-base font-medium transition-colors duration-200 ${
+                      isActive(item.href)
+                        ? "text-accent"
+                        : "text-gray-700 hover:text-accent"
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+
+              {/* Careers Submenu for Mobile (positioned before Contact) */}
+              <div className="border-t border-gray-100 pt-4">
+                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  Careers
+                </div>
+                {[
+                  { name: "Job Openings", href: "/careers/job-openings" },
+                  { name: "Consultancy Service", href: "/careers/consultancy-service" },
+                ].map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`block pl-4 py-2 text-base font-medium transition-colors duration-200 ${
+                      isActive(item.href)
+                        ? "text-accent"
+                        : "text-gray-700 hover:text-accent"
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Contact Link (last) */}
+              {navigationItems.find((i) => i.name === "Contact") && (
                 <Link
-                  key={item.name}
-                  href={item.href}
+                  href={navigationItems.find((i) => i.name === "Contact")!.href}
                   className={`text-base font-medium transition-colors duration-200 ${
-                    isActive(item.href)
+                    isActive("/contact")
                       ? "text-accent"
                       : "text-gray-700 hover:text-accent"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.name}
+                  Contact
                 </Link>
-              ))}
+              )}
 
               {/* Mobile CTA Button - removed as requested */}
             </nav>
