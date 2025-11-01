@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import { MapPin } from "lucide-react"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
 
 interface Job {
@@ -117,7 +118,7 @@ export default function JobListingsSection() {
                 <p className="text-gray-600 text-sm mt-1">{job.company}</p>
 
                 <div className="flex items-center text-gray-500 mt-4 text-sm gap-2">
-                  <span className="material-symbols-outlined text-base">location_on</span>
+                  <MapPin className="w-4 h-4 text-gray-500" />
                   <span>{job.location}</span>
                 </div>
 
