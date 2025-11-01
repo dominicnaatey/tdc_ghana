@@ -107,7 +107,7 @@ export default function JobListingsSection() {
             {filteredJobs.map((job) => (
               <div
                 key={job.title}
-                className="bg-white p-6 rounded-xl border border-border-gray hover:shadow-lg transition-shadow"
+                className="bg-white p-6 rounded-xl border border-border-gray shadow-sm hover:shadow-lg transition-shadow"
               >
                 <h3 className="text-lg font-bold text-text-gray">{job.title}</h3>
                 <p className="text-gray-600 text-sm mt-1">{job.company}</p>
@@ -117,7 +117,7 @@ export default function JobListingsSection() {
                   <span>{job.location}</span>
                 </div>
 
-                <button className="w-full mt-6 h-10 px-4 bg-primary-blue/10 text-primary-blue text-sm font-bold rounded-lg hover:bg-primary-blue/20 transition">
+                <button className="w-full mt-6 h-10 px-4 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition">
                   View Details
                 </button>
               </div>
