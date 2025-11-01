@@ -9,8 +9,8 @@ interface CarouselItem {
 
 const images: CarouselItem[] = [
   { src: "/HoHousingProjects/1.jpg", caption: "Flats" },
-  { src: "/HoHousingProjects/2.jpg", caption: "Serviced plots" },
-  { src: "/HoHousingProjects/3.jpg", caption: "Golf Course" },
+  { src: "/HoHousingProjects/2.jpg", caption: "Golf Course" },
+  { src: "/HoHousingProjects/3.jpg", caption: "Serviced plots" },
 ];
 
 const HoCarousel: React.FC = () => {
