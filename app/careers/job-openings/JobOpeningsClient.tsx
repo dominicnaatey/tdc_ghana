@@ -48,21 +48,21 @@ export default function JobListingsSection() {
             <div className="md:col-span-2">
               <label className="flex flex-col w-full">
                 <div className="flex items-center rounded-lg bg-gray-100">
-                  <div className="text-gray-500 flex items-center justify-center pl-4">
+                  {/* <div className="text-gray-500 flex items-center justify-center pl-4">
                     <span className="material-symbols-outlined">search</span>
-                  </div>
+                  </div> */}
                   <input
                     type="text"
                     placeholder="Search by job title, skill, or company"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="form-input flex-1 border-none bg-gray-100 h-12 px-4 rounded-lg text-sm text-text-gray focus:outline-none focus:ring-2 focus:ring-primary-blue/50"
+                    className="form-input flex-1 border-none bg-gray-200/80 h-12 px-4 rounded-lg text-sm text-text-gray focus:outline-none focus:ring-2 focus:ring-primary-blue/50"
                   />
                 </div>
               </label>
             </div>
 
-            <button className="w-full h-12 px-5 bg-primary-blue text-white text-base font-bold rounded-lg hover:bg-opacity-90 transition">
+            <button disabled className="w-full h-12 px-5 bg-primary text-primary-foreground text-base font-bold rounded-lg hover:bg-primary/90 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none">
               Find Jobs
             </button>
           </div>
@@ -81,7 +81,7 @@ export default function JobListingsSection() {
             </Select>
 
             {/* Job Type */}
-            <Select value={selectedType} onValueChange={(val) => setSelectedType(val)}>
+            {/* <Select value={selectedType} onValueChange={(val) => setSelectedType(val)}>
               <SelectTrigger size="sm" className="bg-white rounded-full">
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>
@@ -89,7 +89,7 @@ export default function JobListingsSection() {
                 <SelectItem value="Full-time">Full-time</SelectItem>
                 <SelectItem value="Remote">Remote</SelectItem>
               </SelectContent>
-            </Select>
+            </Select> */}
 
             {/* Industry */}
             <Select value={selectedIndustry} onValueChange={(val) => setSelectedIndustry(val)}>
@@ -121,8 +121,8 @@ export default function JobListingsSection() {
                   <span>{job.location}</span>
                 </div>
 
-                <button className="w-full mt-6 h-10 px-4 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition">
-                  View Details
+                <button disabled className="w-full mt-6 h-10 px-4 bg-primary text-primary-foreground text-sm font-bold rounded-lg hover:bg-primary/90 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none">
+                  Unavailable
                 </button>
               </div>
             ))}
