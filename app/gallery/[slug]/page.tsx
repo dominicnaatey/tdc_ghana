@@ -99,8 +99,8 @@ const albums: Record<string, AlbumDef> = {
   },
 };
 
-export default async function AlbumPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function AlbumPage({ params }: { params: { slug: string } }) {
+  const { slug } = params
   const album = albums[slug];
   if (!album) {
     notFound();
@@ -148,3 +148,12 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     </main>
   );
 }
+
+// Pre-generate static params for export mode
+export async function generateStaticParams() {
+  const keys = Object.keys(albums)
+  return keys.map((slug) => ({ slug }))
+}
+
+export const dynamicParams = false
+export const dynamic = 'force-static'

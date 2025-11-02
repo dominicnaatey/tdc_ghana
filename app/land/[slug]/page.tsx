@@ -241,3 +241,15 @@ export default async function LandPlotPage({
     </div>
   )
 }
+
+// Pre-generate static params for export mode
+export async function generateStaticParams() {
+  // Static list during export to avoid runtime/database dependencies
+  return [
+    { slug: 'lp001-tema-land' },
+    { slug: 'lp002-accra-land' },
+  ]
+}
+
+export const dynamicParams = false
+export const dynamic = 'force-static'

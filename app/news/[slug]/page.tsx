@@ -8,12 +8,26 @@ import { format } from "date-fns"
 import { findNewsBySlug, listNews } from "@/lib/api/news"
 import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news"
 
-export default async function NewsArticlePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params;
+// Pre-generate static paths for export mode
+export async function generateStaticParams() {
+  try {
+    const payload = await listNews({ page: 1, per_page: 50, sort: 'published_at', order: 'desc' })
+    return payload.data
+      .filter((n: any) => typeof n.slug === 'string' && n.slug.length > 0)
+      .map((n: any) => ({ slug: n.slug }))
+  } catch {
+    // Fallback to local sample data if API is unavailable at build time
+    return sampleNews
+      .filter((n: any) => typeof n.slug === 'string' && n.slug.length > 0)
+      .map((n: any) => ({ slug: n.slug }))
+  }
+}
+
+export const dynamicParams = false
+export const dynamic = 'force-static'
+
+export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
+  const { slug } = params
   let article: any = null;
   try {
     article = await findNewsBySlug(slug);

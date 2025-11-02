@@ -24,10 +24,9 @@ async function getHousingProject(slug: string) {
 export default async function HousingProjectPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }) {
-  const { slug } = await params
-  const project = await getHousingProject(slug)
+  const project = await getHousingProject(params.slug)
 
   if (!project) {
     notFound()
@@ -198,3 +197,15 @@ export default async function HousingProjectPage({
     </div>
   )
 }
+
+// Pre-generate static params for export mode
+export async function generateStaticParams() {
+  // Static list during export to avoid runtime/database dependencies
+  return [
+    { slug: 'modern-family-home' },
+    { slug: 'luxury-villa' },
+  ]
+}
+
+export const dynamicParams = false
+export const dynamic = 'force-static'

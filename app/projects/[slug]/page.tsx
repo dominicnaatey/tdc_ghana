@@ -24,9 +24,9 @@ import LightboxGallery from "@/components/gallery/LightboxGallery"
 export default async function ProjectPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }) {
-  const { slug } = await params
+  const { slug } = params
   const project = getProjectBySlug(slug)
 
   if (!project) {
@@ -373,3 +373,14 @@ export default async function ProjectPage({
     </div>
   )
 }
+
+// Pre-generate static params for export mode
+export async function generateStaticParams() {
+  const { sampleProjects } = await import('@/lib/data/sample-projects')
+  return sampleProjects
+    .filter((p: any) => typeof p.slug === 'string' && p.slug.length > 0)
+    .map((p: any) => ({ slug: p.slug }))
+}
+
+export const dynamicParams = false
+export const dynamic = 'force-static'

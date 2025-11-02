@@ -24,10 +24,9 @@ async function getLandPlot(slug: string) {
 export default async function LandPlotPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }) {
-  const resolvedParams = await params
-  const plot = await getLandPlot(resolvedParams.slug)
+  const plot = await getLandPlot(params.slug)
 
   if (!plot) {
     notFound()
@@ -244,3 +243,15 @@ export default async function LandPlotPage({
     </div>
   )
 }
+
+// Pre-generate static params for export mode
+export async function generateStaticParams() {
+  // Use a static list during export to avoid any runtime/database dependencies
+  return [
+    { slug: 'sp001-tema-plot' },
+    { slug: 'sp002-accra-plot' },
+  ]
+}
+
+export const dynamicParams = false
+export const dynamic = 'force-static'
