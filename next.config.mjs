@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable static export to generate the `out` directory on build
+  output: 'export',
   eslint: {
     ignoreDuringBuilds: true,
   },
