@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "export": "echo \"Static export is handled by 'next build' with output: export.\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
