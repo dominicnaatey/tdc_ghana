@@ -19,6 +19,8 @@ const nextConfig = {
     ],
   },
   async rewrites() {
+    const ENABLE_REWRITES = String(process.env.ENABLE_REWRITES || "").toLowerCase() === "true";
+    if (!ENABLE_REWRITES) return [];
     return [
       { source: "/api/posts", destination: "https://admin.eurochamghana.eu/api/posts" },
       { source: "/api/posts/:path*", destination: "https://admin.eurochamghana.eu/api/posts/:path*" },
