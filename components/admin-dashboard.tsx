@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { FileText, Home, MapPin, Users, Settings, LogOut, Plus, Edit, Trash2, Eye, MoreHorizontal } from "lucide-react"
-import { signOut } from "@/lib/actions"
+// Server actions are disabled in static export; stub sign-out to client redirect
 
 // Mock data - in real app this would come from Supabase
 const mockNews = [
@@ -31,7 +31,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
 
   const handleSignOut = async () => {
-    await signOut()
+    // In static export, just navigate back to home
+    window.location.href = "/"
   }
 
   return (

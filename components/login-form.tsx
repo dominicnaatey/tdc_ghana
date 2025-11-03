@@ -1,8 +1,7 @@
 "use client"
 
-import { useActionState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { signIn } from '@/lib/actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from '@/assets/icons'
@@ -15,7 +14,7 @@ const initialState = {
 }
 
 export default function LoginForm() {
-  const [state, formAction] = useActionState(signIn, initialState)
+  const [state, setState] = useState(initialState as { error?: string; success: boolean })
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
@@ -26,8 +25,14 @@ export default function LoginForm() {
     }
   }, [state?.success, router])
 
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    // In static export, server actions are disabled. Show a friendly message.
+    setState({ success: false, error: 'Login is disabled in static export build. Please use the dynamic deployment to access admin.' })
+  }
+
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6">
       {state?.error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
           {state.error}
