@@ -1,5 +1,7 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs"
 import { NextResponse, type NextRequest } from "next/server"
+
+// Allow disabling middleware behavior for static export builds
+const ENABLE_MIDDLEWARE = String(process.env.ENABLE_MIDDLEWARE || "").toLowerCase() === "true"
 
 // Check if Supabase environment variables are available
 export const isSupabaseConfigured =
@@ -9,6 +11,10 @@ export const isSupabaseConfigured =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.length > 0
 
 export async function updateSession(request: NextRequest) {
+  // Short-circuit entirely when middleware is disabled
+  if (!ENABLE_MIDDLEWARE) {
+    return NextResponse.next({ request })
+  }
   // If Supabase is not configured, just continue without auth
   if (!isSupabaseConfigured) {
     return NextResponse.next({
@@ -18,7 +24,8 @@ export async function updateSession(request: NextRequest) {
 
   const res = NextResponse.next()
 
-  // Create a Supabase client configured to use cookies
+  // Create a Supabase client configured to use cookies (loaded lazily to avoid Edge runtime import issues)
+  const { createMiddlewareClient } = await import("@supabase/auth-helpers-nextjs")
   const supabase = createMiddlewareClient({ req: request, res })
 
   // Check if this is an auth callback
