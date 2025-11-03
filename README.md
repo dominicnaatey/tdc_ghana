@@ -1,30 +1,41 @@
-# No content
+# TDC Ghana — Static Export Setup
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+This project is configured for Next.js static export (`output: 'export'`). This mode generates a fully static site in `out/` during `npm run build` and is ideal for hosting on static providers (e.g., Netlify, Vercel Static, GitHub Pages, S3/CloudFront).
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/dom7ks-projects/v0-no-content)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/u4GutAyr2tq)
+## Key Environment Flags
 
-## Overview
+- `ENABLE_MIDDLEWARE`: When `true`, enables Supabase session middleware for `/admin` and `/auth` routes. Defaults to disabled for static export builds.
+- `ENABLE_REWRITES`: When `true`, enables Next.js `rewrites()` to proxy API and storage paths through the app origin. Disabled for static export builds.
+- `API_BASE_URL`: Server-side base URL used for REST calls (e.g., `https://admin.eurochamghana.eu`).
+- `NEXT_PUBLIC_API_BASE_URL`: Client-side base URL used for REST calls.
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Example `.env`:
 
-## Deployment
+```
+API_BASE_URL=https://admin.eurochamghana.eu
+NEXT_PUBLIC_API_BASE_URL=https://admin.eurochamghana.eu
+ENABLE_MIDDLEWARE=false
+ENABLE_REWRITES=false
+```
 
-Your project is live at:
+## Static Export Notes
 
-**[https://vercel.com/dom7ks-projects/v0-no-content](https://vercel.com/dom7ks-projects/v0-no-content)**
+- Middleware is not compatible with `output: 'export'`. This repo gates middleware behind `ENABLE_MIDDLEWARE` and narrows its matcher to `/admin` and `/auth` only.
+- Next.js `rewrites()` do not run on a static host. API code in `lib/api/news.ts` defaults to absolute URLs unless `ENABLE_REWRITES=true`.
+- Dynamic routes are pre-rendered via `generateStaticParams` and `export const dynamic = 'force-static'`.
+- Image optimization is disabled (`images.unoptimized: true`) which is required for static export.
 
-## Build your app
+## Build & Verify
 
-Continue building your app on:
+1. Install deps: `npm install`
+2. Build static site: `npm run build`
+3. Inspect output: `ls -R out` (or your OS equivalent)
 
-**[https://v0.app/chat/projects/u4GutAyr2tq](https://v0.app/chat/projects/u4GutAyr2tq)**
+## CORS
 
-## How It Works
+If the static site fetches from a separate backend domain, ensure the backend allows your static site origin via CORS (e.g., `Access-Control-Allow-Origin: https://your-static-host`).
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## Development vs Production
+
+- For local development with middleware/rewrites, set `ENABLE_MIDDLEWARE=true` and `ENABLE_REWRITES=true`, then run `npm run dev`.
+- For production static hosting, keep both flags `false` and deploy the `out/` directory.
