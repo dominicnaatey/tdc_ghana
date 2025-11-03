@@ -1,19 +1,19 @@
 import { updateSession } from "@/lib/supabase/middleware"
 import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server"
+const ENABLE_MIDDLEWARE = String(process.env.ENABLE_MIDDLEWARE || "").toLowerCase() === "true"
 
 export async function middleware(request: NextRequest) {
+  if (!ENABLE_MIDDLEWARE) {
+    return NextResponse.next({ request })
+  }
   return await updateSession(request)
 }
 
 export const config = {
+  // Narrow scope to admin and auth routes; keeps public pages free from middleware
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/admin/:path*",
+    "/auth/:path*",
   ],
 }
