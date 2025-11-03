@@ -3,11 +3,13 @@ import type { News, NewsResponse, ListParams, CreateNewsPayload, UpdateNewsPaylo
 const serverBase = process.env.API_BASE_URL;
 const publicBase = process.env.NEXT_PUBLIC_API_BASE_URL;
 const API_BASE_URL = serverBase ?? publicBase ?? 'http://127.0.0.1:8000';
+const ENABLE_REWRITES = String(process.env.ENABLE_REWRITES || "").toLowerCase() === "true";
 
 function getBase(): string {
   try {
-    if (typeof window !== "undefined" && window.location?.origin) {
-      return window.location.origin; // same-origin for browser; allows Next rewrites
+    if (ENABLE_REWRITES && typeof window !== "undefined" && window.location?.origin) {
+      // Same-origin in browser only when rewrites are explicitly enabled
+      return window.location.origin;
     }
   } catch {}
   return API_BASE_URL;
