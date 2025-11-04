@@ -20,10 +20,30 @@ interface ManagementMember {
   qualifications?: string[];
 }
 
+// Ensure member names render in Title Case, not ALL CAPS
+function titleCaseName(name: string): string {
+  return name
+    .split(" ")
+    .map((part) => {
+      if (!part) return part;
+      const hasTrailingComma = part.endsWith(",");
+      const core = hasTrailingComma ? part.slice(0, -1) : part;
+      const titled = core
+        .split("-")
+        .map((seg) => {
+          if (!seg) return seg;
+          return seg.charAt(0).toUpperCase() + seg.slice(1).toLowerCase();
+        })
+        .join("-");
+      return hasTrailingComma ? `${titled},` : titled;
+    })
+    .join(" ");
+}
+
 const managementMembers: ManagementMember[] = [
   {
     id: 1,
-    name: "COURAGE MAKAFUI NUNEKPEKU",
+    name: "Courage Makafui Nunekpeku",
     position: "Managing Director",
     bio: "Mr. Nunekpeku is a seasoned engineer with expertise in Quantity Surveying and Project Management. Throughout his career, he has delivered exceptional results across complex infrastructure projects, collaborating with prestigious organisations including Regimanuel Gray Estate, the Ghana Ports and Harbours Authority, Cappa D'Alberto PLC and Kelm Engineering Limited. His technical proficiency spans both domestic and international markets, supported by rigorous academic studies in Ghana and abroad, with a continued commitment to professional development.<br><br>He holds a Master of Arts degree in Public Sector Management from the University of Ghana, Legon, where he developed a strong foundation in public administration, policy formulation and institutional governance. He also earned a Bachelor of Science with Honours in Construction Engineering and Management from Liverpool John Moores University in the United Kingdom, equipping him with comprehensive technical and managerial skills in the built environment. In addition, he pursued other academic interests at the Kwame Nkrumah University of Science and Technology, the University of Ulster in Northern Ireland, United Kingdom as well as the Accra and Ho Technical Universities.<br><br>Beyond his technical capabilities, Mr. Nunekpeku has proven himself as a successful entrepreneur, establishing and scaling businesses across diverse industry sectors. His strategic vision and operational expertise have enabled him to identify market opportunities and create sustainable value for stakeholders. As a leader, he combines technical precision with innovative thinking, driving results whilst maintaining the highest standards of professional integrity.",
     image: "/management/1.jpg",
@@ -200,13 +220,13 @@ export default function ManagementMembers() {
               <div className="relative w-full aspect-[9/10] mx-auto mb-4 md:mb-6 rounded-lg overflow-hidden bg-gray-200 border-1 border-gray-200 shadow-xl">
                 <Image
                   src={member.image}
-                  alt={member.name}
+                  alt={titleCaseName(member.name)}
                   fill
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <h3 className="text-base md:text-xl font-bold text-gray-900 text-start md:text-center mb-2 group-hover:text-gray-700 transition-colors">
-                {member.name}
+                {titleCaseName(member.name)}
               </h3>
               <p className="text-sm md:text-base text-gray-600 font-medium text-start md:text-center italic">
                 {member.position}
@@ -220,7 +240,7 @@ export default function ManagementMembers() {
       <Dialog open={!!selectedMember} onOpenChange={handleCloseDialog}>
           <DialogContent className="max-w-6xl max-h-[90vh] p-0 overflow-hidden overflow-y-auto ">
             <DialogTitle className="sr-only">
-              {selectedMember?.name || "Management Member Details"}
+              {selectedMember ? titleCaseName(selectedMember.name) : "Management Member Details"}
             </DialogTitle>
             {selectedMember && (
               <div className="w-full">
@@ -228,7 +248,7 @@ export default function ManagementMembers() {
                   <div className="md:w-1/3  mb-6 md:mb-0 md:mr-12 flex-shrink-0">
                     <Image
                       src={selectedMember.image}
-                      alt={`Portrait of ${selectedMember.name}`}
+                      alt={`Portrait of ${titleCaseName(selectedMember.name)}`}
                       width={300}
                       height={375}
                       className="rounded-lg shadow-md w-full aspect-[14/15] object-cover object-top"
