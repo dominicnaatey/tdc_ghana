@@ -72,6 +72,9 @@ function NewsCard({ article }: { article: any }) {
     if (!raw) return "/placeholder.svg";
     if (/^https?:\/\//i.test(raw)) return raw;
 
+    const rewritesEnabled = String(process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false").toLowerCase() !== "false";
+    const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(/\/$/, "");
+
     let path = raw.replace(/\\/g, "/");
 
     // drop route prefix like 'news/'
@@ -91,7 +94,12 @@ function NewsCard({ article }: { article: any }) {
       path = "/storage" + path;
     }
 
-    // build against same-origin to leverage Next rewrites
+    // For remote storage assets, prefer API base when rewrites are disabled
+    if (path.startsWith('/storage') && !rewritesEnabled) {
+      return `${apiBase}${path}`;
+    }
+
+    // Otherwise build against same-origin to leverage Next rewrites
     const origin = typeof window !== "undefined" ? window.location.origin : (process.env.NEXT_PUBLIC_API_BASE_URL ?? "");
     try {
       return new URL(path, origin || "http://localhost:3001").toString();

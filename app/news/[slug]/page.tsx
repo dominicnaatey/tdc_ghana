@@ -10,24 +10,40 @@ import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news"
 
 // Pre-generate static paths for export mode
 export async function generateStaticParams() {
+  // Allow explicit overrides via env for static export
+  const envList = String(process.env.STATIC_NEWS_SLUGS || process.env.NEXT_PUBLIC_STATIC_NEWS_SLUGS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  const slugs = new Set<string>();
+
+  // Try remote list at build-time
   try {
-    const payload = await listNews({ page: 1, per_page: 50, sort: 'published_at', order: 'desc' })
-    return payload.data
-      .filter((n: any) => typeof n.slug === 'string' && n.slug.length > 0)
-      .map((n: any) => ({ slug: n.slug }))
+    const payload = await listNews({ page: 1, per_page: 200, sort: 'published_at', order: 'desc' })
+    for (const n of payload.data || []) {
+      if (typeof n.slug === 'string' && n.slug.length > 0) slugs.add(n.slug);
+    }
   } catch {
-    // Fallback to local sample data if API is unavailable at build time
-    return sampleNews
-      .filter((n: any) => typeof n.slug === 'string' && n.slug.length > 0)
-      .map((n: any) => ({ slug: n.slug }))
+    // Ignore network errors; rely on local data and env overrides
   }
+
+  // Always include local sample slugs for resilience
+  for (const n of sampleNews) {
+    if (typeof (n as any).slug === 'string' && (n as any).slug.length > 0) slugs.add((n as any).slug);
+  }
+
+  // Include any env-provided overrides (e.g., critical slugs to export)
+  for (const s of envList) slugs.add(s);
+
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 export const dynamicParams = false
 export const dynamic = 'force-static'
 
-export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   let article: any = null;
   try {
     article = await findNewsBySlug(slug);
@@ -60,6 +76,8 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
   const resolveImageSrc = (a: any) => {
     let raw = (a?.featured_image_path ?? a?.featured_image ?? "").trim();
     if (!raw) return "/placeholder.svg";
+    const rewritesEnabled = String(process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false").toLowerCase() !== "false";
+    const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(/\/$/, "");
 
     // If absolute URL, convert known admin.eurochamghana.eu storage paths to relative
     if (/^https?:\/\//i.test(raw)) {
@@ -67,7 +85,10 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
         const u = new URL(raw);
         if (/admin\.eurochamghana\.eu$/i.test(u.hostname)) {
           const m = u.pathname.match(/\/(storage\/.*)$/);
-          if (m) return '/' + m[1].replace(/^\/+/, '');
+          if (m) {
+            const storagePath = '/' + m[1].replace(/^\/+/, '');
+            return rewritesEnabled ? storagePath : `${apiBase}${storagePath}`;
+          }
         }
       } catch {}
       return raw; // keep other absolute URLs as-is
@@ -92,28 +113,41 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
       path = "/storage" + path;
     }
 
+    if (path.startsWith('/storage')) {
+      return rewritesEnabled ? path : `${apiBase}${path}`;
+    }
+
     return path; // relative path for same-origin rewrites
   };
 
-  // Normalize rich HTML content image sources similarly
+  // Normalize rich HTML content image sources similarly, environment-aware
   const normalizeContent = (html: string): string => {
     if (!html) return '';
+    const rewritesEnabled = String(process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false").toLowerCase() !== "false";
+    const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(/\/$/, "");
+
+    const toStorageUrl = (p: string) => {
+      const path = p.replace(/^\/+/, '');
+      const storagePath = path.startsWith('storage/') ? `/${path}` : `/storage/${path}`;
+      return rewritesEnabled ? storagePath : `${apiBase}${storagePath}`;
+    };
+
     let out = html;
-    // admin host absolute storage -> relative
-    out = out.replace(/src=["']\s*https?:\/\/[^"']*admin\.eurochamghana\.eu\/(storage\/[^"]+)["']/gi, 'src="/$1"');
-    // news/posts -> posts
-    out = out.replace(/src=["']\s*news\/posts\/([^"']+)["']/gi, 'src="/posts/$1"');
-    out = out.replace(/src=["']\s*\/news\/posts\/([^"']+)["']/gi, 'src="/posts/$1"');
-    // map posts -> storage/posts
-    out = out.replace(/src=["']\s*posts\/([^"']+)["']/gi, 'src="/storage/posts/$1"');
-    out = out.replace(/src=["']\s*\/posts\/([^"']+)["']/gi, 'src="/storage/posts/$1"');
-    // drop leading 'news/'
-    out = out.replace(/src=["']\s*news\/([^"']+)["']/gi, 'src="/$1"');
-    out = out.replace(/src=["']\s*\/news\/([^"']+)["']/gi, 'src="/$1"');
-    // ensure storage has leading slash
-    out = out.replace(/src=["']\s*storage\/([^"']+)["']/gi, 'src="/storage/$1"');
-    // collapse double slashes
-    out = out.replace(/src=["']\s*(\/{2,})([^"']+)["']/gi, 'src="/$2"');
+    // admin absolute storage -> env-aware
+    out = out.replace(/src=["']\s*https?:\/\/[^"']*admin\.eurochamghana\.eu\/(storage\/[^"']+)["']/gi, (_m, p1) => `src="${toStorageUrl(p1)}"`);
+    // relative ../../storage paths -> env-aware
+    out = out.replace(/src=["']\s*(?:\.\.\/)+storage\/([^"']+)["']/gi, (_m, p1) => `src="${toStorageUrl(`storage/${p1}`)}"`);
+    // storage/* (with or without leading slash) -> env-aware
+    out = out.replace(/src=["']\s*\/?storage\/([^"']+)["']/gi, (_m, p1) => `src="${toStorageUrl(`storage/${p1}`)}"`);
+    // news/posts -> storage/posts
+    out = out.replace(/src=["']\s*news\/posts\/([^"']+)["']/gi, (_m, p1) => `src="${toStorageUrl(`posts/${p1}`)}"`);
+    out = out.replace(/src=["']\s*\/news\/posts\/([^"']+)["']/gi, (_m, p1) => `src="${toStorageUrl(`posts/${p1}`)}"`);
+    // posts -> storage/posts
+    out = out.replace(/src=["']\s*\/?posts\/([^"']+)["']/gi, (_m, p1) => `src="${toStorageUrl(`posts/${p1}`)}"`);
+    // drop leading 'news/' for local assets
+    out = out.replace(/src=["']\s*\/?news\/([^"']+)["']/gi, 'src="/$1"');
+    // collapse stray double slashes
+    out = out.replace(/src=["']\s*\/{2,}([^"']+)["']/gi, 'src="/$1"');
     return out;
   };
 
