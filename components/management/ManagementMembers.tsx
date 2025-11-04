@@ -52,7 +52,7 @@ const managementMembers: ManagementMember[] = [
       "Bachelor of Science with Honours in Construction Engineering and Management - Liverpool John Moores University, UK",
       "Studies at Kwame Nkrumah University of Science and Technology",
       "Studies at University of Ulster, Northern Ireland, UK",
-      "Studies at Accra and Ho Technical Universities",
+      "Studied at Accra and Ho Technical Universities",
     ],
   },
   {
