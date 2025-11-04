@@ -2,25 +2,32 @@
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider } from "@/Layouts/sidebar/sidebar-context";
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useState } from 'react';
+import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [supabaseClient] = useState(() => createClientComponentClient());
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith("/admin");
 
+  // Lazy-load Supabase providers only for admin routes
+  const AdminProviders = dynamic(() => import("./admin-providers"), {
+    ssr: false,
+  });
+
+  if (isAdminRoute) {
+    return <AdminProviders>{children}</AdminProviders>;
+  }
+
+  // Public routes: no Supabase auth helpers bundled
   return (
-    <SessionContextProvider supabaseClient={supabaseClient}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
-      </ThemeProvider>
-    </SessionContextProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      forcedTheme="light"
+      disableTransitionOnChange
+    >
+      <SidebarProvider>{children}</SidebarProvider>
+    </ThemeProvider>
   );
 }
