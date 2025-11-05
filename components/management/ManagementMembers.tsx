@@ -202,7 +202,7 @@ export default function ManagementMembers() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 font-serif mb-4">
-            Our Management Team
+            Management Team
           </h2>
           {/* <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our management team comprises experienced professionals dedicated to
