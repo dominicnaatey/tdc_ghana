@@ -396,10 +396,12 @@ export default function Header() {
               id="mobile-menu"
               className={`border-t border-gray-200 bg-white transition-all duration-300 ease-out transform origin-top ${
                 isMenuOpen
-                  ? "opacity-100 scale-100 max-h-[100vh]"
-                  : "opacity-0 scale-95 max-h-0 pointer-events-none"
-              } overflow-hidden`}
+                  ? "opacity-100 scale-100 max-h-[calc(100vh-4rem)] overflow-y-auto"
+                  : "opacity-0 scale-95 max-h-0 overflow-hidden pointer-events-none"
+              }`}
               aria-hidden={!isMenuOpen}
+              tabIndex={-1}
+              style={{ WebkitOverflowScrolling: "touch" }}
             >
               <nav
                 className="flex flex-col space-y-4 px-4 py-6"
