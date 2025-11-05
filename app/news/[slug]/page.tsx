@@ -18,11 +18,26 @@ export async function generateStaticParams() {
 
   const slugs = new Set<string>();
 
-  // Try remote list at build-time
+  // Try remote list at build-time: collect across all pages for completeness
   try {
-    const payload = await listNews({ page: 1, per_page: 200, sort: 'published_at', order: 'desc' })
-    for (const n of payload.data || []) {
-      if (typeof n.slug === 'string' && n.slug.length > 0) slugs.add(n.slug);
+    const first = await listNews({ page: 1, per_page: 50, sort: 'published_at', order: 'desc' })
+    const lastPage = Math.max(1, Number(first.meta?.last_page || 1));
+    const addFrom = (payload: any) => {
+      for (const n of payload?.data || []) {
+        const raw = (n as any)?.slug;
+        if (typeof raw === 'string' && raw.trim().length > 0) {
+          slugs.add(decodeURIComponent(raw.trim().toLowerCase()));
+        }
+      }
+    };
+    addFrom(first);
+    for (let p = 2; p <= lastPage; p++) {
+      try {
+        const pagePayload = await listNews({ page: p, per_page: 50, sort: 'published_at', order: 'desc' })
+        addFrom(pagePayload);
+      } catch {
+        // Continue on partial failures
+      }
     }
   } catch {
     // Ignore network errors; rely on local data and env overrides
@@ -30,11 +45,12 @@ export async function generateStaticParams() {
 
   // Always include local sample slugs for resilience
   for (const n of sampleNews) {
-    if (typeof (n as any).slug === 'string' && (n as any).slug.length > 0) slugs.add((n as any).slug);
+    const raw = (n as any)?.slug;
+    if (typeof raw === 'string' && raw.trim().length > 0) slugs.add(decodeURIComponent(raw.trim().toLowerCase()));
   }
 
   // Include any env-provided overrides (e.g., critical slugs to export)
-  for (const s of envList) slugs.add(s);
+  for (const s of envList) slugs.add(decodeURIComponent(s.trim().toLowerCase()));
 
   return Array.from(slugs).map((slug) => ({ slug }));
 }
@@ -42,20 +58,26 @@ export async function generateStaticParams() {
 export const dynamicParams = false
 export const dynamic = 'force-static'
 
-export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
+  const slug = decodeURIComponent(params.slug).trim().toLowerCase();
+  const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || 'false').toLowerCase() === 'true';
+  if (DEBUG) console.debug('[news][slug] incoming params', params);
   let article: any = null;
   try {
     article = await findNewsBySlug(slug);
+    if (DEBUG) console.debug('[news][slug] fetched article by slug', { slug, article });
   } catch (e) {
     // swallow network error and fallback to local sample data
+    if (DEBUG) console.warn('[news][slug] fetch error', e);
   }
   
   if (!article) {
     article = getNewsBySlug(slug) as any;
+    if (DEBUG) console.debug('[news][slug] fallback local sample article', { slug, article });
   }
   
   if (!article) {
+    if (DEBUG) console.warn('[news][slug] not found; invoking notFound()', { slug });
     notFound();
   }
   
@@ -63,9 +85,11 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
   try {
     const relatedPayload = await listNews({ page: 1, per_page: 4, sort: 'published_at', order: 'desc' });
     relatedNews = relatedPayload.data.filter((n) => n.id !== (article as any).id).slice(0, 2);
+    if (DEBUG) console.debug('[news][slug] related response meta', relatedPayload?.meta);
   } catch (e) {
     // fallback to local sample data for related items
     relatedNews = sampleNews.filter((n) => n.slug !== (article as any).slug).slice(0, 2) as any[];
+    if (DEBUG) console.warn('[news][slug] related fetch error; using sample', e);
   }
   
   const author = (article as any).author ?? 'TDC Ghana Editorial';
@@ -153,6 +177,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
 
   const imageSrc = resolveImageSrc(article);
   const normalizedContent = normalizeContent(String((article as any).content ?? ''));
+  if (DEBUG) console.debug('[news][slug] pre-render data', {
+    slug,
+    article,
+    relatedCount: relatedNews.length,
+    imageSrc,
+    hasContent: Boolean((article as any).content),
+  });
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "Source Serif Pro, serif" }}>
@@ -247,6 +278,15 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
             className="text-gray-800 leading-[1.6] text-lg md:text-xl font-serif"
           />
         </div>
+
+        {DEBUG && (
+          <div className="max-w-4xl mx-auto px-4 py-6 bg-yellow-50 border border-yellow-200 rounded-md">
+            <h3 className="font-semibold text-yellow-700 mb-2">Debug Data</h3>
+            <pre className="text-xs text-yellow-900 overflow-auto">
+{JSON.stringify({ slug, article, relatedNews }, null, 2)}
+            </pre>
+          </div>
+        )}
 
         {/* Article Footer */}
         <footer className="border-t border-gray-200 pt-8">
