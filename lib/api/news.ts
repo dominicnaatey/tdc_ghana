@@ -32,6 +32,12 @@ function getAuthHeaders(token?: string): Record<string, string> {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || '').toLowerCase() === 'true';
+  if (DEBUG) {
+    const maskedHeaders = { ...(init?.headers ?? {}) } as Record<string, string>;
+    if (maskedHeaders.Authorization) maskedHeaders.Authorization = 'Bearer ***';
+    console.debug('[api][request]', { path, init: { ...init, headers: maskedHeaders } });
+  }
   const res = await fetch(path, {
     headers: {
       Accept: 'application/json',
@@ -45,15 +51,21 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let bodyText: string | null = null;
   try { bodyText = await res.text(); } catch {}
 
+  if (DEBUG) {
+    console.debug('[api][response]', { path, status: res.status, ok: res.ok, length: bodyText?.length ?? 0 });
+  }
   if (!res.ok) {
     let parsed: any = null;
     try { parsed = bodyText ? JSON.parse(bodyText) : null; } catch {}
     const message = parsed?.message ?? parsed?.error ?? (bodyText || `HTTP ${res.status}`);
-    throw new Error(message);
+    const err = new Error(message);
+    if (DEBUG) console.warn('[api][error]', { path, status: res.status, message });
+    throw err;
   }
   try {
     return bodyText ? JSON.parse(bodyText) as T : ({} as T);
   } catch (err) {
+    if (DEBUG) console.warn('[api][parse-error]', { path, bodyText });
     throw new Error('Failed to parse response JSON');
   }
 }
@@ -69,8 +81,9 @@ export async function getNews(id: number, options?: RequestInit): Promise<News> 
 }
 
 export async function findNewsBySlug(slug: string, options?: RequestInit): Promise<News | null> {
-  const payload = await listNews({ search: slug, per_page: 10 }, options);
-  const match = payload.data.find((n) => n.slug === slug);
+  const norm = decodeURIComponent(slug).trim().toLowerCase();
+  const payload = await listNews({ search: norm, per_page: 200 }, options);
+  const match = payload.data.find((n) => String(n.slug || '').trim().toLowerCase() === norm);
   return match ?? null;
 }
 
