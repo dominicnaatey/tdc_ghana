@@ -57,7 +57,7 @@ const managementMembers: ManagementMember[] = [
   },
   {
     id: 2,
-    name: "Abdul Al-Mumin Yakubu",
+    name: "Abdul Al - Mumin Yakubu, Esq",
     position: "General Manager, Finance & Administration",
     bio: "Alhaji Abdul Al-Mumin Yakubu is the General Manager in charge of Finance and Administration at TDC Ghana Ltd. He is a distinguished Fellow of both the Association of Chartered Certified Accountants (ACCA) and the Institute of Chartered Accountants, Ghana (ICAG). In addition, he is a Barrister at Law and a member of the Ghana Bar Association.<br><br>Abdul holds a Qualifying Certificate in Law from the Ghana School of Law, Makola, and a Bachelor of Laws (LLB) degree from the Ghana Institute of Management and Public Administration (GIMPA), where he focused on Labour Law, Administrative Law, Commercial Law, as well as Corporate and Public Financial Management Laws. He also earned a Master of Science (MSc) in Accounting and Finance from the University of Northampton, UK.<br><br>With nearly thirty(30) years of professional experience, Abdul has developed deep expertise in finance, auditing, internal systems review, and recovery strategies. He began his career at TDC in 1995 as an Audit Clerk and steadily progressed through roles including Audit Supervisor, Finance Manager, and Finance Director. Since 2015, he has led the Finance and Administration division as General Manager, providing strategic leadership and driving growth across the organization.",
     image: "/management/2.jpg",
@@ -72,7 +72,7 @@ const managementMembers: ManagementMember[] = [
   },
    {
     id: 3,
-    name: "Mrs. Cynthia Lariba Zotbah Abaduri-Weseh",
+    name: "Cynthia Lariba Zotbah Abaduri-Weseh",
     position: "Head of Finance",
     bio: "Mrs. Cynthia Lariba Zotbah Abaduri-Weseh is the Head of Finance of TDC Ghana Ltd, where she oversees corporate and project budgets, financial analysis, reporting and internal controls.<br><br>She is a Chartered Certified Accountant with over 20 years of experience spanning finance, accounting and estate management in the large-scale business, construction and real estate sectors. She has a proven track record of driving cost reduction, maximizing revenue and strengthening business continuity through expertise in budgeting, financial reporting, risk management, taxation, project evaluation, and cost control.<br><br>Cynthia holds a Post Chartered Diploma in Business Analytics, an MSc in Industrial Finance and Investment from KNUST, a BSc in Applied Accounting from Oxford Brookes University (UK). She is a fellow of the Association of Chartered Accountants (ACCA, UK) and a member of the Institute of Chartered Accountants Ghana.",
     image: "/management/3.jpg",
@@ -86,7 +86,7 @@ const managementMembers: ManagementMember[] = [
   },
   {
     id: 4,
-    name: "George Opoku-Ware Boateng",
+    name: "George Opoku-Ware Boateng, Esq",
     position: "Head of Legal",
     bio: "George Opoku-Ware Boateng holds a Master's Degree in Management and Administration from the University of Ghana Business School, Legon. He also earned a Bachelor of Arts in History and Religions and a Bachelor of Laws, both from the University of Ghana.<br><br>Called to the Ghana Bar in 2008, he has maintained an active membership with the Ghana Bar Association since then. Beginning his career at TDC as a Legal Officer in 2008, GEORGE OPOKU-WARE BOATENG has played an integral role in the company's legal endeavors, successfully prosecuting and defending major cases.<br><br>His extensive experience and steadfast commitment led to his appointment as Head of Legal in 2025, where he continues to provide expert legal oversight and guidance.",
     image: "/management/4.jpg",
@@ -100,7 +100,7 @@ const managementMembers: ManagementMember[] = [
   },
   {
     id: 5,
-    name: "DOROTHY A. ASARE-KUMAH ADOLF, ESQ",
+    name: "Dorothy A. Asare - Kumah Adolf ,Esq",
     position: "Board Secretary and Head of Corporate Planning & Communication",
     bio: "Mrs. Asare-Kumah Adolf is the Head of Corporate Planning and Communications at TDC Ghana Ltd. She holds dual Master's degrees in Communications and Law (LLM) from Grand Valley University, Michigan, USA, and the University of Law, UK, respectively. Additionally, she holds a Postgraduate Diploma in Education from the University of Education, Winneba, and a Diploma in Journalism from the Ghana Institute of Journalism.<br><br>Prior to joining TDC nearly two decades ago, Mrs. Asare-Kumah Adolf established her career in journalism and lectured briefly at Tarrant County Community College in Fort Worth, Texas, as well as at the Ghana Institute of Journalism. As a former workers' Union leader, she continuously utilised her dual legal and communications expertise in staff welfare advocacy and institutional reforms.<br><br>She is a member of the Ghana Bar Association, the Ghana Journalists Association and the Institute of Public Relations, Ghana.",
     image: "/management/5.jpg",
