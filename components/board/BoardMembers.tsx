@@ -20,6 +20,38 @@ interface BoardMember {
   qualifications?: string[];
 }
 
+// Normalize names to Title Case while preserving short acronyms (e.g., MP)
+function titleCaseName(name: string): string {
+  return name
+    .split(" ")
+    .map((part) => {
+      if (!part) return part;
+      const leadingMatch = part.match(/^[\(\"\']+/);
+      const trailingMatch = part.match(/[\)\"\'\.,]+$/);
+      const leading = leadingMatch ? leadingMatch[0] : "";
+      const trailing = trailingMatch ? trailingMatch[0] : "";
+      const core = part.slice(leading.length, part.length - trailing.length);
+
+      const lettersOnly = core.replace(/[^A-Za-z]/g, "");
+      const isAllCapsShort =
+        lettersOnly.length > 0 &&
+        lettersOnly === lettersOnly.toUpperCase() &&
+        lettersOnly.length <= 4;
+
+      const titledCore = isAllCapsShort
+        ? core.toUpperCase()
+        : core
+            .split("-")
+            .map((seg) =>
+              seg ? seg.charAt(0).toUpperCase() + seg.slice(1).toLowerCase() : seg
+            )
+            .join("-");
+
+      return `${leading}${titledCore}${trailing}`;
+    })
+    .join(" ");
+}
+
 const boardMembers: BoardMember[] = [
   {
     id: 1,
@@ -178,13 +210,13 @@ export default function BoardMembers() {
               <div className="relative w-full aspect-[9/10] mx-auto mb-4 md:mb-6 rounded-lg overflow-hidden bg-gray-200 border-1 border-gray-200 shadow-xl">
                 <Image
                   src={member.image}
-                  alt={member.name}
+                  alt={titleCaseName(member.name)}
                   fill
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <h3 className="text-base md:text-xl font-bold text-gray-900 text-start md:text-center mb-2 group-hover:text-gray-700 transition-colors">
-                {member.name}
+                {titleCaseName(member.name)}
               </h3>
               <p className="text-sm md:text-base text-gray-600 font-medium text-start md:text-center italic">
                 {member.position}
@@ -258,7 +290,7 @@ export default function BoardMembers() {
       <Dialog open={!!selectedMember} onOpenChange={handleCloseDialog}>
           <DialogContent className="max-w-6xl max-h-[90vh] p-0 overflow-hidden overflow-y-auto ">
             <DialogTitle className="sr-only">
-              {selectedMember?.name || "Board Member Details"}
+              {selectedMember ? titleCaseName(selectedMember.name) : "Board Member Details"}
             </DialogTitle>
             {selectedMember && (
               <div className="w-full">
@@ -266,7 +298,7 @@ export default function BoardMembers() {
                   <div className="md:w-1/3  mb-6 md:mb-0 md:mr-12 flex-shrink-0">
                     <Image
                       src={selectedMember.image}
-                      alt={`Portrait of ${selectedMember.name}`}
+                      alt={`Portrait of ${titleCaseName(selectedMember.name)}`}
                       width={300}
                       height={375}
                       className="rounded-lg shadow-md w-full aspect-[14/15] object-cover object-top"
@@ -289,7 +321,7 @@ export default function BoardMembers() {
                   </div>
                   <div className="md:w-2/3">
                     <h1 className="text-2xl font-bold text-black tracking-wider">
-                      {selectedMember.name}
+                      {titleCaseName(selectedMember.name)}
                     </h1>
                     <h2 className="text-sm font-semibold text-accent tracking-widest mt-2">
                       {selectedMember.position}
