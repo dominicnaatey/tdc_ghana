@@ -394,7 +394,7 @@ export default function Header() {
           {isCompact && (
             <div
               id="mobile-menu"
-              className={`border-t border-gray-200 bg-white transition-all duration-300 ease-out transform origin-top ${
+              className={`border-t border-gray-200 bg-white transition-all duration-300 ease-out transform origin-top scrollbar-none scroll-smooth ${
                 isMenuOpen
                   ? "opacity-100 scale-100 max-h-[calc(100vh-4rem)] overflow-y-auto"
                   : "opacity-0 scale-95 max-h-0 overflow-hidden pointer-events-none"
