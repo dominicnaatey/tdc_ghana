@@ -10,7 +10,7 @@ import {
   DropdownClose,
 } from "@/components/ui/dropdown";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +19,37 @@ export default function Header() {
     useState(false);
   const [isCareersDropdownOpen, setIsCareersDropdownOpen] = useState(false);
   const hoverTimeoutRef = useRef<number | null>(null);
+
+  // Custom 1100px breakpoint for responsive behavior
+  const [isCompact, setIsCompact] = useState<boolean>(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 1100px)");
+    const applyMatch = (matches: boolean) => setIsCompact(matches);
+    // Initialize
+    applyMatch(mq.matches);
+    // Listen for media query changes
+    const mqListener = (e: MediaQueryListEvent) => applyMatch(e.matches);
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", mqListener);
+    } else {
+      // Fallback for older browsers
+      // @ts-ignore
+      mq.addListener(mqListener);
+    }
+    // Safety net on window resize
+    const resizeListener = () => applyMatch(mq.matches);
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      if (typeof mq.removeEventListener === "function") {
+        mq.removeEventListener("change", mqListener);
+      } else {
+        // @ts-ignore
+        mq.removeListener(mqListener);
+      }
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -30,6 +61,13 @@ export default function Header() {
     };
   }, []);
   const pathname = usePathname();
+
+  // Auto-close mobile menu when switching to desktop layout
+  useEffect(() => {
+    if (!isCompact) {
+      setIsMenuOpen(false);
+    }
+  }, [isCompact]);
 
   const navigationItems = [
     { name: "Home", href: "/" },
@@ -86,7 +124,11 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8 ml-auto">
+          <nav
+            className={`${isCompact ? "hidden" : "flex"} items-center space-x-8 ml-auto`}
+            role="navigation"
+            aria-label="Primary"
+          >
             {/* Home Link */}
             <Link
               href="/"
@@ -326,9 +368,19 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className={`p-2 ${isCompact ? "" : "hidden"}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label="Toggle navigation menu"
+            aria-haspopup="true"
+            aria-controls="mobile-menu"
+            aria-expanded={isMenuOpen}
+            onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
+              if (e.key === "Escape") setIsMenuOpen(false);
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setIsMenuOpen((prev) => !prev);
+              }
+            }}
           >
             {isMenuOpen ? (
               <X className="h-6 w-6 text-gray-700" />
@@ -339,9 +391,21 @@ export default function Header() {
         </div>
 
           {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 bg-white">
-              <nav className="flex flex-col space-y-4 px-4 py-6">
+          {isCompact && (
+            <div
+              id="mobile-menu"
+              className={`border-t border-gray-200 bg-white transition-all duration-300 ease-out transform origin-top ${
+                isMenuOpen
+                  ? "opacity-100 scale-100 max-h-[100vh]"
+                  : "opacity-0 scale-95 max-h-0 pointer-events-none"
+              } overflow-hidden`}
+              aria-hidden={!isMenuOpen}
+            >
+              <nav
+                className="flex flex-col space-y-4 px-4 py-6"
+                role="navigation"
+                aria-label="Mobile Primary"
+              >
               {/* Home Link */}
               <Link
                 href="/"
