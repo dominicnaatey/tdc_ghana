@@ -51,6 +51,38 @@ export default function Header() {
     };
   }, []);
 
+  // Approximate CLS tracking (development aid)
+  useEffect(() => {
+    if (typeof window === "undefined" || !("PerformanceObserver" in window)) return;
+    let cls = 0;
+    let observer: PerformanceObserver | null = null;
+    try {
+      observer = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          // @ts-ignore: layout-shift specific props
+          if (!entry.hadRecentInput) {
+            // @ts-ignore
+            cls += entry.value || 0;
+          }
+        }
+      });
+      // @ts-ignore
+      observer.observe({ type: "layout-shift", buffered: true });
+      (window as any).__getCLS = () => cls;
+      const logOnce = () => setTimeout(() => {
+        // eslint-disable-next-line no-console
+        console.info("[Header] CLS (approx):", cls.toFixed(4));
+      }, 800);
+      window.addEventListener("load", logOnce);
+      return () => {
+        window.removeEventListener("load", logOnce);
+        observer && observer.disconnect();
+      };
+    } catch {
+      // ignore
+    }
+  }, []);
+
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -123,9 +155,9 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation (CSS-driven to prevent hydration flicker) */}
           <nav
-            className={`${isCompact ? "hidden" : "flex"} items-center space-x-8 ml-auto`}
+            className={`nav-desktop items-center space-x-8 ml-auto`}
             role="navigation"
             aria-label="Primary"
           >
@@ -366,9 +398,9 @@ export default function Header() {
 
           {/* CTA Button - removed as requested */}
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button (CSS-driven visibility) */}
           <button
-            className={`p-2 ${isCompact ? "" : "hidden"}`}
+            className={`p-2 mobile-toggle`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle navigation menu"
             aria-haspopup="true"
