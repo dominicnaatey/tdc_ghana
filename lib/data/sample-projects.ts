@@ -309,8 +309,8 @@ export const sampleProjects: Project[] = [
       "/projects/project8/floor plans/1.jpg",
       "/projects/project8/floor plans/2.jpg",
       "/projects/project8/kaizer 3ds/1.jpg",
-      "/projects/project8/kaizer 3ds/2.png",
-      "/projects/project8/kaizer 3ds/3.png",
+      "/projects/project8/kaizer 3ds/2.jpg",
+      "/projects/project8/kaizer 3ds/3.jpg",
     ],
   },
   {
@@ -354,7 +354,7 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
     completion_date: "2026-12-31",
     budget: 0,
     beneficiaries: 0,
-    featured_image: "/projects/project9/comm 2 habour view apt 3ds/3.png",
+    featured_image: "/projects/project9/comm 2 habour view apt 3ds/3.jpg",
     project_type: "Housing",
     featured: false,
     facilities: [
@@ -369,9 +369,9 @@ Your exclusive gateway to a lifestyle of elegance, comfort, and unmatched views 
     image_collection: [
       "/projects/project9/FLOOR PLAN/2.jpg",
       "/projects/project9/FLOOR PLAN/3.jpg",
-      "/projects/project9/comm 2 habour view apt 3ds/1.png",
-      "/projects/project9/comm 2 habour view apt 3ds/2.png",
-      "/projects/project9/comm 2 habour view apt 3ds/3.png",
+      "/projects/project9/comm 2 habour view apt 3ds/1.jpg",
+      "/projects/project9/comm 2 habour view apt 3ds/2.jpg",
+      "/projects/project9/comm 2 habour view apt 3ds/3.jpg",
     ],
   },
   {
