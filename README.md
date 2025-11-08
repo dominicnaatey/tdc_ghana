@@ -39,3 +39,108 @@ If the static site fetches from a separate backend domain, ensure the backend al
 
 - For local development with middleware/rewrites, set `ENABLE_MIDDLEWARE=true` and `ENABLE_REWRITES=true`, then run `npm run dev`.
 - For production static hosting, keep both flags `false` and deploy the `out/` directory.
+
+## Security: HTTP Strict Transport Security (HSTS)
+
+HSTS enforces HTTPS by instructing browsers to only connect over TLS for a period of time. This project includes configuration options for common hosts.
+
+- Why: Prevents SSL stripping and accidental HTTP access; protects subdomains when enabled.
+- Header: `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`
+
+### Apache (cPanel) setup
+
+- Place the `.htaccess` file in your cPanel `public_html/` (or the site’s document root). This repository includes a ready-to-use `.htaccess` with:
+  - 301 redirect from HTTP → HTTPS, handling `X-Forwarded-Proto` for proxies/CDNs
+  - HSTS header sent only on HTTPS responses
+
+Snippet (already in `.htaccess`):
+
+```
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+</IfModule>
+```
+
+Notes for cPanel:
+- Ensure a valid certificate (AutoSSL or Let’s Encrypt) is installed for your domain and subdomains.
+- If using a proxy (e.g., Cloudflare), confirm it passes HTTPS correctly and the origin is also HTTPS.
+
+### Nginx setup
+
+Use `docs/nginx-hsts.conf` as a template. It:
+- Redirects HTTP → HTTPS
+- Adds HSTS on all HTTPS responses
+
+Key lines:
+
+```
+server { listen 80; return 301 https://$host$request_uri; }
+server {
+  listen 443 ssl http2;
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+}
+```
+
+### Vercel
+
+For Vercel deployments, HSTS is enabled via `vercel.json` headers:
+
+```
+{
+  "headers": [{
+    "source": "/(.*)",
+    "headers": [{
+      "key": "Strict-Transport-Security",
+      "value": "max-age=31536000; includeSubDomains; preload"
+    }]
+  }]
+}
+```
+
+### Testing & Verification
+
+- Browser devtools: Open any HTTPS page → Network tab → select the request → check `Strict-Transport-Security` in Response Headers.
+- Terminal: `curl -I https://yourdomain.example` and confirm the header appears.
+- Online checkers: Use `securityheaders.com` or `hstspreload.org` to validate configuration.
+- Mixed content: Fix any `http://` resources (images, scripts, CSS). HSTS does not convert mixed content; update URLs to `https://`.
+
+### Rollout Guidance
+
+- Start with a short `max-age` (e.g., `300`) to verify behavior.
+- After confirming no mixed content or HTTP-only subdomains, raise to `31536000` (1 year).
+- Only include `preload` if you intend to submit your domain to the HSTS preload list and all subdomains are permanently on HTTPS.
+- Monitor logs and reports for any blocked HTTP resources.
+
+### cPanel-specific considerations
+
+- The `.htaccess` must reside in the serving document root (typically `public_html/`). Files inside application subfolders won’t affect the top-level vhost.
+- Some hosts run LiteSpeed; the provided `.htaccess` works the same under LiteSpeed.
+- If behind a proxy/CDN, the redirect rule includes `X-Forwarded-Proto` to avoid redirect loops.
+
+## Client Cache: News Data
+
+To reduce unnecessary network requests, the News page uses a localStorage-based cache that persists across reloads and sessions.
+
+- Storage key: `news_cache:v1:<params>`
+- TTL: 1 hour (override with `NEXT_PUBLIC_NEWS_CACHE_TTL_MS` in milliseconds)
+- Module: `lib/news-cache.ts`
+- API hooks:
+  - `listNewsCached(params)`: returns cached payload if fresh, otherwise fetches and stores
+  - `invalidateNewsCache()`: clears all cached entries
+  - `refreshNewsCache(params)`: forces a fetch and writes cache
+- Invalidation:
+  - Automatically triggered after `createNews`, `updateNews`, or `deleteNews`
+  - User-initiated via the Refresh button on `/news`
+- Logging: Enable with `NEXT_PUBLIC_DEBUG_NEWS_CACHE=true` to see cache read/write logs in the console
+
+Verification steps:
+- Load `/news` and observe fewer repeat API calls; subsequent reloads should serve from cache until TTL expiry.
+- Use DevTools → Application → Local Storage to inspect `news_cache:*` keys.
+- Click Refresh on `/news` to invalidate and refetch.
