@@ -1,0 +1,17 @@
+# Force HTTPS and enable HSTS (cPanel/Apache)
+
+# 1) Redirect all HTTP to HTTPS (301)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Handle proxies/CDNs that set X-Forwarded-Proto
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# 2) Send HSTS header on HTTPS responses only
+<IfModule mod_headers.c>
+  # Recommended: after verification, keep max-age at 1 year
+  # If you want to roll out cautiously, start with 300 and then raise to 31536000
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+</IfModule>
