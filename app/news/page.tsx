@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow, format } from "date-fns";
-import { listNews } from "@/lib/api/news";
+import { listNewsCached, invalidateNewsCache, refreshNewsCache } from "@/lib/news-cache";
 
 // Removed: now fetching from REST API inside NewsList
 
@@ -250,7 +250,7 @@ function NewsList() {
   const loadPage = useCallback(async (p: number) => {
     try {
       setIsLoading(true);
-      const payload = await listNews({ page: p, per_page: 10, sort: 'published_at', order: 'desc' });
+      const payload = await listNewsCached({ page: p, per_page: 10, sort: 'published_at', order: 'desc' });
       setDisplayedNews((prev) => (p === 1 ? payload.data : [...prev, ...payload.data]));
       setLastPage(payload.meta.last_page);
       setHasMore(p < payload.meta.last_page);
@@ -312,6 +312,22 @@ function NewsList() {
 
   return (
     <>
+      {/* Controls */}
+      <div className="max-w-4xl mx-auto px-4 mb-4 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-black">Latest News</h2>
+        <button
+          className="text-sm text-gray-600 hover:text-black"
+          onClick={async () => {
+            try {
+              invalidateNewsCache();
+              setPage(1);
+              await loadPage(1);
+            } catch {}
+          }}
+        >
+          Refresh
+        </button>
+      </div>
       {/* Desktop Layout */}
       <div className="max-w-4xl mx-auto hidden md:block">
         {displayedNews.map((article) => (

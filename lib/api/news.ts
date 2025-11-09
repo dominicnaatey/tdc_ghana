@@ -1,4 +1,5 @@
 import type { News, NewsResponse, ListParams, CreateNewsPayload, UpdateNewsPayload } from "../types/news";
+import { invalidateNewsCache } from "../news-cache";
 
 const serverBase = process.env.API_BASE_URL;
 const publicBase = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -89,20 +90,24 @@ export async function findNewsBySlug(slug: string, options?: RequestInit): Promi
 
 export async function createNews(payload: CreateNewsPayload, token?: string): Promise<News> {
   const url = new URL('/api/posts', getBase()).toString();
-  return request<News>(url, {
+  const created = await request<News>(url, {
     method: 'POST',
     headers: { ...getAuthHeaders(token) },
     body: JSON.stringify(payload),
   });
+  try { invalidateNewsCache(); } catch {}
+  return created;
 }
 
 export async function updateNews(id: number, payload: UpdateNewsPayload, token?: string): Promise<News> {
   const url = new URL(`/api/posts/${id}`, getBase()).toString();
-  return request<News>(url, {
+  const updated = await request<News>(url, {
     method: 'PUT',
     headers: { ...getAuthHeaders(token) },
     body: JSON.stringify(payload),
   });
+  try { invalidateNewsCache(); } catch {}
+  return updated;
 }
 
 export async function deleteNews(id: number, token?: string): Promise<{ success: boolean }> {
@@ -111,5 +116,6 @@ export async function deleteNews(id: number, token?: string): Promise<{ success:
     method: 'DELETE',
     headers: { ...getAuthHeaders(token) },
   });
+  try { invalidateNewsCache(); } catch {}
   return { success: true };
 }
