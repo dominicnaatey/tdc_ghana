@@ -128,19 +128,24 @@ For Vercel deployments, HSTS is enabled via `vercel.json` headers:
 
 To reduce unnecessary network requests, the News page uses a localStorage-based cache that persists across reloads and sessions.
 
-- Storage key: `news_cache:v1:<params>`
+- Storage key: `news_cache:v1:<params>` with index and LRU eviction
 - TTL: 1 hour (override with `NEXT_PUBLIC_NEWS_CACHE_TTL_MS` in milliseconds)
+- Max entries: default 50 (override with `NEXT_PUBLIC_NEWS_CACHE_MAX_ENTRIES`)
+- Disable cache: set `NEXT_PUBLIC_DISABLE_NEWS_CACHE=true`
 - Module: `lib/news-cache.ts`
 - API hooks:
-  - `listNewsCached(params)`: returns cached payload if fresh, otherwise fetches and stores
+  - `listNewsCached(params)`: returns cached payload if present; otherwise fetches and stores (stampede-protected)
   - `invalidateNewsCache()`: clears all cached entries
-  - `refreshNewsCache(params)`: forces a fetch and writes cache
+  - `refreshNewsCache(params)`: performs a conditional request using ETag/Last-Modified; on 304 updates timestamp, otherwise replaces cache
+  - `getNewsCacheStats()`: returns hit/miss/refresh/invalidations counters
 - Invalidation:
   - Automatically triggered after `createNews`, `updateNews`, or `deleteNews`
+  - Conditional GETs via ETag/Last-Modified handle server-driven updates (304 Not Modified)
   - User-initiated via the Refresh button on `/news`
-- Logging: Enable with `NEXT_PUBLIC_DEBUG_NEWS_CACHE=true` to see cache read/write logs in the console
+- Logging: Enable with `NEXT_PUBLIC_DEBUG_NEWS_CACHE=true` to see cache read/write/invalidate and 304 logs
 
 Verification steps:
 - Load `/news` and observe fewer repeat API calls; subsequent reloads should serve from cache until TTL expiry.
 - Use DevTools → Application → Local Storage to inspect `news_cache:*` keys.
 - Click Refresh on `/news` to invalidate and refetch.
+- For ETag/Last-Modified, inspect Network response headers; verify 304 responses result in cache reuse and timestamp refresh.
