@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
 import Providers from "./providers";
+import PrefetchNews from "@/components/prefetch-news";
 
 export const metadata: Metadata = {
   title: {
@@ -45,6 +46,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
             </main>
             <Footer />
           </div>
+          {/* Background prefetcher for news content */}
+          <PrefetchNews />
         </Providers>
       </body>
     </html>
