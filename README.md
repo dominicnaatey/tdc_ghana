@@ -149,3 +149,42 @@ Verification steps:
 - Use DevTools → Application → Local Storage to inspect `news_cache:*` keys.
 - Click Refresh on `/news` to invalidate and refetch.
 - For ETag/Last-Modified, inspect Network response headers; verify 304 responses result in cache reuse and timestamp refresh.
+
+## Background Preloading: News
+
+To ensure instant display when navigating to `/news`, the app preloads news data in the background while users browse other sections.
+
+- Components:
+  - `public/sw.js`: Service Worker that caches `GET /api/posts` responses using a cache-first, stale-while-revalidate strategy. It also supports explicit prefetch via `postMessage`.
+  - `components/prefetch-news.tsx`: Client component registered globally in `app/layout.tsx` that:
+    - Registers the service worker and sends prefetch messages.
+    - Uses `refreshNewsCache()` to warm localStorage with conditional requests (ETag/Last-Modified).
+    - Schedules prefetch during idle time and triggers prefetch on hover/focus of links to `/news`.
+
+- Network-aware behavior:
+  - Respects `navigator.connection.saveData` and skips prefetch when enabled.
+  - Avoids prefetch on slow connections (`effectiveType` of `slow-2g` or `2g`).
+  - Skips when offline.
+
+- Cache freshness & invalidation:
+  - Service worker revalidates in the background and updates its cached response on subsequent requests.
+  - `lib/news-cache.ts` performs conditional refresh with `If-None-Match`/`If-Modified-Since` and updates timestamps on 304.
+  - Mutations (`createNews`, `updateNews`, `deleteNews`) call `invalidateNewsCache()` to maintain consistency.
+
+- Error handling & fallbacks:
+  - If service worker prefetch fails, the component still warms localStorage; if that fails, normal fetch paths are used on `/news`.
+  - Service worker returns a minimal JSON fallback when the network fails to avoid breaking UI.
+
+- Metrics:
+  - `lib/news-cache.ts` exposes `getNewsCacheStats()` counters (hits, misses, refreshes, invalidations).
+  - `components/prefetch-news.tsx` records `window.__newsPrefetchStats` with last prefetch duration and cache counters.
+
+- Configuration:
+  - `NEXT_PUBLIC_ENABLE_REWRITES`: When `true`, prefetches relative to the app origin (for same-origin proxy setups).
+  - `NEXT_PUBLIC_API_BASE_URL`: Base URL for API when rewrites are disabled.
+  - `NEXT_PUBLIC_DEBUG_NEWS_PREFETCH=true`: Enables prefetch logs.
+
+Verification:
+- Open any non-news page and wait a few seconds; check DevTools → Application → Cache Storage (`tdc-news-v1`) and Local Storage (`news_cache:v1:*`) for preloaded entries.
+- Hover or focus a link to `/news` and verify prefetch triggers.
+- Navigate to `/news`; content should render instantly from cache, with a background revalidation in Network.
