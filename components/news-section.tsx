@@ -1,13 +1,42 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, ArrowRight, Heart, MessageCircle, Bookmark } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
-import { getPublishedNews } from "@/lib/data/sample-news"
+import { useEffect, useState } from "react"
+import { listNewsCached, refreshNewsCache } from "@/lib/news-cache"
+import type { News } from "@/lib/types/news"
 
 export default function NewsSection() {
-  const newsItems = getPublishedNews().slice(0, 3)
+  const [newsItems, setNewsItems] = useState<News[]>([])
+  const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS_SECTION || '').toLowerCase() === 'true'
+
+  useEffect(() => {
+    let mounted = true
+    const params = { page: 1, per_page: 3, sort: 'published_at' as const, order: 'desc' as const }
+    const load = async () => {
+      try {
+        const cached = await listNewsCached(params)
+        if (mounted) setNewsItems((cached?.data || []).filter(n => n.is_published))
+      } catch (err) {
+        if (DEBUG) console.warn('[news-section] cached load error', err)
+      }
+      // Background refresh to ensure latest
+      try {
+        const fresh = await refreshNewsCache(params)
+        if (mounted) setNewsItems((fresh?.data || []).filter(n => n.is_published))
+      } catch (err) {
+        if (DEBUG) console.warn('[news-section] refresh error', err)
+      }
+    }
+    load()
+    return () => { mounted = false }
+  }, [])
+
+  const resolveImage = (n: News) => n.featured_image_path || "/placeholder.svg"
 
   return (
     <section className="py-16 lg:py-24 bg-card">
@@ -26,11 +55,11 @@ export default function NewsSection() {
             {newsItems.map((article) => (
               <Link key={article.id} href={`/news/${article.slug}`} className="group">
                 <article className="space-y-4">
-                  {article.featured_image && (
+                  {resolveImage(article) && (
                     <div className="aspect-[2/1] overflow-hidden rounded-md">
                       <img
-                        src={article.featured_image || "/placeholder.svg"}
-                        alt={article.title}
+                        src={resolveImage(article)}
+                        alt={article.title || "News"}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
@@ -41,13 +70,13 @@ export default function NewsSection() {
                       {article.title}
                     </h3>
                     <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
-                      {article.excerpt}
+                      {article.excerpt || ''}
                     </p>
                     
                     {/* Engagement and Date */}
                     <div className="flex items-center justify-between pt-2">
                       <div className="flex items-center space-x-4 text-xs text-gray-500">
-                        <span>{format(new Date(article.published_at), "MMM d")}</span>
+                        {article.published_at && <span>{format(new Date(article.published_at), "MMM d")}</span>}
                         <div className="flex items-center space-x-1">
                           <Heart className="w-3 h-3" />
                           <span>{article.id * 7 + 15}</span>
@@ -70,6 +99,11 @@ export default function NewsSection() {
                 </article>
               </Link>
             ))}
+            {newsItems.length === 0 && (
+              <div className="md:col-span-3 text-center text-sm text-muted-foreground">
+                No news available yet.
+              </div>
+            )}
           </div>
         </div>
 
