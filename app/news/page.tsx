@@ -313,7 +313,7 @@ function NewsList() {
   return (
     <>
       {/* Controls */}
-      <div className="max-w-4xl mx-auto px-4 mb-4 flex items-center justify-between">
+      {/* <div className="max-w-4xl mx-auto px-4 mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-black">Latest News</h2>
         <button
           className="text-sm text-gray-600 hover:text-black"
@@ -327,7 +327,7 @@ function NewsList() {
         >
           Refresh
         </button>
-      </div>
+      </div> */}
       {/* Desktop Layout */}
       <div className="max-w-4xl mx-auto hidden md:block">
         {displayedNews.map((article) => (
