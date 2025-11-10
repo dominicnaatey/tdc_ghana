@@ -36,7 +36,44 @@ export default function NewsSection() {
     return () => { mounted = false }
   }, [])
 
-  const resolveImage = (n: News) => n.featured_image_path || "/placeholder.svg"
+  // Normalize image URL like /news and /news/[slug] pages
+  const resolveImage = (n: News) => {
+    const raw = String((n as any).featured_image_path ?? (n as any).featured_image ?? '').trim()
+    if (!raw) return "/placeholder.svg"
+
+    // Absolute http(s) URLs: use as-is
+    if (/^https?:\/\//i.test(raw)) return raw
+
+    const rewritesEnabled = String(process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false").toLowerCase() !== "false"
+    const apiBase = String(process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/$/, '')
+
+    // Normalize slashes and bad prefixes
+    let path = raw.replace(/\\/g, "/")
+    path = path.replace(/^news\//, "")
+    path = path.replace(/^\/news\//, "/")
+    path = path.replace(/^news\/posts\//, "posts/")
+    path = path.replace(/^\/news\/posts\//, "/posts/")
+    if (!path.startsWith("/")) path = "/" + path
+    path = path.replace(/\/{2,}/g, "/")
+
+    // Map '/posts/*' to '/storage/posts/*'
+    if (path.startsWith("/posts/")) {
+      path = "/storage" + path
+    }
+
+    // If pointing at remote storage and rewrites are disabled, prefix API base
+    if (path.startsWith('/storage') && !rewritesEnabled) {
+      return `${apiBase}${path}`
+    }
+
+    // Otherwise build against same-origin to leverage Next rewrites
+    const origin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_API_BASE_URL ?? '')
+    try {
+      return new URL(path, origin || 'http://localhost:3001').toString()
+    } catch {
+      return `${origin || ''}${path}`
+    }
+  }
 
   return (
     <section className="py-16 lg:py-24 bg-card">
