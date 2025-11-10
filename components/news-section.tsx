@@ -114,17 +114,17 @@ export default function NewsSection() {
                     <div className="flex items-center justify-between pt-2">
                       <div className="flex items-center space-x-4 text-xs text-gray-500">
                         {article.published_at && <span>{format(new Date(article.published_at), "MMM d")}</span>}
-                        <div className="flex items-center space-x-1">
+                        {/* <div className="flex items-center space-x-1">
                           <Heart className="w-3 h-3" />
                           <span>{article.id * 7 + 15}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
+                        </div> */}
+                        {/* <div className="flex items-center space-x-1">
                           <MessageCircle className="w-3 h-3" />
                           <span>{article.id * 3 + 2}</span>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Bookmark className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" />
+                        {/* <Bookmark className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" /> */}
                         <button className="text-gray-400 hover:text-gray-600">
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
