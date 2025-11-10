@@ -52,10 +52,10 @@ export default function FeaturedProjects() {
                           <Calendar className="w-3 h-3" />
                           <span>{format(new Date(project.start_date), "MMM yyyy")}</span>
                         </div>
-                        <div className="flex items-center space-x-1">
+                        {/* <div className="flex items-center space-x-1">
                           <Users className="w-3 h-3" />
                           <span>{(project.beneficiaries / 1000).toFixed(0)}K</span>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="flex items-center space-x-2">
                         <Badge className={
@@ -71,10 +71,10 @@ export default function FeaturedProjects() {
                     </div>
                     
                     {/* Budget */}
-                    <div className="flex items-center space-x-1 text-sm font-semibold text-primary">
+                    {/* <div className="flex items-center space-x-1 text-sm font-semibold text-primary">
                       <DollarSign className="w-4 h-4" />
                       <span>GHS {(project.budget / 1000000).toFixed(0)}M</span>
-                    </div>
+                    </div> */}
                   </div>
                 </article>
               </Link>
