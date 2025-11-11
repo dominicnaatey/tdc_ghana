@@ -165,7 +165,7 @@ export default async function ProjectPage({
                   </>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-2">Timeline</h4>
@@ -202,7 +202,7 @@ export default async function ProjectPage({
                       </Badge>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Payment Information */}
                 {project.payment_details && (
