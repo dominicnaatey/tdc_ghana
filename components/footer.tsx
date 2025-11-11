@@ -24,7 +24,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white font-serif">TDC Ghana Ltd</h3>
-                <p className="text-sm text-blue-100">Tema Development Corporation</p>
+                <p className="text-sm text-blue-100">Leaders in The Real <span className="">Estates Developemnt Business</span></p>
               </div>
             </div>
             <p className="text-blue-100 mb-4 max-w-md">
