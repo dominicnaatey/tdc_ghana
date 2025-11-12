@@ -253,27 +253,27 @@ export default function ContactContent() {
 
               {/* Contact Form */}
               <div>
-                <Card>
+                <Card className="bg-white border border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle className="font-serif">Send us a message</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="bg-white">
                     <form className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
-                      <Input placeholder="Full Name" value={formData.name} onChange={(e) => handleInputChange("name", e.target.value)} />
-                      <Input type="email" placeholder="Email Address" value={formData.email} onChange={(e) => handleInputChange("email", e.target.value)} />
-                      <Input type="tel" placeholder="Phone Number" value={formData.phone} onChange={(e) => handleInputChange("phone", e.target.value)} />
-                      <Input placeholder="Subject" value={formData.subject} onChange={(e) => handleInputChange("subject", e.target.value)} />
+                      <Input className="bg-white border border-gray-300 focus-visible:ring-gray-400" placeholder="Full Name" value={formData.name} onChange={(e) => handleInputChange("name", e.target.value)} />
+                      <Input className="bg-white border border-gray-300 focus-visible:ring-gray-400" type="email" placeholder="Email Address" value={formData.email} onChange={(e) => handleInputChange("email", e.target.value)} />
+                      <Input className="bg-white border border-gray-300 focus-visible:ring-gray-400" type="tel" placeholder="Phone Number" value={formData.phone} onChange={(e) => handleInputChange("phone", e.target.value)} />
+                      <Input className="bg-white border border-gray-300 focus-visible:ring-gray-400" placeholder="Subject" value={formData.subject} onChange={(e) => handleInputChange("subject", e.target.value)} />
                       <Select value={formData.inquiryType} onValueChange={(v) => handleInputChange("inquiryType", v)}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-white border border-gray-300">
                           <SelectValue placeholder="Select Inquiry Type" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-white">
                           <SelectItem value="housing">Housing Projects</SelectItem>
                           <SelectItem value="land">Serviced Plots / Land</SelectItem>
                           <SelectItem value="general">General Inquiry</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Textarea placeholder="Your Message" value={formData.message} onChange={(e) => handleInputChange("message", e.target.value)} rows={5} />
+                      <Textarea className="bg-white border border-gray-300 focus-visible:ring-gray-400" placeholder="Your Message" value={formData.message} onChange={(e) => handleInputChange("message", e.target.value)} rows={5} />
                       <Button type="submit" className="w-full">
                         <Send className="mr-2 h-4 w-4" />
                         Send Message
