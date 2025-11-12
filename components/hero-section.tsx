@@ -48,7 +48,7 @@ export default function HeroSection() {
             <div className="space-y-4">
               <h1 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
                 Leader in The Real 
-                <span className="text-primary block">Estate Developemnt Business</span>
+                <span className="text-primary block">Estate Development Business</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
                 TDC Ghana Ltd leads Ghana's transformation through innovative
