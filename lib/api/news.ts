@@ -3,7 +3,8 @@ import { invalidateNewsCache } from "../news-cache";
 
 const serverBase = process.env.API_BASE_URL;
 const publicBase = process.env.NEXT_PUBLIC_API_BASE_URL;
-const API_BASE_URL = serverBase ?? publicBase ?? 'http://127.0.0.1:8000';
+// Default to remote admin host in production static exports to avoid localhost fallbacks
+const API_BASE_URL = serverBase ?? publicBase ?? 'https://admin.eurochamghana.eu';
 const ENABLE_REWRITES = String(process.env.ENABLE_REWRITES || "").toLowerCase() === "true";
 
 function getBase(): string {
