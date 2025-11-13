@@ -2,6 +2,8 @@
 const nextConfig = {
   // Enable static export to generate the `out` directory on build
   output: 'export',
+  // Keep exported routes consistent with directory-based hosting (Apache)
+  trailingSlash: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
