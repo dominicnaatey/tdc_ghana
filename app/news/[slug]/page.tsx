@@ -347,7 +347,7 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
           {relatedNews.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {relatedNews.slice(0, 4).map((related) => (
-                <Link key={related.id} href={`/news/${related.slug}`} className="group">
+                <Link key={related.id} href={`/news/${String(related.slug ?? '').trim().toLowerCase()}`} className="group">
                   <article className="space-y-4">
                     { ( (related as any).featured_image ?? (related as any).featured_image_path ) && (
                       <div className="aspect-[2/1] overflow-hidden rounded-md">

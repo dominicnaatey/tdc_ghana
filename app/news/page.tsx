@@ -133,7 +133,7 @@ function NewsCard({ article }: { article: any }) {
         style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
       >
         <div className="flex gap-6">
-          <Link href={`/news/${article.slug}`} className="block flex-1">
+          <Link href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block flex-1">
             <div className="flex-1 cursor-pointer">
               <h2
                 className="font-bold text-black mb-2 line-clamp-2 leading-tight hover:text-black"
@@ -164,7 +164,7 @@ function NewsCard({ article }: { article: any }) {
           </Link>
 
           {/* Always render with fallback to placeholder */}
-          <Link href={`/news/${article.slug}`} className="block">
+          <Link href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block">
             <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
               <img
                 src={resolveImageSrc(article)}
@@ -181,7 +181,7 @@ function NewsCard({ article }: { article: any }) {
 
       {/* Mobile Layout */}
       <Link
-        href={`/news/${article.slug}`}
+        href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`}
         className="group md:hidden block mb-8"
       >
         <article className="space-y-4">
