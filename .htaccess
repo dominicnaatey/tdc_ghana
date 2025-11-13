@@ -1,9 +1,60 @@
+DirectoryIndex index.html
+RewriteEngine On
+RewriteBase /
+
+# Serve the homepage index explicitly (root path)
+RewriteRule ^$ index.html [L]
+
+# Explicitly prefer top-level .html pages when same-named directories exist
+# This guarantees /news, /gallery, /projects, /housing, /land resolve to their .html pages
+RewriteRule ^news/?$ news.html [L]
+RewriteRule ^gallery/?$ gallery.html [L]
+RewriteRule ^projects/?$ projects.html [L]
+RewriteRule ^housing/?$ housing.html [L]
+RewriteRule ^land/?$ land.html [L]
+RewriteRule ^downloads/?$ downloads.html [L]
+RewriteRule ^management/?$ management.html [L]
+RewriteRule ^serviced-plots/?$ serviced-plots.html [L]
+RewriteRule ^about/?$ about.html [L]
+RewriteRule ^contact/?$ contact.html [L]
+RewriteRule ^privacy/?$ privacy.html [L]
+RewriteRule ^terms/?$ terms.html [L]
+RewriteRule ^board-of-directors/?$ board-of-directors.html [L]
+
+# Serve Next.js static assets as-is
+RewriteRule ^_next/ - [L]
+
+# Serve existing files unchanged
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Clean URLs → page.html when present (prefer .html over directory)
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# Trailing slash → sibling .html when it exists (e.g., /serviced-plots/ → /serviced-plots.html)
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteCond %{DOCUMENT_ROOT}/%1.html -f
+RewriteRule ^(.+)/$ $1.html [L]
+
+# If a directory is requested without trailing slash, add the slash
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+[^/])$ $1/ [R=301,L]
+
+# Serve directory index.html on clean URLs (e.g., /news/ → /news/index.html)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+?)/$ $1/index.html [L]
+
+# Use exported 404 page for missing routes
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
 # Force HTTPS and enable HSTS (cPanel/Apache)
 
 # 1) Redirect all HTTP to HTTPS (301)
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  # Handle proxies/CDNs that set X-Forwarded-Proto
   RewriteCond %{HTTPS} !=on [OR]
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
@@ -11,7 +62,5 @@
 
 # 2) Send HSTS header on HTTPS responses only
 <IfModule mod_headers.c>
-  # Recommended: after verification, keep max-age at 1 year
-  # If you want to roll out cautiously, start with 300 and then raise to 31536000
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
 </IfModule>
