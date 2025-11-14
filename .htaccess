@@ -1,43 +1,27 @@
 DirectoryIndex index.html
+Options -MultiViews
 
-# Ensure directory URLs work (e.g., /news/<slug> serves /news/<slug>/index.html)
+# Use a single rewrite engine/base
 RewriteEngine On
 RewriteBase /
 
-# Add trailing slash when requesting a directory without it
+# Canonicalize News (avoid /news.html)
+RewriteRule ^news\.html$ news/ [R=301,L]
+RewriteRule ^news$ news/ [R=301,L]
+RewriteRule ^news/$ news/index.html [L]
+
+# Homepage
+RewriteRule ^$ index.html [L]
+
+# Add trailing slash for physical directories
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} !/$
 RewriteRule ^(.+)$ $1/ [R=301,L]
 
-# Serve index.html inside directories
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Serve directory index for trailing-slash URLs
+RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_FILENAME}/index.html -f
-RewriteRule ^(.+)$ $1/index.html [L]
-
-# Explicitly map homepage
-RewriteRule ^$ index.html [L]
-RewriteEngine On
-RewriteBase /
-
-# Serve the homepage index explicitly (root path)
-RewriteRule ^$ index.html [L]
-
-# Explicitly prefer top-level .html pages when same-named directories exist
-# This guarantees /news, /gallery, /projects, /housing, /land resolve to their .html pages
-RewriteRule ^news/?$ news.html [L]
-RewriteRule ^gallery/?$ gallery.html [L]
-RewriteRule ^projects/?$ projects.html [L]
-RewriteRule ^housing/?$ housing.html [L]
-RewriteRule ^land/?$ land.html [L]
-RewriteRule ^downloads/?$ downloads.html [L]
-RewriteRule ^management/?$ management.html [L]
-RewriteRule ^serviced-plots/?$ serviced-plots.html [L]
-RewriteRule ^about/?$ about.html [L]
-RewriteRule ^contact/?$ contact.html [L]
-RewriteRule ^privacy/?$ privacy.html [L]
-RewriteRule ^terms/?$ terms.html [L]
-RewriteRule ^board-of-directors/?$ board-of-directors.html [L]
+RewriteRule ^(.+)/$ $1/index.html [L]
 
 # Serve Next.js static assets as-is
 RewriteRule ^_next/ - [L]
@@ -46,23 +30,11 @@ RewriteRule ^_next/ - [L]
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# Clean URLs → page.html when present (prefer .html over directory)
+# Fallback: if a clean URL has a sibling .html, serve it
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.+?)/?$ $1.html [L]
-
-# Trailing slash → sibling .html when it exists (e.g., /serviced-plots/ → /serviced-plots.html)
-RewriteCond %{REQUEST_URI} ^(.+)/$
-RewriteCond %{DOCUMENT_ROOT}/%1.html -f
-RewriteRule ^(.+)/$ $1.html [L]
-
-# If a directory is requested without trailing slash, add the slash
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^(.+[^/])$ $1/ [R=301,L]
-
-# Serve directory index.html on clean URLs (e.g., /news/ → /news/index.html)
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_FILENAME}/index.html -f
-RewriteRule ^(.+?)/$ $1/index.html [L]
+RewriteRule ^(.+)$ $1.html [L]
 
 # Use exported 404 page for missing routes
 ErrorDocument 404 /404.html
