@@ -133,6 +133,9 @@ function withSearchParams(path: string, params: Record<string, any> = {}): strin
 async function fetchListWithCondition(params: ListParams = {}, etag?: string | null, lastModified?: string | null): Promise<{ status: number; data: NewsResponse | null; etag?: string | null; lastModified?: string | null }> {
   const url = withSearchParams('/api/posts', params as any);
   const headers: Record<string, string> = { Accept: 'application/json', 'Content-Type': 'application/json' };
+  // Include Authorization when a token is provided via env (supports public or server-only tokens)
+  const envToken = (process.env.NEXT_PUBLIC_API_TOKEN || process.env.API_TOKEN || '').trim();
+  if (envToken) headers['Authorization'] = `Bearer ${envToken}`;
   if (etag) headers['If-None-Match'] = etag;
   if (lastModified) headers['If-Modified-Since'] = lastModified;
   const res = await fetch(url, { headers, cache: 'no-store' });
