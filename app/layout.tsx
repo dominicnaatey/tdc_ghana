@@ -32,7 +32,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning className="light">
       <head>
-        <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer></script>
+        {process.env.NODE_ENV === "production" ? (
+          <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer></script>
+        ) : null}
       </head>
       <body suppressHydrationWarning className="bg-white text-gray-900">
         <Providers>
