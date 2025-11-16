@@ -50,7 +50,11 @@ async function ProjectsList() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project) => (
-        <Link key={project.id} href={`/projects/${project.slug}`} className="group">
+        <Link
+          key={project.id}
+          href={`/projects/${String(project.slug || '').trim().toLowerCase()}`}
+          className="group"
+        >
           <article className="space-y-4">
             {project.featured_image && (
               <div className="aspect-[2/1] overflow-hidden rounded-md">
