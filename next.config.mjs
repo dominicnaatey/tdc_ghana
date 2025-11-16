@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
 const nextConfig = {
-  // Enable static export to generate the `out` directory on build
-  output: 'export',
-  // Keep exported routes consistent with directory-based hosting (Apache)
-  trailingSlash: true,
+  // Enable static export only in production; keep dev server dynamic for stability
+  ...(isProd ? { output: 'export', trailingSlash: true } : {}),
   typescript: {
     ignoreBuildErrors: true,
   },
