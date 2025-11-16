@@ -9,6 +9,7 @@ const DEFAULT_TTL_MS = Number(process.env.NEXT_PUBLIC_NEWS_CACHE_TTL_MS || 3600_
 const MAX_ENTRIES = Number(process.env.NEXT_PUBLIC_NEWS_CACHE_MAX_ENTRIES || 50);
 const DISABLE = String(process.env.NEXT_PUBLIC_DISABLE_NEWS_CACHE || process.env.DISABLE_NEWS_CACHE || '').toLowerCase() === 'true';
 const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS_CACHE || process.env.DEBUG_NEWS_CACHE || '').toLowerCase() === 'true';
+const FORCE_REFRESH = String(process.env.NEXT_PUBLIC_FORCE_NEWS_REFRESH || process.env.FORCE_NEWS_REFRESH || '').toLowerCase() === 'true';
 
 type CacheEntry = {
   ts: number;            // stored timestamp
@@ -182,6 +183,27 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
   // Always revalidate the first page against the server to ensure new posts appear instantly.
   // Uses conditional headers (ETag/Last-Modified) and falls back to cache when up-to-date.
   if (isFirstPage) {
+    // Optional hard refresh toggle via env: bypass conditional and cache for page one
+    if (FORCE_REFRESH) {
+      const hardKey = key + ':hard';
+      if (inFlight.has(hardKey)) return inFlight.get(hardKey)!;
+      const p = (async () => {
+        const res = await fetchListWithCondition(params);
+        const entry: CacheEntry = {
+          ts: Date.now(),
+          lu: Date.now(),
+          params: normalizeParams(params),
+          data: (res.data as NewsResponse),
+          etag: res.etag ?? null,
+          lastModified: res.lastModified ?? null,
+        };
+        writeCache(key, entry);
+        return entry.data;
+      })();
+      inFlight.set(hardKey, p);
+      try { return await p; } finally { inFlight.delete(hardKey); }
+    }
+
     const refreshKey = key + ':refresh';
     if (inFlight.has(refreshKey)) return inFlight.get(refreshKey)!;
     const p = (async () => {
