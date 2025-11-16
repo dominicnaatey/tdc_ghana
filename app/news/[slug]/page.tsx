@@ -58,8 +58,9 @@ export async function generateStaticParams() {
 export const dynamicParams = false
 export const dynamic = 'force-static'
 
-export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
-  const slug = decodeURIComponent(params.slug).trim().toLowerCase();
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug).trim().toLowerCase();
   const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || 'false').toLowerCase() === 'true';
   if (DEBUG) console.debug('[news][slug] incoming params', params);
   let article: any = null;
@@ -111,7 +112,8 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
           const m = u.pathname.match(/\/(storage\/.*)$/);
           if (m) {
             const storagePath = '/' + m[1].replace(/^\/+/, '');
-            return rewritesEnabled ? storagePath : `${apiBase}${storagePath}`;
+            // Always return absolute remote URL for storage assets to avoid same-origin 404s on export
+            return `${apiBase}${storagePath}`;
           }
         }
       } catch {}
@@ -138,7 +140,8 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
     }
 
     if (path.startsWith('/storage')) {
-      return rewritesEnabled ? path : `${apiBase}${path}`;
+      // Force absolute remote URL for all storage paths
+      return `${apiBase}${path}`;
     }
 
     return path; // relative path for same-origin rewrites
@@ -153,7 +156,8 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
     const toStorageUrl = (p: string) => {
       const path = p.replace(/^\/+/, '');
       const storagePath = path.startsWith('storage/') ? `/${path}` : `/storage/${path}`;
-      return rewritesEnabled ? storagePath : `${apiBase}${storagePath}`;
+      // Always use absolute remote URL for storage assets
+      return `${apiBase}${storagePath}`;
     };
 
     let out = html;
