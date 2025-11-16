@@ -54,3 +54,13 @@ ErrorDocument 403 /404.html
 <IfModule mod_headers.c>
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
 </IfModule>
+RewriteEngine On
+
+# If the requested file or directory exists, serve it
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Rewrite /news/<slug> to the client-only viewer page
+# This ensures new articles work instantly without a rebuild
+RewriteRule ^news/([^/]+)/?$ news/view?slug=$1 [L,QSA]
