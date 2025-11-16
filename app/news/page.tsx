@@ -266,26 +266,6 @@ function NewsList() {
     loadPage(1);
   }, [loadPage]);
 
-  // Background revalidation: quickly check for fresh content and update UI
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const refreshed = await refreshNewsCache({ page: 1, per_page: 10, sort: 'published_at', order: 'desc' });
-        if (cancelled) return;
-        setDisplayedNews((prev) => {
-          const prevFirst = prev?.[0]?.id;
-          const nextFirst = refreshed?.data?.[0]?.id;
-          // Update only when the dataset actually changed to avoid flicker
-          return prevFirst !== nextFirst ? refreshed.data : prev;
-        });
-        setLastPage(Number(refreshed?.meta?.last_page || 1));
-        setHasMore(1 < Number(refreshed?.meta?.last_page || 1));
-      } catch {}
-    })();
-    return () => { cancelled = true; };
-  }, []);
-
   const loadMoreNews = useCallback(() => {
     if (isLoading || !hasMore) return;
     const next = page + 1;
