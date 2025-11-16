@@ -94,8 +94,8 @@ function NewsCard({ article }: { article: any }) {
       path = "/storage" + path;
     }
 
-    // For remote storage assets, prefer API base when rewrites are disabled
-    if (path.startsWith('/storage') && !rewritesEnabled) {
+    // Always use absolute remote URL for storage assets to avoid same-origin 404s on export
+    if (path.startsWith('/storage')) {
       return `${apiBase}${path}`;
     }
 
