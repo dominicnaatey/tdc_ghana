@@ -24,9 +24,17 @@ import LightboxGallery from "@/components/gallery/LightboxGallery"
 export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string }
+  params: any
 }) {
-  const { slug } = params
+  const resolved = await params
+  const raw = resolved?.slug ?? ""
+  let decoded = raw
+  try {
+    decoded = decodeURIComponent(raw)
+  } catch {
+    decoded = raw
+  }
+  const slug = decoded.trim().toLowerCase()
   const project = getProjectBySlug(slug)
 
   if (!project) {
