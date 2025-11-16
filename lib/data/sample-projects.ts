@@ -467,7 +467,10 @@ export function getFeaturedProjects() {
 }
 
 export function getProjectBySlug(slug: string) {
-  return sampleProjects.find((project) => project.slug === slug);
+  const norm = String(slug || '').trim().toLowerCase();
+  return sampleProjects.find(
+    (project) => String(project.slug || '').trim().toLowerCase() === norm
+  );
 }
 
 export function getProjectsByType(type: string) {
