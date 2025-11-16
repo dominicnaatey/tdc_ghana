@@ -1,4 +1,7 @@
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "next build"
+  "buildCommand": "next build",
+  "rewrites": [
+    { "source": "/news/:slug", "destination": "/news/view?slug=:slug" }
+  ]
 }
