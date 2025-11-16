@@ -177,13 +177,28 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
     return res.data as NewsResponse;
   }
   const key = makeKey(params);
+  const isFirstPage = Number((params?.page ?? 1)) === 1;
+
+  // Always revalidate the first page against the server to ensure new posts appear instantly.
+  // Uses conditional headers (ETag/Last-Modified) and falls back to cache when up-to-date.
+  if (isFirstPage) {
+    const refreshKey = key + ':refresh';
+    if (inFlight.has(refreshKey)) return inFlight.get(refreshKey)!;
+    const p = (async () => {
+      const refreshed = await refreshNewsCache(params);
+      return refreshed;
+    })();
+    inFlight.set(refreshKey, p);
+    try { return await p; } finally { inFlight.delete(refreshKey); }
+  }
+
+  // For subsequent pages, use cached data with stampede protection
   const existing = readCache(key);
   if (existing?.data) {
     metrics.hits += 1;
     return existing.data;
   }
   metrics.misses += 1;
-  // stampede protection: reuse in-flight promise
   if (inFlight.has(key)) return inFlight.get(key)!;
   const p = (async () => {
     const res = await fetchListWithCondition(params);
