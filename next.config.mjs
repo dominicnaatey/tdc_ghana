@@ -4,9 +4,6 @@ const nextConfig = {
   output: 'export',
   // Keep exported routes consistent with directory-based hosting (Apache)
   trailingSlash: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
