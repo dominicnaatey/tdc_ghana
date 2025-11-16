@@ -24,9 +24,10 @@ async function getHousingProject(slug: string) {
 export default async function HousingProjectPage({
   params,
 }: {
-  params: { slug: string }
+  params: any
 }) {
-  const project = await getHousingProject(params.slug)
+  const resolved = await params
+  const project = await getHousingProject(resolved?.slug)
 
   if (!project) {
     notFound()
