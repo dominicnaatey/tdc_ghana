@@ -35,17 +35,21 @@ function getAuthHeaders(token?: string): Record<string, string> {
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || '').toLowerCase() === 'true';
+  // Build headers safely using the Headers interface to satisfy HeadersInit
+  const envToken = process.env.API_TOKEN ?? process.env.NEXT_PUBLIC_API_TOKEN;
+  const hdr = new Headers(init?.headers ?? {});
+  hdr.set('Accept', 'application/json');
+  hdr.set('Content-Type', 'application/json');
+  if (envToken) hdr.set('Authorization', `Bearer ${envToken}`);
+
   if (DEBUG) {
-    const maskedHeaders = { ...(init?.headers ?? {}) } as Record<string, string>;
-    if (maskedHeaders.Authorization) maskedHeaders.Authorization = 'Bearer ***';
-    console.debug('[api][request]', { path, init: { ...init, headers: maskedHeaders } });
+    const masked = new Headers(hdr);
+    if (masked.has('Authorization')) masked.set('Authorization', 'Bearer ***');
+    console.debug('[api][request]', { path, init: { ...init, headers: Object.fromEntries(masked.entries()) } });
   }
+
   const res = await fetch(path, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {})
-    },
+    headers: hdr,
     cache: 'no-store',
     ...init,
   });
