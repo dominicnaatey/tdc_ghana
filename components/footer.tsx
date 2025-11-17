@@ -100,7 +100,7 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Contact Info</h4>
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
-                <MapPin className="h-5 w-5 text-blue-200 mt-0.5 flex-shrink-0" />
+                <MapPin className="h-5 w-5 text-blue-200 mt-0.5 shrink-0" />
                 <span className="text-blue-100 text-sm">
                   TDC Head Office<br />
                   Tema, Greater Accra Region<br />
@@ -108,11 +108,11 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-blue-200 flex-shrink-0" />
+                <Phone className="h-5 w-5 text-blue-200 shrink-0" />
                 <span className="text-blue-100 text-sm">+233 (0) 303 202 731</span>
               </li>
               <li className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-blue-200 flex-shrink-0" />
+                <Mail className="h-5 w-5 text-blue-200 shrink-0" />
                 <span className="text-blue-100 text-sm">info@tdc.gov.gh</span>
               </li>
             </ul>
