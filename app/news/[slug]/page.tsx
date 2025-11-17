@@ -467,7 +467,7 @@ export default async function NewsArticlePage({
                   <article className="space-y-4">
                     {((related as any).featured_image ??
                       (related as any).featured_image_path) && (
-                      <div className="aspect-[2/1] overflow-hidden rounded-md">
+                      <div className="aspect-2/1 overflow-hidden rounded-md">
                         <img
                           src={resolveImageSrc(related)}
                           alt={related.title}
