@@ -93,7 +93,7 @@ export default function ContactContent() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Information */}
-              <div className="max-w-md w-full">
+              <div className="max-w-md w-full order-2 lg:order-1">
                 <h1 className="text-2xl font-bold mb-7 font-serif text-foreground">
                   Get In Touch
                 </h1>
@@ -196,7 +196,7 @@ export default function ContactContent() {
                         <p>Tema - Ghana</p>
                       </address>
                       {/* Social Icons */}
-                      <div className="mt-4">
+                      <div className="mt-6">
                         <h3 className="text-sm font-semibold font-serif text-foreground mb-2">Connect with us</h3>
                         <div className="flex items-center gap-3">
                           {/* Facebook */}
@@ -273,10 +273,10 @@ export default function ContactContent() {
               </div>
 
               {/* Contact Form */}
-              <div>
+              <div className="order-1 lg:order-2">
                 <Card className="bg-white border border-gray-200 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="font-serif">Send us a message</CardTitle>
+                    <CardTitle className="font-serif font-bold text-2xl">Send us a message</CardTitle>
                   </CardHeader>
                   <CardContent className="bg-white">
                     <form className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
