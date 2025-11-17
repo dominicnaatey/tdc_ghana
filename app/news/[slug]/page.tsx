@@ -269,6 +269,11 @@ export default async function NewsArticlePage({
   const normalizedContent = normalizeContent(
     String((article as any).content ?? "")
   );
+  const siteUrl = String(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3003").replace(/\/$/, "");
+  const canonicalUrl = new URL(`/news/${slug}`, siteUrl).toString();
+  const twitterHref = `https://twitter.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(article.title || '')}`;
+  const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`;
+  const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
   if (DEBUG)
     console.debug("[news][slug] pre-render data", {
       slug,
@@ -351,18 +356,15 @@ export default async function NewsArticlePage({
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              {/* <button className="text-gray-600 hover:text-black transition-colors">
-                <Bookmark className="w-5 h-5" />
-              </button> */}
-              <button className="text-gray-600 hover:text-blue-500 transition-colors">
+              <a href={twitterHref} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors" aria-label="Share on X">
                 <Twitter className="w-5 h-5" />
-              </button>
-              <button className="text-gray-600 hover:text-blue-700 transition-colors">
+              </a>
+              <a href={facebookHref} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors" aria-label="Share on Facebook">
                 <Facebook className="w-5 h-5" />
-              </button>
-              <button className="text-gray-600 hover:text-blue-600 transition-colors">
+              </a>
+              <a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors" aria-label="Share on LinkedIn">
                 <Linkedin className="w-5 h-5" />
-              </button>
+              </a>
             </div>
           </div>
         </header>
@@ -410,18 +412,15 @@ export default async function NewsArticlePage({
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              {/* <button className="text-gray-600 hover:text-black transition-colors">
-                <Bookmark className="w-5 h-5" />
-              </button> */}
-              <button className="text-gray-600 hover:text-blue-500 transition-colors">
+              <a href={twitterHref} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors" aria-label="Share on X">
                 <Twitter className="w-5 h-5" />
-              </button>
-              <button className="text-gray-600 hover:text-blue-700 transition-colors">
+              </a>
+              <a href={facebookHref} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors" aria-label="Share on Facebook">
                 <Facebook className="w-5 h-5" />
-              </button>
-              <button className="text-gray-600 hover:text-blue-600 transition-colors">
+              </a>
+              <a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors" aria-label="Share on LinkedIn">
                 <Linkedin className="w-5 h-5" />
-              </button>
+              </a>
             </div>
           </div>
 
