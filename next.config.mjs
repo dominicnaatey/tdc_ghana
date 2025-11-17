@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
+const useStaticExport = String(process.env.OUTPUT_EXPORT || '').toLowerCase() === 'true'
 const nextConfig = {
-  // Enable static export only in production; keep dev server dynamic for stability
-  ...(isProd ? { output: 'export', trailingSlash: true } : {}),
+  // Allow opting into static export explicitly via OUTPUT_EXPORT=true
+  ...(useStaticExport ? { output: 'export', trailingSlash: true } : {}),
   typescript: {
     ignoreBuildErrors: true,
   },
