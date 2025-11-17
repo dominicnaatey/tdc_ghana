@@ -26,11 +26,32 @@ export default function ContactContent() {
     message: "",
   });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-  };
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [errorMsg, setErrorMsg] = useState("")
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setStatus("loading")
+    setErrorMsg("")
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setErrorMsg(String(body?.error || "failed"))
+        setStatus("error")
+        return
+      }
+      setStatus("success")
+      setFormData({ name: "", email: "", phone: "", subject: "", inquiryType: "", message: "" })
+    } catch {
+      setErrorMsg("network")
+      setStatus("error")
+    }
+  }
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -49,7 +70,7 @@ export default function ContactContent() {
               className="w-full h-full object-cover object-center"
             />
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/90"></div>
+            <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/30 to-black/90"></div>
           </div>
 
           {/* Content */}
@@ -85,7 +106,7 @@ export default function ContactContent() {
                       className="mt-0.5 mr-2 shrink-0 text-blue-500 transition-all duration-200 ease-out motion-reduce:transition-none"
                     />
                     <div>
-                      <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
+                      <h2 className="text-base font-bold border-b border-black mb-2 font-serif inline-block">
                         Call us
                       </h2>
                       <ul className="space-y-1 text-base">
@@ -118,7 +139,7 @@ export default function ContactContent() {
                       className="mt-0.5 mr-2 shrink-0 text-[#25D366] transition-all duration-200 ease-out motion-reduce:transition-none"
                     />
                     <div>
-                      <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
+                      <h2 className="text-base font-bold border-b border-black mb-2 font-serif inline-block">
                         WhatsApp
                       </h2>
                       <p className="text-base">
@@ -143,7 +164,7 @@ export default function ContactContent() {
                       className="mt-0.5 mr-2 shrink-0 text-red-600 transition-all duration-200 ease-out motion-reduce:transition-none"
                     />
                     <div>
-                      <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
+                      <h2 className="text-base font-bold border-b border-black mb-2 font-serif inline-block">
                         Email
                       </h2>
                       <p className="text-base">
@@ -166,7 +187,7 @@ export default function ContactContent() {
                       className="mt-0.5 mr-2 shrink-0 text-gray-600 transition-all duration-200 ease-out motion-reduce:transition-none"
                     />
                     <div>
-                      <h2 className="text-base font-bold border-b-1 border-black mb-2 font-serif inline-block">
+                      <h2 className="text-base font-bold border-b border-black mb-2 font-serif inline-block">
                         Post Address
                       </h2>
                       <address className="not-italic text-base leading-snug text-foreground">
@@ -274,10 +295,16 @@ export default function ContactContent() {
                         </SelectContent>
                       </Select> */}
                       <Textarea className="bg-white border border-gray-300 focus-visible:ring-gray-400" placeholder="Your Message" value={formData.message} onChange={(e) => handleInputChange("message", e.target.value)} rows={6}/>
-                      <Button type="submit" className="w-full">
+                      <Button type="submit" className="w-full" disabled={status === "loading"}>
                         <Send className="mr-2 h-4 w-4" />
-                        Send Message
+                        {status === "loading" ? "Sending..." : status === "success" ? "Sent" : "Send Message"}
                       </Button>
+                      {status === "error" && (
+                        <div className="mt-2 text-sm text-red-600">Submission failed{errorMsg ? `: ${errorMsg}` : ""}</div>
+                      )}
+                      {status === "success" && (
+                        <div className="mt-2 text-sm text-green-700">Message sent</div>
+                      )}
                     </form>
                   </CardContent>
                 </Card>
