@@ -351,9 +351,9 @@ export default async function NewsArticlePage({
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="text-gray-600 hover:text-black transition-colors">
+              {/* <button className="text-gray-600 hover:text-black transition-colors">
                 <Bookmark className="w-5 h-5" />
-              </button>
+              </button> */}
               <button className="text-gray-600 hover:text-blue-500 transition-colors">
                 <Twitter className="w-5 h-5" />
               </button>
@@ -410,9 +410,9 @@ export default async function NewsArticlePage({
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="text-gray-600 hover:text-black transition-colors">
+              {/* <button className="text-gray-600 hover:text-black transition-colors">
                 <Bookmark className="w-5 h-5" />
-              </button>
+              </button> */}
               <button className="text-gray-600 hover:text-blue-500 transition-colors">
                 <Twitter className="w-5 h-5" />
               </button>
@@ -505,7 +505,7 @@ export default async function NewsArticlePage({
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Bookmark className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" />
+                          {/* <Bookmark className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" /> */}
                           <button className="text-gray-400 hover:text-gray-600">
                             <svg
                               className="w-4 h-4"
