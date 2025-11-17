@@ -99,8 +99,9 @@ const albums: Record<string, AlbumDef> = {
   },
 };
 
-export default async function AlbumPage({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function AlbumPage({ params }: { params: any }) {
+  const resolved = await params
+  const slug = resolved?.slug
   const album = albums[slug];
   if (!album) {
     notFound();
