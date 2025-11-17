@@ -57,11 +57,11 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
+              {/* <li>
                 <Link href="/housing" className="text-blue-100 hover:text-white transition-colors">
                   Housing Projects
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/serviced-plots" className="text-blue-100 hover:text-white transition-colors">
             Serviced Plots
