@@ -426,7 +426,7 @@ export default async function NewsArticlePage({
           </div>
 
           {/* Author Bio */}
-          <div className="bg-gray-50 rounded-lg p-6 mb-12">
+          {/* <div className="bg-gray-50 rounded-lg p-6 mb-12">
             <div className="flex items-start space-x-4">
               <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-xl font-semibold text-gray-600">
@@ -446,7 +446,7 @@ export default async function NewsArticlePage({
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </footer>
       </article>
 
