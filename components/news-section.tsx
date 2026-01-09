@@ -93,7 +93,7 @@ export default function NewsSection() {
               <Link key={article.id} href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="group">
                 <article className="space-y-4">
                   {resolveImage(article) && (
-                    <div className="aspect-[2/1] overflow-hidden rounded-md">
+                    <div className="aspect-2/1 overflow-hidden rounded-md">
                       <img
                         src={resolveImage(article)}
                         alt={article.title || "News"}
