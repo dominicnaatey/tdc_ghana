@@ -18,14 +18,33 @@ if (fs.existsSync(apiRoute)) {
     console.log('✅ Disabled Contact API route (API routes not supported in static export)');
 }
 
-// 2. Disable dynamicParams
+// 2. Disable dynamicParams and force-dynamic
 filesToToggle.forEach(file => {
     if (fs.existsSync(file)) {
         let content = fs.readFileSync(file, 'utf8');
+        let modified = false;
+
+        // Toggle dynamicParams
         if (content.includes('export const dynamicParams = true')) {
             content = content.replace('export const dynamicParams = true', 'export const dynamicParams = false');
+            modified = true;
+        }
+
+        // Comment out force-dynamic (double quotes)
+        if (content.includes('export const dynamic = "force-dynamic"')) {
+            content = content.replace('export const dynamic = "force-dynamic"', '// export const dynamic = "force-dynamic"');
+            modified = true;
+        }
+        
+        // Comment out force-dynamic (single quotes)
+        if (content.includes("export const dynamic = 'force-dynamic'")) {
+            content = content.replace("export const dynamic = 'force-dynamic'", "// export const dynamic = 'force-dynamic'");
+            modified = true;
+        }
+
+        if (modified) {
             fs.writeFileSync(file, content);
-            console.log(`✅ Updated ${file} to dynamicParams = false`);
+            console.log(`✅ Updated ${file} for static export`);
         }
     }
 });
@@ -33,7 +52,6 @@ filesToToggle.forEach(file => {
 try {
     // 3. Run Build
     console.log('🚀 Running build with OUTPUT_EXPORT=true...');
-    // We use the package manager's build script but inject the env var
     execSync('npm run build', { 
         stdio: 'inherit', 
         env: { ...process.env, OUTPUT_EXPORT: 'true' } 
@@ -54,10 +72,29 @@ try {
     filesToToggle.forEach(file => {
         if (fs.existsSync(file)) {
             let content = fs.readFileSync(file, 'utf8');
+            let modified = false;
+
+            // Restore dynamicParams
             if (content.includes('export const dynamicParams = false')) {
                 content = content.replace('export const dynamicParams = false', 'export const dynamicParams = true');
+                modified = true;
+            }
+
+            // Uncomment force-dynamic (double quotes)
+            if (content.includes('// export const dynamic = "force-dynamic"')) {
+                content = content.replace('// export const dynamic = "force-dynamic"', 'export const dynamic = "force-dynamic"');
+                modified = true;
+            }
+
+            // Uncomment force-dynamic (single quotes)
+            if (content.includes("// export const dynamic = 'force-dynamic'")) {
+                content = content.replace("// export const dynamic = 'force-dynamic'", "export const dynamic = 'force-dynamic'");
+                modified = true;
+            }
+
+            if (modified) {
                 fs.writeFileSync(file, content);
-                console.log(`✅ Restored ${file} to dynamicParams = true`);
+                console.log(`✅ Restored ${file}`);
             }
         }
     });
