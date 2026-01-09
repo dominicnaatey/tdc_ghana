@@ -90,7 +90,7 @@ export default function NewsSection() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {newsItems.map((article) => (
-              <Link key={article.id} href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="group">
+              <a key={article.id} href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="group">
                 <article className="space-y-4">
                   {resolveImage(article) && (
                     <div className="aspect-2/1 overflow-hidden rounded-md">
@@ -134,7 +134,7 @@ export default function NewsSection() {
                     </div>
                   </div>
                 </article>
-              </Link>
+              </a>
             ))}
             {newsItems.length === 0 && (
               <div className="md:col-span-3 text-center text-sm text-muted-foreground">

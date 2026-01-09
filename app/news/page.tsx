@@ -133,7 +133,7 @@ function NewsCard({ article }: { article: any }) {
         style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
       >
         <div className="flex gap-6">
-          <Link href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block flex-1">
+          <a href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block flex-1">
             <div className="flex-1 cursor-pointer">
               <h2
                 className="font-bold text-black mb-2 line-clamp-2 leading-tight hover:text-black"
@@ -161,10 +161,10 @@ function NewsCard({ article }: { article: any }) {
                 </div>
               </div>
             </div>
-          </Link>
+          </a>
 
           {/* Always render with fallback to placeholder */}
-          <Link href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block">
+          <a href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block">
             <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
               <img
                 src={resolveImageSrc(article)}
@@ -175,12 +175,12 @@ function NewsCard({ article }: { article: any }) {
                 decoding="async"
               />
             </div>
-          </Link>
+          </a>
         </div>
       </article>
 
       {/* Mobile Layout */}
-      <Link
+      <a
         href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`}
         className="group md:hidden block mb-8"
       >
@@ -232,7 +232,7 @@ function NewsCard({ article }: { article: any }) {
             </div>
           </div>
         </article>
-      </Link>
+      </a>
     </>
   );
 }

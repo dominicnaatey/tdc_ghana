@@ -458,7 +458,7 @@ export default async function NewsArticlePage({
           {relatedNews.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {relatedNews.slice(0, 4).map((related) => (
-                <Link
+                <a
                   key={related.id}
                   href={`/news/${String(related.slug ?? "")
                     .trim()
@@ -519,7 +519,7 @@ export default async function NewsArticlePage({
                       </div>
                     </div>
                   </article>
-                </Link>
+                </a>
               ))}
             </div>
           ) : (
