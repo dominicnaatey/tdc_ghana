@@ -136,7 +136,7 @@ export default function NewsViewerClient() {
         <h1 className="text-2xl font-bold mb-4">Unable to load article</h1>
         <p className="text-gray-600">{error}</p>
         <div className="mt-6">
-          <Link href="/news" className="text-blue-600">Back to News</Link>
+          <a href="/news" className="text-blue-600">Back to News</a>
         </div>
       </div>
     );
@@ -148,7 +148,7 @@ export default function NewsViewerClient() {
         <h1 className="text-2xl font-bold mb-4">Article not found</h1>
         <p className="text-gray-600">The requested article could not be found.</p>
         <div className="mt-6">
-          <Link href="/news" className="text-blue-600">Back to News</Link>
+          <a href="/news" className="text-blue-600">Back to News</a>
         </div>
       </div>
     );
@@ -162,10 +162,10 @@ export default function NewsViewerClient() {
     <div className="min-h-screen bg-white" style={{ fontFamily: "Source Serif Pro, serif" }}>
       <div className="border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link href="/news" className="text-gray-600 hover:text-black inline-flex items-center">
+          <a href="/news" className="text-gray-600 hover:text-black inline-flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to News
-          </Link>
+          </a>
         </div>
       </div>
 
@@ -225,7 +225,7 @@ export default function NewsViewerClient() {
             <h2 className="text-2xl font-bold text-black mb-4">More from TDC</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {related.slice(0, 2).map((rel) => (
-                <Link key={rel.id} href={`/news/view?slug=${encodeURIComponent(String(rel.slug || "").trim().toLowerCase())}`} className="group">
+                <a key={rel.id} href={`/news/${String(rel.slug || "").trim().toLowerCase()}`} className="group">
                   <article className="space-y-4">
                     {(rel as any).featured_image || (rel as any).featured_image_path ? (
                       <div className="aspect-[2/1] overflow-hidden rounded-md">
@@ -237,7 +237,7 @@ export default function NewsViewerClient() {
                       <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{rel.excerpt}</p>
                     </div>
                   </article>
-                </Link>
+                </a>
               ))}
             </div>
           </div>
