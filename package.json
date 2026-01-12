@@ -5,12 +5,17 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "eslint .",
     "start": "next start",
     "build:static": "node build-static.mjs",
     "export": "echo \"Static export is handled by 'next build' with output: export.\"",
     "test": "vitest",
     "test:watch": "vitest --watch"
+  },
+  "eslintConfig": {
+    "extends": [
+      "next/core-web-vitals"
+    ]
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
@@ -80,6 +85,10 @@
     "zod": "3.25.67"
   },
   "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-config-next": "16.1.1",
+    "@next/eslint-plugin-next": "16.1.1",
+    "@typescript-eslint/parser": "^8.16.0",
     "@tailwindcss/postcss": "^4.1.9",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
