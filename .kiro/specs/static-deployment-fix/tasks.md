@@ -17,7 +17,7 @@ This implementation plan addresses the 404 routing issues when deploying Next.js
   - **Property 1: URL Rewriting Completeness**
   - **Validates: Requirements 1.1, 1.2**
 
-- [-] 1.2 Write property test for clean URL preservation
+- [x] 1.2 Write property test for clean URL preservation
   - **Property 2: Clean URL Preservation**
   - **Validates: Requirements 1.4, 1.5**
 
