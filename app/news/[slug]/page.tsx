@@ -83,8 +83,6 @@ export async function generateStaticParams() {
 }
 
 export const dynamicParams = true;
-// Force dynamic rendering so that new articles are fetched on demand
-export const dynamic = "force-dynamic";
 
 export default async function NewsArticlePage({
   params,
