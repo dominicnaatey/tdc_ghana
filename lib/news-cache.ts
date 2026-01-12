@@ -154,6 +154,28 @@ async function fetchListWithCondition(params: ListParams = {}, etag?: string | n
 
 export function getNewsCacheStats(): Metrics { return { ...metrics }; }
 
+export function getNewsCacheContent(): Array<{ key: string; size: number; ts: number; lu: number }> {
+  if (!isBrowser()) return [];
+  const items: Array<{ key: string; size: number; ts: number; lu: number }> = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i) || '';
+      if (k.startsWith(KEY_PREFIX)) {
+        const raw = localStorage.getItem(k) || '';
+        let meta = { ts: 0, lu: 0 };
+        try {
+          const parsed = JSON.parse(raw);
+          meta = { ts: parsed.ts, lu: parsed.lu };
+        } catch {}
+        items.push({ key: k, size: raw.length, ...meta });
+      }
+    }
+  } catch (err) {
+    if (DEBUG) console.warn('[news-cache][inspect-error]', err);
+  }
+  return items;
+}
+
 export function invalidateNewsCache(): void {
   if (!isBrowser()) return;
   try {
@@ -166,9 +188,24 @@ export function invalidateNewsCache(): void {
     writeIndex([]);
     metrics.invalidations += 1;
     if (DEBUG) console.log('[news-cache][invalidate]', { removed: keys.length });
+    
+    // Reset internal state if needed (metrics are kept for session tracking)
+    // But we might want to reset metrics too if requested? 
+    // The prompt says "Resets the cache timestamp" which is implicit by clearing.
   } catch (err) {
     if (DEBUG) console.warn('[news-cache][invalidate-error]', err);
   }
+}
+
+// Expose debug tools to window for console access
+if (isBrowser()) {
+  (window as any).__TDC_NEWS_CACHE__ = {
+    stats: getNewsCacheStats,
+    content: getNewsCacheContent,
+    clear: invalidateNewsCache,
+    base: BASE_KEY,
+    version: VERSION
+  };
 }
 
 export async function listNewsCached(params: ListParams = {}, _options?: RequestInit): Promise<NewsResponse> {
