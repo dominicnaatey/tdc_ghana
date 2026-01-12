@@ -10,7 +10,8 @@
     "build:static": "node build-static.mjs",
     "export": "echo \"Static export is handled by 'next build' with output: export.\"",
     "test": "vitest",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "clean": "rm -rf .next out"
   },
   "eslintConfig": {
     "extends": [
