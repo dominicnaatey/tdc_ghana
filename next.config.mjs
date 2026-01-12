@@ -6,11 +6,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-     turbo: {
-       root: process.cwd(),
-     },
-  },
   images: {
     unoptimized: true,
     remotePatterns: [
