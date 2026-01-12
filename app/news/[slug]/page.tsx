@@ -297,10 +297,10 @@ export default async function NewsArticlePage({
             asChild
             className="text-gray-600 hover:text-black"
           >
-            <Link href="/news">
+            <a href="/news">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to News
-            </Link>
+            </a>
           </Button>
         </div>
       </div>
