@@ -1,25 +1,74 @@
+DirectoryIndex index.html
 Options -MultiViews
+
+<IfModule pagespeed_module>
+    ModPagespeed off
+</IfModule>
+
+# Use a single rewrite engine/base
 RewriteEngine On
 RewriteBase /
 
-# Force HTTPS
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# 0. GLOBAL REDIRECTS (Fixing bad links)
+# Fix double news path: /news/news/slug -> /news/slug (Relative redirect to support subdirectories)
+RewriteRule ^news/news/(.*)$ news/$1 [R=301,L,NC]
 
-# 1. Serve existing files and directories directly
-RewriteCond %{REQUEST_FILENAME} -d [OR]
+# Canonicalize News (avoid /news.html)
+RewriteRule ^news\.html$ news/ [R=301,L]
+RewriteRule ^news$ news/ [R=301,L]
+RewriteRule ^news/$ news/index.html [L]
+
+# Homepage
+RewriteRule ^$ index.html [L]
+
+# Add trailing slash for physical directories
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.+)$ $1/ [R=301,L]
+
+# Serve directory index for trailing-slash URLs
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+)/$ $1/index.html [L]
+
+# Serve Next.js static assets as-is
+RewriteRule ^_next/ - [L]
+
+# Serve existing files unchanged
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# 2. News Fallback
-# If the request is for /news/<slug> and it doesn't exist as a file/dir,
-# rewrite it to the client-side viewer.
-RewriteRule ^news/([^/]+)/?$ news/view/index.html?slug=$1 [L,QSA]
-
-# 3. HTML Extension Support (Clean URLs)
-# If a request for /foo doesn't exist, but /foo.html does, serve /foo.html
+# Fallback: if a clean URL has a sibling .html, serve it
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.*)$ $1.html [L]
+RewriteRule ^(.+)$ $1.html [L]
 
-# 4. Custom 404 Page
+# Use exported 404 page for missing routes
 ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
+# Force HTTPS and enable HSTS (cPanel/Apache)
+
+# 1) Redirect all HTTP to HTTPS (301)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# 2) Send HSTS header on HTTPS responses only
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+</IfModule>
+RewriteEngine On
+
+# If the requested file or directory exists, serve it
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Rewrite /news/<slug> to the client-only viewer page
+# This ensures new articles work instantly without a rebuild
+RewriteRule ^news/([^/]+)/?$ news/view/index.html?slug=$1 [L,QSA]

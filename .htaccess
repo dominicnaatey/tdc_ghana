@@ -5,6 +5,9 @@ Options -MultiViews
 RewriteEngine On
 RewriteBase /
 
+# Canonicalize duplicate segment: /news/news/* → /news/*
+RewriteRule ^news/news/(.+)$ news/$1 [R=301,L]
+
 # Canonicalize News (avoid /news.html)
 RewriteRule ^news\.html$ news/ [R=301,L]
 RewriteRule ^news$ news/ [R=301,L]
@@ -63,4 +66,4 @@ RewriteRule ^ - [L]
 
 # Rewrite /news/<slug> to the client-only viewer page
 # This ensures new articles work instantly without a rebuild
-RewriteRule ^news/([^/]+)/?$ news/view?slug=$1 [L,QSA]
+RewriteRule ^news/([^/]+)/?$ news/view/index.html?slug=$1 [L,QSA]
