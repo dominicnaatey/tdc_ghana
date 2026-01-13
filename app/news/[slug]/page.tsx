@@ -19,8 +19,14 @@ import { format } from "date-fns";
 import { findNewsBySlug, listNews } from "@/lib/api/news";
 import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news";
 
-// Pre-generate static paths for export mode
+// Pre-generate static paths for export mode with enhanced error handling and pagination
 export async function generateStaticParams() {
+  const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || "false").toLowerCase() === "true";
+  
+  if (DEBUG) {
+    console.debug("[generateStaticParams] Starting static path generation");
+  }
+
   // Allow explicit overrides via env for static export
   const envList = String(
     process.env.STATIC_NEWS_SLUGS ||
@@ -31,55 +37,213 @@ export async function generateStaticParams() {
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
 
-  const slugs = new Set<string>();
+  if (DEBUG && envList.length > 0) {
+    console.debug("[generateStaticParams] Environment slugs:", envList);
+  }
 
-  // Try remote list at build-time: collect across all pages for completeness
+  const slugs = new Set<string>();
+  let apiSuccessful = false;
+  let totalApiArticles = 0;
+
+  // Enhanced API data fetching with comprehensive error handling and pagination
   try {
+    if (DEBUG) {
+      console.debug("[generateStaticParams] Attempting to fetch remote news data");
+    }
+
+    // Fetch first page to determine pagination
     const first = await listNews({
       page: 1,
       per_page: 50,
       sort: "published_at",
       order: "desc",
     });
+
     const lastPage = Math.max(1, Number(first.meta?.last_page || 1));
-    const addFrom = (payload: any) => {
-      for (const n of payload?.data || []) {
-        const raw = (n as any)?.slug;
+    const totalItems = Number(first.meta?.total || 0);
+    
+    if (DEBUG) {
+      console.debug("[generateStaticParams] API pagination info:", {
+        currentPage: first.meta?.current_page,
+        lastPage,
+        perPage: first.meta?.per_page,
+        total: totalItems
+      });
+    }
+
+    // Helper function to safely extract slugs from API response
+    const addSlugsFromPayload = (payload: any, pageNum: number) => {
+      const articles = payload?.data || [];
+      let pageArticleCount = 0;
+      
+      for (const article of articles) {
+        const raw = article?.slug;
         if (typeof raw === "string" && raw.trim().length > 0) {
-          slugs.add(decodeURIComponent(raw.trim().toLowerCase()));
+          const normalizedSlug = decodeURIComponent(raw.trim().toLowerCase());
+          // Only include published articles for static generation
+          if (article?.status === 'published' || !article?.status) {
+            slugs.add(normalizedSlug);
+            pageArticleCount++;
+            totalApiArticles++;
+          }
         }
       }
+      
+      if (DEBUG) {
+        console.debug(`[generateStaticParams] Page ${pageNum}: added ${pageArticleCount} published articles`);
+      }
     };
-    addFrom(first);
-    for (let p = 2; p <= lastPage; p++) {
-      try {
-        const pagePayload = await listNews({
-          page: p,
+
+    // Process first page
+    addSlugsFromPayload(first, 1);
+
+    // Handle pagination for large datasets
+    if (lastPage > 1) {
+      if (DEBUG) {
+        console.debug(`[generateStaticParams] Processing ${lastPage - 1} additional pages`);
+      }
+
+      const pagePromises = [];
+      
+      // Fetch remaining pages with controlled concurrency
+      for (let page = 2; page <= lastPage; page++) {
+        const pagePromise = listNews({
+          page,
           per_page: 50,
           sort: "published_at",
           order: "desc",
+        })
+        .then(pagePayload => {
+          addSlugsFromPayload(pagePayload, page);
+          return { page, success: true };
+        })
+        .catch(error => {
+          if (DEBUG) {
+            console.warn(`[generateStaticParams] Failed to fetch page ${page}:`, error.message);
+          }
+          return { page, success: false, error: error.message };
         });
-        addFrom(pagePayload);
-      } catch {
-        // Continue on partial failures
+        
+        pagePromises.push(pagePromise);
+      }
+
+      // Wait for all page requests to complete (allowing partial failures)
+      const pageResults = await Promise.allSettled(pagePromises);
+      
+      if (DEBUG) {
+        const successful = pageResults.filter(r => r.status === 'fulfilled' && r.value.success).length;
+        const failed = pageResults.length - successful;
+        console.debug(`[generateStaticParams] Pagination results: ${successful} successful, ${failed} failed`);
       }
     }
-  } catch {
-    // Ignore network errors; rely on local data and env overrides
+
+    apiSuccessful = true;
+    
+    if (DEBUG) {
+      console.debug(`[generateStaticParams] API fetch completed successfully. Total articles: ${totalApiArticles}`);
+    }
+
+  } catch (error) {
+    // Comprehensive error handling for API failures during build
+    if (DEBUG) {
+      console.warn("[generateStaticParams] API fetch failed:", error);
+    }
+    
+    // Log specific error types for debugging
+    if (error instanceof Error) {
+      if (error.message.includes('ECONNREFUSED') || error.message.includes('ETIMEDOUT')) {
+        if (DEBUG) {
+          console.warn("[generateStaticParams] Network connectivity issue detected");
+        }
+      } else if (error.message.includes('fetch failed') || error.message.includes('Request timeout')) {
+        if (DEBUG) {
+          console.warn("[generateStaticParams] Request timeout or fetch failure detected");
+        }
+      } else {
+        if (DEBUG) {
+          console.warn("[generateStaticParams] Unexpected API error:", error.message);
+        }
+      }
+    }
   }
 
-  // Always include local sample slugs for resilience
-  for (const n of sampleNews) {
-    const raw = (n as any)?.slug;
-    if (typeof raw === "string" && raw.trim().length > 0)
-      slugs.add(decodeURIComponent(raw.trim().toLowerCase()));
+  // Always include local sample data for resilience (Requirements 2.3, 2.5)
+  let localArticleCount = 0;
+  for (const article of sampleNews) {
+    const raw = article?.slug;
+    if (typeof raw === "string" && raw.trim().length > 0 && article.status === 'published') {
+      const normalizedSlug = decodeURIComponent(raw.trim().toLowerCase());
+      slugs.add(normalizedSlug);
+      localArticleCount++;
+    }
   }
 
-  // Include any env-provided overrides (e.g., critical slugs to export)
-  for (const s of envList)
-    slugs.add(decodeURIComponent(s.trim().toLowerCase()));
+  if (DEBUG) {
+    console.debug(`[generateStaticParams] Added ${localArticleCount} local sample articles`);
+  }
 
-  return Array.from(slugs).map((slug) => ({ slug }));
+  // Include environment variable overrides for additional slugs (Requirements 2.4, 2.5)
+  let envArticleCount = 0;
+  for (const envSlug of envList) {
+    if (envSlug && envSlug.trim().length > 0) {
+      const normalizedSlug = decodeURIComponent(envSlug.trim().toLowerCase());
+      slugs.add(normalizedSlug);
+      envArticleCount++;
+    }
+  }
+
+  if (DEBUG && envArticleCount > 0) {
+    console.debug(`[generateStaticParams] Added ${envArticleCount} environment variable slugs`);
+  }
+
+  // Generate fallback pages for common routing scenarios (Requirements 2.4)
+  const commonFallbacks = [
+    'latest-news',
+    'breaking-news', 
+    'featured-story',
+    'announcement'
+  ];
+  
+  let fallbackCount = 0;
+  for (const fallback of commonFallbacks) {
+    if (!slugs.has(fallback)) {
+      slugs.add(fallback);
+      fallbackCount++;
+    }
+  }
+
+  if (DEBUG && fallbackCount > 0) {
+    console.debug(`[generateStaticParams] Added ${fallbackCount} fallback routing pages`);
+  }
+
+  const finalSlugs = Array.from(slugs).map((slug) => ({ slug }));
+
+  if (DEBUG) {
+    console.debug("[generateStaticParams] Final summary:", {
+      totalSlugs: finalSlugs.length,
+      apiSuccessful,
+      apiArticles: totalApiArticles,
+      localArticles: localArticleCount,
+      envArticles: envArticleCount,
+      fallbackPages: fallbackCount,
+      slugs: finalSlugs.map(s => s.slug).slice(0, 10) // Show first 10 for debugging
+    });
+  }
+
+  // Validate all generated slugs are properly formatted
+  const validatedSlugs = finalSlugs.filter(({ slug }) => {
+    const isValid = /^[a-z0-9-]+$/.test(slug) && slug.length > 0 && slug.length < 200;
+    if (!isValid && DEBUG) {
+      console.warn(`[generateStaticParams] Invalid slug filtered out: "${slug}"`);
+    }
+    return isValid;
+  });
+
+  if (DEBUG && validatedSlugs.length !== finalSlugs.length) {
+    console.warn(`[generateStaticParams] Filtered out ${finalSlugs.length - validatedSlugs.length} invalid slugs`);
+  }
+
+  return validatedSlugs;
 }
 
 export const dynamicParams = true;

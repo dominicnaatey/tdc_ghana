@@ -21,7 +21,7 @@ This implementation plan addresses the 404 routing issues when deploying Next.js
   - **Property 2: Clean URL Preservation**
   - **Validates: Requirements 1.4, 1.5**
 
-- [ ] 2. Enhance static path generation in news pages
+- [x] 2. Enhance static path generation in news pages
   - Modify `generateStaticParams` in `app/news/[slug]/page.tsx` to fetch all available articles
   - Add comprehensive error handling for API failures during build
   - Include pagination handling for large datasets
@@ -29,11 +29,11 @@ This implementation plan addresses the 404 routing issues when deploying Next.js
   - Ensure local sample data is always included
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
-- [ ] 2.1 Write property test for static generation completeness
+- [x] 2.1 Write property test for static generation completeness
   - **Property 3: Static Generation Completeness**
   - **Validates: Requirements 2.1, 2.3, 2.5**
 
-- [ ] 2.2 Write property test for build resilience
+- [x] 2.2 Write property test for build resilience
   - **Property 4: Build Resilience**
   - **Validates: Requirements 2.2**
 
