@@ -64,7 +64,7 @@ export async function generateStaticParams() {
     
     if (DEBUG) {
       console.debug("[generateStaticParams] API pagination info:", {
-        currentPage: first.meta?.current_page,
+        currentPage: first.meta?.page,
         lastPage,
         perPage: first.meta?.per_page,
         total: totalItems
@@ -253,39 +253,114 @@ export default async function NewsArticlePage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug: rawSlug } = await params;
-  const slug = decodeURIComponent(rawSlug).trim().toLowerCase();
+  // Enhanced mode detection for consistent behavior across environments
   const DEBUG =
     String(
       process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || "false"
     ).toLowerCase() === "true";
-  if (DEBUG) console.debug("[news][slug] incoming params", params);
+  
+  const IS_STATIC_EXPORT = String(process.env.OUTPUT_EXPORT || "false").toLowerCase() === "true";
+  const NODE_ENV = process.env.NODE_ENV || "development";
+  const IS_PRODUCTION = NODE_ENV === "production";
+  
+  // Mode-appropriate debug information
+  const SHOW_DEBUG_INFO = DEBUG && (IS_STATIC_EXPORT || !IS_PRODUCTION);
+    
+  const { slug: rawSlug } = await params;
+  
+  // Enhanced slug normalization and validation (Requirements 3.3)
+  let slug: string;
+  try {
+    slug = decodeURIComponent(rawSlug).trim().toLowerCase();
+    
+    // Validate slug format to prevent malformed slugs from causing issues
+    if (!slug || slug.length === 0 || slug.length > 200) {
+      if (DEBUG) console.warn("[news][slug] invalid slug length", { rawSlug, slug, mode: { IS_STATIC_EXPORT, NODE_ENV } });
+      notFound();
+    }
+    
+    // Check for invalid characters that could cause issues
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      if (DEBUG) console.warn("[news][slug] invalid slug format", { rawSlug, slug, mode: { IS_STATIC_EXPORT, NODE_ENV } });
+      notFound();
+    }
+    
+    // Check for reserved words that could conflict with routes
+    const reservedWords = ['index', 'news', 'admin', 'api', '_next'];
+    if (reservedWords.includes(slug)) {
+      if (DEBUG) console.warn("[news][slug] reserved word slug", { rawSlug, slug, mode: { IS_STATIC_EXPORT, NODE_ENV } });
+      notFound();
+    }
+    
+  } catch (decodeError) {
+    // Handle URI malformed errors gracefully (Requirements 3.3)
+    if (DEBUG) console.warn("[news][slug] decode error", { rawSlug, error: decodeError, mode: { IS_STATIC_EXPORT, NODE_ENV } });
+    notFound();
+  }
+  
+  if (DEBUG) console.debug("[news][slug] incoming params", { params, mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION } });
+  
   let article: any = null;
+  let apiError: Error | null = null;
+  
+  // Enhanced API error handling with specific error types (Requirements 3.2)
   try {
     article = await findNewsBySlug(slug);
     if (DEBUG)
-      console.debug("[news][slug] fetched article by slug", { slug, article });
+      console.debug("[news][slug] fetched article by slug", { slug, article, mode: { IS_STATIC_EXPORT, NODE_ENV } });
   } catch (e) {
-    // swallow network error and fallback to local sample data
-    if (DEBUG) console.warn("[news][slug] fetch error", e);
+    apiError = e as Error;
+    
+    // Enhanced error logging for different failure types (Requirements 3.5)
+    if (DEBUG) {
+      const errorType = e instanceof Error ? e.message : 'Unknown error';
+      const errorContext = { slug, error: errorType, mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION } };
+      
+      if (errorType.includes('ECONNREFUSED') || errorType.includes('ETIMEDOUT')) {
+        console.warn("[news][slug] network connectivity issue", errorContext);
+      } else if (errorType.includes('fetch failed') || errorType.includes('timeout')) {
+        console.warn("[news][slug] request timeout or fetch failure", errorContext);
+      } else if (errorType.includes('JSON') || errorType.includes('parse')) {
+        console.warn("[news][slug] data parsing error", errorContext);
+      } else {
+        console.warn("[news][slug] unexpected API error", errorContext);
+      }
+    }
   }
 
+  // Enhanced fallback to local sample data (Requirements 3.2)
   if (!article) {
     article = getNewsBySlug(slug) as any;
-    if (DEBUG)
+    if (DEBUG) {
+      const fallbackStatus = article ? 'found' : 'not found';
       console.debug("[news][slug] fallback local sample article", {
         slug,
-        article,
+        article: article ? { id: article.id, title: article.title } : null,
+        fallbackStatus,
+        hadApiError: !!apiError,
+        mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION }
       });
+    }
   }
 
+  // Enhanced not found handling with debug information (Requirements 3.1, 3.4, 3.5)
   if (!article) {
-    if (DEBUG)
-      console.warn("[news][slug] not found; invoking notFound()", { slug });
+    if (DEBUG) {
+      console.warn("[news][slug] article not found in any source", { 
+        slug, 
+        rawSlug,
+        apiError: apiError?.message,
+        availableSlugs: sampleNews.filter(a => a.status === 'published').map(a => a.slug).slice(0, 5),
+        mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION }
+      });
+    }
     notFound();
   }
 
   let relatedNews: any[] = [];
+  let relatedApiError: Error | null = null;
+  
+  // Enhanced related news fetching with better error handling (Requirements 3.2)
   try {
     const relatedPayload = await listNews({
       page: 1,
@@ -297,14 +372,27 @@ export default async function NewsArticlePage({
       .filter((n) => n.id !== (article as any).id)
       .slice(0, 2);
     if (DEBUG)
-      console.debug("[news][slug] related response meta", relatedPayload?.meta);
+      console.debug("[news][slug] related response meta", { 
+        meta: relatedPayload?.meta, 
+        mode: { IS_STATIC_EXPORT, NODE_ENV } 
+      });
   } catch (e) {
-    // fallback to local sample data for related items
+    relatedApiError = e as Error;
+    
+    // Enhanced fallback to local sample data for related items (Requirements 3.2)
     relatedNews = sampleNews
-      .filter((n) => n.slug !== (article as any).slug)
+      .filter((n) => n.slug !== (article as any).slug && n.status === 'published')
       .slice(0, 2) as any[];
-    if (DEBUG)
-      console.warn("[news][slug] related fetch error; using sample", e);
+    
+    if (DEBUG) {
+      const errorType = e instanceof Error ? e.message : 'Unknown error';
+      console.warn("[news][slug] related fetch error; using local fallback", { 
+        slug, 
+        error: errorType,
+        fallbackCount: relatedNews.length,
+        mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION }
+      });
+    }
   }
 
   const author = (article as any).author ?? "TDC Ghana Editorial";
@@ -315,9 +403,11 @@ export default async function NewsArticlePage({
     null;
 
   // Server-safe image URL normalizer (keeps same-origin to leverage Next rewrites)
+  // Enhanced for mode consistency (Requirements 5.1, 5.2)
   const resolveImageSrc = (a: any) => {
     let raw = (a?.featured_image_path ?? a?.featured_image ?? "").trim();
     if (!raw) return "/placeholder.svg";
+    
     const rewritesEnabled =
       String(
         process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false"
@@ -371,8 +461,10 @@ export default async function NewsArticlePage({
   };
 
   // Normalize rich HTML content image sources similarly, environment-aware
+  // Enhanced for mode consistency (Requirements 5.1, 5.2)
   const normalizeContent = (html: string): string => {
     if (!html) return "";
+    
     const rewritesEnabled =
       String(
         process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false"
@@ -444,6 +536,7 @@ export default async function NewsArticlePage({
       relatedCount: relatedNews.length,
       imageSrc,
       hasContent: Boolean((article as any).content),
+      mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION, SHOW_DEBUG_INFO }
     });
 
   return (
@@ -554,10 +647,37 @@ export default async function NewsArticlePage({
 
         {DEBUG && (
           <div className="max-w-4xl mx-auto px-4 py-6 bg-yellow-50 border border-yellow-200 rounded-md">
-            <h3 className="font-semibold text-yellow-700 mb-2">Debug Data</h3>
-            <pre className="text-xs text-yellow-900 overflow-auto">
-              {JSON.stringify({ slug, article, relatedNews }, null, 2)}
-            </pre>
+            <h3 className="font-semibold text-yellow-700 mb-2">Debug Information</h3>
+            <div className="text-xs text-yellow-900 space-y-2">
+              <div><strong>Slug Processing:</strong></div>
+              <div>• Raw slug: {JSON.stringify((await params).slug)}</div>
+              <div>• Normalized slug: {JSON.stringify(slug)}</div>
+              <div>• Article source: {apiError ? 'Local fallback' : 'API'}</div>
+              {apiError && (
+                <div>• API error: {apiError.message}</div>
+              )}
+              
+              <div className="mt-3"><strong>Related News:</strong></div>
+              <div>• Count: {relatedNews.length}</div>
+              <div>• Source: {relatedApiError ? 'Local fallback' : 'API'}</div>
+              {relatedApiError && (
+                <div>• Related API error: {relatedApiError.message}</div>
+              )}
+              
+              <div className="mt-3"><strong>Article Data:</strong></div>
+              <pre className="overflow-auto max-h-40 bg-yellow-100 p-2 rounded text-xs">
+                {JSON.stringify({ 
+                  id: article.id,
+                  slug: article.slug, 
+                  title: article.title,
+                  category: article.category,
+                  author: article.author,
+                  published_at: article.published_at,
+                  hasContent: !!article.content,
+                  contentLength: article.content?.length || 0
+                }, null, 2)}
+              </pre>
+            </div>
           </div>
         )}
 
@@ -689,17 +809,38 @@ export default async function NewsArticlePage({
               <p className="text-gray-600 mb-4">
                 No related articles found in the same category.
               </p>
-              <p className="text-sm text-gray-500">This might be because:</p>
-              <ul className="text-sm text-gray-500 mt-2">
-                <li>
-                  • No other articles exist in the "{categoryLabel}" category
-                </li>
-                <li>• All articles in this category are drafts</li>
-                <li>
-                  • The current article is the only published article in this
-                  category
-                </li>
-              </ul>
+              <div className="text-sm text-gray-500 mb-6">
+                <p className="mb-2">This might be because:</p>
+                <ul className="text-left inline-block">
+                  <li>• No other articles exist in the "{categoryLabel}" category</li>
+                  <li>• All articles in this category are drafts</li>
+                  <li>• The current article is the only published article in this category</li>
+                  {relatedApiError && (
+                    <li>• API service is temporarily unavailable</li>
+                  )}
+                </ul>
+              </div>
+              
+              {/* Enhanced navigation links (Requirements 3.4) */}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button variant="outline" asChild>
+                  <a href="/news" className="flex items-center">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Browse All News
+                  </a>
+                </Button>
+                <Button variant="outline" asChild>
+                  <a href="/" className="flex items-center">
+                    Home Page
+                  </a>
+                </Button>
+              </div>
+              
+              {DEBUG && relatedApiError && (
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-xs text-red-700">
+                  <strong>Debug:</strong> Related articles API error: {relatedApiError.message}
+                </div>
+              )}
             </div>
           )}
         </div>
