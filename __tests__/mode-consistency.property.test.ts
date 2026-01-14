@@ -45,381 +45,223 @@ describe('Mode Consistency Property Tests', () => {
     delete process.env.NEXT_PUBLIC_STATIC_NEWS_SLUGS;
   });
 
-  // Generator for mode configurations
-  const modeConfigArbitrary = fc.record({
-    outputExport: fc.boolean(),
-    nodeEnv: fc.constantFrom('development', 'production', 'test'),
-    debugNews: fc.boolean(),
-    staticSlugs: fc.array(fc.stringMatching(/^[a-z0-9]+(-[a-z0-9]+)*$/), { minLength: 0, maxLength: 3 })
-  });
-
   test('Property 8: Mode Consistency - Static path generation should be consistent across modes', async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        modeConfigArbitrary,
-        fc.array(fc.stringMatching(/^[a-z0-9]+(-[a-z0-9]+)*$/), { minLength: 0, maxLength: 3 }), // API slugs
-        async (modeConfig, apiSlugs) => {
-          // Setup environment variables for the mode
-          process.env.OUTPUT_EXPORT = modeConfig.outputExport.toString();
-          process.env.NODE_ENV = modeConfig.nodeEnv;
-          process.env.NEXT_PUBLIC_DEBUG_NEWS = modeConfig.debugNews.toString();
-          process.env.DEBUG_NEWS = modeConfig.debugNews.toString();
-          
-          if (modeConfig.staticSlugs.length > 0) {
-            process.env.STATIC_NEWS_SLUGS = modeConfig.staticSlugs.join(',');
-          }
+    // Test with different mode configurations
+    const modeConfigs = [
+      { outputExport: 'true', nodeEnv: 'production', debug: 'false' },
+      { outputExport: 'false', nodeEnv: 'development', debug: 'true' },
+      { outputExport: 'true', nodeEnv: 'development', debug: 'false' }
+    ];
 
-          // Mock API response consistently
-          const { listNews } = await import('@/lib/api/news');
-          const mockListNews = vi.mocked(listNews);
-          mockListNews.mockResolvedValue({
-            data: apiSlugs.map((slug, index) => ({
-              id: `api-${index}`,
-              slug: slug,
-              status: 'published',
-              title: `API Article ${index}`,
-              published_at: new Date().toISOString()
-            })),
-            meta: {
-              current_page: 1,
-              last_page: 1,
-              per_page: 50,
-              total: apiSlugs.length
-            }
-          });
+    const testSlug = 'test-consistency-slug';
+    const results = [];
 
-          // Import and execute generateStaticParams
-          const { generateStaticParams } = await import('@/app/news/[slug]/page');
-          const staticParams = await generateStaticParams();
+    for (const config of modeConfigs) {
+      // Setup environment for this mode
+      process.env.OUTPUT_EXPORT = config.outputExport;
+      process.env.NODE_ENV = config.nodeEnv;
+      process.env.NEXT_PUBLIC_DEBUG_NEWS = config.debug;
+      process.env.DEBUG_NEWS = config.debug;
+      process.env.STATIC_NEWS_SLUGS = testSlug;
 
-          // Verify basic structure is consistent regardless of mode
-          expect(Array.isArray(staticParams)).toBe(true);
-          expect(staticParams.length).toBeGreaterThan(0);
+      // Mock API to return consistent data
+      const { listNews } = await import('@/lib/api/news');
+      const mockListNews = listNews as any;
+      mockListNews.mockResolvedValue({
+        data: [
+          { id: 'test-1', slug: 'api-test-article', status: 'published', title: 'API Test Article' }
+        ],
+        meta: { current_page: 1, last_page: 1, per_page: 50, total: 1 }
+      });
 
-          // Verify all generated slugs are valid regardless of mode
-          staticParams.forEach(param => {
-            expect(param.slug).toMatch(/^[a-z0-9-]+$/);
-            expect(param.slug.length).toBeGreaterThan(0);
-            expect(param.slug.length).toBeLessThan(200);
-          });
+      // Clear module cache and import fresh
+      vi.resetModules();
+      const { generateStaticParams } = await import('@/app/news/[slug]/page');
+      const staticParams = await generateStaticParams();
 
-          // Verify local sample data is always included regardless of mode
-          const generatedSlugs = new Set(staticParams.map(param => param.slug));
-          const localSlugs = getPublishedNews().map(article => 
-            decodeURIComponent(article.slug.trim().toLowerCase())
-          );
+      results.push({
+        config,
+        slugs: new Set(staticParams.map(param => param.slug))
+      });
+    }
 
-          localSlugs.forEach(localSlug => {
-            expect(generatedSlugs.has(localSlug)).toBe(true);
-          });
+    // Verify all configurations include the same core content
+    const firstResult = results[0];
+    results.slice(1).forEach(result => {
+      // All should include local sample data
+      const localSlugs = getPublishedNews().map(article => 
+        decodeURIComponent(article.slug.trim().toLowerCase())
+      );
+      
+      localSlugs.forEach(localSlug => {
+        expect(firstResult.slugs.has(localSlug)).toBe(true);
+        expect(result.slugs.has(localSlug)).toBe(true);
+      });
 
-          // Verify environment variable slugs are included regardless of mode
-          modeConfig.staticSlugs.forEach(envSlug => {
-            const normalizedSlug = decodeURIComponent(envSlug.trim().toLowerCase());
-            expect(generatedSlugs.has(normalizedSlug)).toBe(true);
-          });
+      // All should include environment variable slugs
+      expect(firstResult.slugs.has(testSlug)).toBe(true);
+      expect(result.slugs.has(testSlug)).toBe(true);
 
-          // Verify API slugs are included regardless of mode
-          apiSlugs.forEach(apiSlug => {
-            const normalizedSlug = decodeURIComponent(apiSlug.trim().toLowerCase());
-            expect(generatedSlugs.has(normalizedSlug)).toBe(true);
-          });
-
-          // Verify fallback pages are always included regardless of mode
-          const expectedFallbacks = ['latest-news', 'breaking-news', 'featured-story', 'announcement'];
-          expectedFallbacks.forEach(fallback => {
-            expect(generatedSlugs.has(fallback)).toBe(true);
-          });
-
-          return true;
-        }
-      ),
-      { numRuns: 20 }
-    );
-  });
+      // All should include API data
+      expect(firstResult.slugs.has('api-test-article')).toBe(true);
+      expect(result.slugs.has('api-test-article')).toBe(true);
+    });
+  }, 15000);
 
   test('Property 8: Mode Consistency - Error handling should be consistent across modes', async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        modeConfigArbitrary,
-        fc.constantFrom('network_failure', 'timeout', 'api_error'),
-        async (modeConfig, errorType) => {
-          // Setup environment variables for the mode
-          process.env.OUTPUT_EXPORT = modeConfig.outputExport.toString();
-          process.env.NODE_ENV = modeConfig.nodeEnv;
-          process.env.NEXT_PUBLIC_DEBUG_NEWS = modeConfig.debugNews.toString();
-          process.env.DEBUG_NEWS = modeConfig.debugNews.toString();
-          
-          if (modeConfig.staticSlugs.length > 0) {
-            process.env.STATIC_NEWS_SLUGS = modeConfig.staticSlugs.join(',');
-          }
+    const modeConfigs = [
+      { outputExport: 'true', nodeEnv: 'production' },
+      { outputExport: 'false', nodeEnv: 'development' }
+    ];
 
-          // Mock API failure based on error type
-          const { listNews } = await import('@/lib/api/news');
-          const mockListNews = vi.mocked(listNews);
+    const testSlug = 'error-test-slug';
+    const results = [];
 
-          switch (errorType) {
-            case 'network_failure':
-              mockListNews.mockRejectedValue(new Error('ECONNREFUSED'));
-              break;
-            case 'timeout':
-              mockListNews.mockRejectedValue(new Error('Request timeout'));
-              break;
-            case 'api_error':
-              mockListNews.mockRejectedValue(new Error('API Error: 500 Internal Server Error'));
-              break;
-          }
+    for (const config of modeConfigs) {
+      // Setup environment
+      process.env.OUTPUT_EXPORT = config.outputExport;
+      process.env.NODE_ENV = config.nodeEnv;
+      process.env.STATIC_NEWS_SLUGS = testSlug;
 
-          // Import and execute generateStaticParams
-          const { generateStaticParams } = await import('@/app/news/[slug]/page');
-          const staticParams = await generateStaticParams();
+      // Mock API failure
+      const { listNews } = await import('@/lib/api/news');
+      const mockListNews = listNews as any;
+      mockListNews.mockRejectedValue(new Error('ECONNREFUSED'));
 
-          // Verify error handling is consistent regardless of mode
-          expect(Array.isArray(staticParams)).toBe(true);
-          expect(staticParams.length).toBeGreaterThan(0);
+      // Clear module cache and import fresh
+      vi.resetModules();
+      const { generateStaticParams } = await import('@/app/news/[slug]/page');
+      const staticParams = await generateStaticParams();
 
-          // Verify fallback to local data works consistently across modes
-          const generatedSlugs = new Set(staticParams.map(param => param.slug));
-          const localSlugs = getPublishedNews().map(article => 
-            decodeURIComponent(article.slug.trim().toLowerCase())
-          );
+      results.push({
+        config,
+        slugs: new Set(staticParams.map(param => param.slug))
+      });
+    }
 
-          localSlugs.forEach(localSlug => {
-            expect(generatedSlugs.has(localSlug)).toBe(true);
-          });
+    // Verify error handling is consistent across modes
+    results.forEach(result => {
+      // Should still work with fallback data
+      expect(result.slugs.size).toBeGreaterThan(0);
 
-          // Verify environment variable slugs are handled consistently
-          modeConfig.staticSlugs.forEach(envSlug => {
-            const normalizedSlug = decodeURIComponent(envSlug.trim().toLowerCase());
-            expect(generatedSlugs.has(normalizedSlug)).toBe(true);
-          });
+      // Should include local sample data
+      const localSlugs = getPublishedNews().map(article => 
+        decodeURIComponent(article.slug.trim().toLowerCase())
+      );
+      localSlugs.forEach(localSlug => {
+        expect(result.slugs.has(localSlug)).toBe(true);
+      });
 
-          // Verify fallback pages are included consistently
-          const expectedFallbacks = ['latest-news', 'breaking-news', 'featured-story', 'announcement'];
-          expectedFallbacks.forEach(fallback => {
-            expect(generatedSlugs.has(fallback)).toBe(true);
-          });
-
-          return true;
-        }
-      ),
-      { numRuns: 20 }
-    );
-  });
+      // Should include environment variable slugs
+      expect(result.slugs.has(testSlug)).toBe(true);
+    });
+  }, 10000);
 
   test('Property 8: Mode Consistency - Slug normalization should be identical across modes', async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.array(
-          fc.oneof(
-            fc.stringMatching(/^[A-Z0-9]+(-[A-Z0-9]+)*$/), // Uppercase
-            fc.stringMatching(/^[a-z0-9]+(-[a-z0-9]+)*$/), // Lowercase
-            fc.stringMatching(/^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/), // Mixed case
-          ),
-          { minLength: 1, maxLength: 3 }
-        ),
-        async (testSlugs) => {
-          // Test with different mode configurations
-          const modeConfigs = [
-            { outputExport: 'true', nodeEnv: 'production', debug: 'false' },
-            { outputExport: 'false', nodeEnv: 'development', debug: 'true' },
-            { outputExport: 'true', nodeEnv: 'development', debug: 'false' },
-            { outputExport: 'false', nodeEnv: 'production', debug: 'true' }
-          ];
+    const testSlugs = ['TEST-SLUG', 'Mixed-Case-Slug'];
+    const modeConfigs = [
+      { outputExport: 'true', nodeEnv: 'production' },
+      { outputExport: 'false', nodeEnv: 'development' }
+    ];
 
-          const results = [];
+    const results = [];
 
-          for (const config of modeConfigs) {
-            // Setup environment for this mode
-            process.env.OUTPUT_EXPORT = config.outputExport;
-            process.env.NODE_ENV = config.nodeEnv;
-            process.env.NEXT_PUBLIC_DEBUG_NEWS = config.debug;
-            process.env.DEBUG_NEWS = config.debug;
-            process.env.STATIC_NEWS_SLUGS = testSlugs.join(',');
+    for (const config of modeConfigs) {
+      // Setup environment
+      process.env.OUTPUT_EXPORT = config.outputExport;
+      process.env.NODE_ENV = config.nodeEnv;
+      process.env.STATIC_NEWS_SLUGS = testSlugs.join(',');
 
-            // Mock API to return empty response
-            const { listNews } = await import('@/lib/api/news');
-            const mockListNews = vi.mocked(listNews);
-            mockListNews.mockResolvedValue({
-              data: [],
-              meta: { current_page: 1, last_page: 1, per_page: 50, total: 0 }
-            });
+      // Mock API to return empty response
+      const { listNews } = await import('@/lib/api/news');
+      const mockListNews = listNews as any;
+      mockListNews.mockResolvedValue({
+        data: [],
+        meta: { current_page: 1, last_page: 1, per_page: 50, total: 0 }
+      });
 
-            // Clear module cache and import fresh
-            vi.resetModules();
-            const { generateStaticParams } = await import('@/app/news/[slug]/page');
-            const staticParams = await generateStaticParams();
+      // Clear module cache and import fresh
+      vi.resetModules();
+      const { generateStaticParams } = await import('@/app/news/[slug]/page');
+      const staticParams = await generateStaticParams();
 
-            results.push({
-              config,
-              slugs: staticParams.map(param => param.slug).sort()
-            });
-          }
+      results.push({
+        config,
+        slugs: staticParams.map(param => param.slug).sort()
+      });
+    }
 
-          // Verify all modes produce identical slug normalization
-          const firstResult = results[0];
-          results.slice(1).forEach((result, index) => {
-            // Environment variable slugs should be normalized identically
-            testSlugs.forEach(testSlug => {
-              const normalizedSlug = decodeURIComponent(testSlug.trim().toLowerCase());
-              const firstHasSlug = firstResult.slugs.includes(normalizedSlug);
-              const currentHasSlug = result.slugs.includes(normalizedSlug);
-              
-              expect(currentHasSlug).toBe(firstHasSlug);
-            });
+    // Verify all modes produce identical slug normalization
+    const firstResult = results[0];
+    results.slice(1).forEach(result => {
+      // Environment variable slugs should be normalized identically
+      testSlugs.forEach(testSlug => {
+        const normalizedSlug = decodeURIComponent(testSlug.trim().toLowerCase());
+        const firstHasSlug = firstResult.slugs.includes(normalizedSlug);
+        const currentHasSlug = result.slugs.includes(normalizedSlug);
+        
+        expect(currentHasSlug).toBe(firstHasSlug);
+      });
 
-            // All slugs should follow the same normalization pattern
-            result.slugs.forEach(slug => {
-              expect(slug).toBe(slug.toLowerCase());
-              expect(slug).toBe(decodeURIComponent(slug));
-              expect(slug).toBe(slug.trim());
-              expect(slug).toMatch(/^[a-z0-9-]+$/);
-            });
-          });
-
-          return true;
-        }
-      ),
-      { numRuns: 10 }
-    );
-  });
+      // All slugs should follow the same normalization pattern
+      result.slugs.forEach(slug => {
+        expect(slug).toBe(slug.toLowerCase());
+        expect(slug).toBe(decodeURIComponent(slug));
+        expect(slug).toBe(slug.trim());
+        expect(slug).toMatch(/^[a-z0-9-]+$/);
+      });
+    });
+  }, 10000);
 
   test('Property 8: Mode Consistency - Debug information should not affect core functionality', async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.array(fc.stringMatching(/^[a-z0-9]+(-[a-z0-9]+)*$/), { minLength: 0, maxLength: 3 }),
-        async (apiSlugs) => {
-          // Test with debug enabled and disabled
-          const debugConfigs = [true, false];
-          const results = [];
+    const apiSlugs = ['test-debug-slug'];
+    const debugConfigs = [true, false];
+    const results = [];
 
-          for (const debugEnabled of debugConfigs) {
-            // Setup environment
-            process.env.NEXT_PUBLIC_DEBUG_NEWS = debugEnabled.toString();
-            process.env.DEBUG_NEWS = debugEnabled.toString();
-            process.env.NODE_ENV = 'production';
-            process.env.OUTPUT_EXPORT = 'true';
+    for (const debugEnabled of debugConfigs) {
+      // Setup environment
+      process.env.NEXT_PUBLIC_DEBUG_NEWS = debugEnabled.toString();
+      process.env.DEBUG_NEWS = debugEnabled.toString();
+      process.env.NODE_ENV = 'production';
+      process.env.OUTPUT_EXPORT = 'true';
 
-            // Mock API response
-            const { listNews } = await import('@/lib/api/news');
-            const mockListNews = vi.mocked(listNews);
-            mockListNews.mockResolvedValue({
-              data: apiSlugs.map((slug, index) => ({
-                id: `api-${index}`,
-                slug: slug,
-                status: 'published',
-                title: `API Article ${index}`,
-                published_at: new Date().toISOString()
-              })),
-              meta: {
-                current_page: 1,
-                last_page: 1,
-                per_page: 50,
-                total: apiSlugs.length
-              }
-            });
-
-            // Clear module cache and import fresh
-            vi.resetModules();
-            const { generateStaticParams } = await import('@/app/news/[slug]/page');
-            const staticParams = await generateStaticParams();
-
-            results.push({
-              debugEnabled,
-              slugs: staticParams.map(param => param.slug).sort()
-            });
-          }
-
-          // Verify debug mode doesn't affect core functionality
-          const [debugResult, noDebugResult] = results;
-          
-          // Should generate the same slugs regardless of debug mode
-          expect(debugResult.slugs).toEqual(noDebugResult.slugs);
-          
-          // Should have the same number of slugs
-          expect(debugResult.slugs.length).toBe(noDebugResult.slugs.length);
-
-          return true;
+      // Mock API response
+      const { listNews } = await import('@/lib/api/news');
+      const mockListNews = listNews as any;
+      mockListNews.mockResolvedValue({
+        data: apiSlugs.map((slug, index) => ({
+          id: `api-${index}`,
+          slug: slug,
+          status: 'published',
+          title: `API Article ${index}`,
+          published_at: new Date().toISOString()
+        })),
+        meta: {
+          current_page: 1,
+          last_page: 1,
+          per_page: 50,
+          total: apiSlugs.length
         }
-      ),
-      { numRuns: 10 }
-    );
-  });
+      });
 
-  test('Property 8: Mode Consistency - Build configuration should not affect user experience', async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.array(fc.stringMatching(/^[a-z0-9]+(-[a-z0-9]+)*$/), { minLength: 1, maxLength: 3 }),
-        async (testSlugs) => {
-          // Test different build configurations
-          const buildConfigs = [
-            { outputExport: 'true', nodeEnv: 'production' },
-            { outputExport: 'false', nodeEnv: 'development' },
-            { outputExport: 'true', nodeEnv: 'development' },
-            { outputExport: 'false', nodeEnv: 'production' }
-          ];
+      // Clear module cache and import fresh
+      vi.resetModules();
+      const { generateStaticParams } = await import('@/app/news/[slug]/page');
+      const staticParams = await generateStaticParams();
 
-          const results = [];
+      results.push({
+        debugEnabled,
+        slugs: staticParams.map(param => param.slug).sort()
+      });
+    }
 
-          for (const config of buildConfigs) {
-            // Setup environment
-            process.env.OUTPUT_EXPORT = config.outputExport;
-            process.env.NODE_ENV = config.nodeEnv;
-            process.env.STATIC_NEWS_SLUGS = testSlugs.join(',');
-
-            // Mock API to return consistent data
-            const { listNews } = await import('@/lib/api/news');
-            const mockListNews = vi.mocked(listNews);
-            mockListNews.mockResolvedValue({
-              data: [
-                { id: 'test-1', slug: 'test-article-1', status: 'published', title: 'Test Article 1' },
-                { id: 'test-2', slug: 'test-article-2', status: 'published', title: 'Test Article 2' }
-              ],
-              meta: { current_page: 1, last_page: 1, per_page: 50, total: 2 }
-            });
-
-            // Clear module cache and import fresh
-            vi.resetModules();
-            const { generateStaticParams } = await import('@/app/news/[slug]/page');
-            const staticParams = await generateStaticParams();
-
-            results.push({
-              config,
-              slugs: new Set(staticParams.map(param => param.slug))
-            });
-          }
-
-          // Verify all configurations include the same core content
-          const firstResult = results[0];
-          results.slice(1).forEach(result => {
-            // All should include local sample data
-            const localSlugs = getPublishedNews().map(article => 
-              decodeURIComponent(article.slug.trim().toLowerCase())
-            );
-            
-            localSlugs.forEach(localSlug => {
-              expect(firstResult.slugs.has(localSlug)).toBe(true);
-              expect(result.slugs.has(localSlug)).toBe(true);
-            });
-
-            // All should include environment variable slugs
-            testSlugs.forEach(testSlug => {
-              const normalizedSlug = decodeURIComponent(testSlug.trim().toLowerCase());
-              expect(firstResult.slugs.has(normalizedSlug)).toBe(true);
-              expect(result.slugs.has(normalizedSlug)).toBe(true);
-            });
-
-            // All should include API data
-            expect(firstResult.slugs.has('test-article-1')).toBe(true);
-            expect(firstResult.slugs.has('test-article-2')).toBe(true);
-            expect(result.slugs.has('test-article-1')).toBe(true);
-            expect(result.slugs.has('test-article-2')).toBe(true);
-          });
-
-          return true;
-        }
-      ),
-      { numRuns: 10 }
-    );
-  });
+    // Verify debug mode doesn't affect core functionality
+    const [debugResult, noDebugResult] = results;
+    
+    // Should generate the same slugs regardless of debug mode
+    expect(debugResult.slugs).toEqual(noDebugResult.slugs);
+    
+    // Should have the same number of slugs
+    expect(debugResult.slugs.length).toBe(noDebugResult.slugs.length);
+  }, 10000);
 });

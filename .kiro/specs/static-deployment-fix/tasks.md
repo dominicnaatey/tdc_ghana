@@ -70,7 +70,7 @@ This implementation plan addresses the 404 routing issues when deploying Next.js
   - Verify news article HTML files exist for all expected slugs
   - Ensure all tests pass, ask the user if questions arise
 
-- [-] 6. Add development and production mode consistency
+- [x] 6. Add development and production mode consistency
   - Ensure routing works consistently between `npm run dev` and static export
   - Add environment variable handling for different deployment modes
   - Verify debug information is appropriate for each mode

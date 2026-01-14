@@ -20,11 +20,17 @@ import { findNewsBySlug, listNews } from "@/lib/api/news";
 import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news";
 
 // Pre-generate static paths for export mode with enhanced error handling and pagination
+// Enhanced for mode consistency (Requirements 5.1, 5.2, 5.3)
 export async function generateStaticParams() {
   const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS || process.env.DEBUG_NEWS || "false").toLowerCase() === "true";
+  const IS_STATIC_EXPORT = String(process.env.OUTPUT_EXPORT || "false").toLowerCase() === "true";
+  const NODE_ENV = process.env.NODE_ENV || "development";
+  const IS_PRODUCTION = NODE_ENV === "production";
   
   if (DEBUG) {
-    console.debug("[generateStaticParams] Starting static path generation");
+    console.debug("[generateStaticParams] Starting static path generation", {
+      mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION }
+    });
   }
 
   // Allow explicit overrides via env for static export
@@ -37,8 +43,21 @@ export async function generateStaticParams() {
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
 
-  if (DEBUG && envList.length > 0) {
-    console.debug("[generateStaticParams] Environment slugs:", envList);
+  // Also check for additional slugs from the other environment variable
+  const additionalEnvList = String(
+    process.env.NEXT_PUBLIC_STATIC_NEWS_SLUGS ||
+      process.env.STATIC_NEWS_SLUGS ||
+      ""
+  )
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  // Combine both environment variable sources
+  const allEnvSlugs = [...new Set([...envList, ...additionalEnvList])];
+
+  if (DEBUG && allEnvSlugs.length > 0) {
+    console.debug("[generateStaticParams] Environment slugs:", allEnvSlugs);
   }
 
   const slugs = new Set<string>();
@@ -184,7 +203,7 @@ export async function generateStaticParams() {
 
   // Include environment variable overrides for additional slugs (Requirements 2.4, 2.5)
   let envArticleCount = 0;
-  for (const envSlug of envList) {
+  for (const envSlug of allEnvSlugs) {
     if (envSlug && envSlug.trim().length > 0) {
       const normalizedSlug = decodeURIComponent(envSlug.trim().toLowerCase());
       slugs.add(normalizedSlug);
@@ -226,7 +245,8 @@ export async function generateStaticParams() {
       localArticles: localArticleCount,
       envArticles: envArticleCount,
       fallbackPages: fallbackCount,
-      slugs: finalSlugs.map(s => s.slug).slice(0, 10) // Show first 10 for debugging
+      slugs: finalSlugs.map(s => s.slug).slice(0, 10), // Show first 10 for debugging
+      mode: { IS_STATIC_EXPORT, NODE_ENV, IS_PRODUCTION }
     });
   }
 
@@ -645,11 +665,17 @@ export default async function NewsArticlePage({
           />
         </div>
 
-        {DEBUG && (
+        {SHOW_DEBUG_INFO && (
           <div className="max-w-4xl mx-auto px-4 py-6 bg-yellow-50 border border-yellow-200 rounded-md">
             <h3 className="font-semibold text-yellow-700 mb-2">Debug Information</h3>
             <div className="text-xs text-yellow-900 space-y-2">
-              <div><strong>Slug Processing:</strong></div>
+              <div><strong>Mode Configuration:</strong></div>
+              <div>• Environment: {NODE_ENV}</div>
+              <div>• Static Export: {IS_STATIC_EXPORT ? 'Yes' : 'No'}</div>
+              <div>• Production: {IS_PRODUCTION ? 'Yes' : 'No'}</div>
+              <div>• Debug Enabled: {DEBUG ? 'Yes' : 'No'}</div>
+              
+              <div className="mt-3"><strong>Slug Processing:</strong></div>
               <div>• Raw slug: {JSON.stringify((await params).slug)}</div>
               <div>• Normalized slug: {JSON.stringify(slug)}</div>
               <div>• Article source: {apiError ? 'Local fallback' : 'API'}</div>
@@ -836,9 +862,11 @@ export default async function NewsArticlePage({
                 </Button>
               </div>
               
-              {DEBUG && relatedApiError && (
+              {SHOW_DEBUG_INFO && relatedApiError && (
                 <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-xs text-red-700">
                   <strong>Debug:</strong> Related articles API error: {relatedApiError.message}
+                  <br />
+                  <strong>Mode:</strong> {NODE_ENV} | Static Export: {IS_STATIC_EXPORT ? 'Yes' : 'No'}
                 </div>
               )}
             </div>
