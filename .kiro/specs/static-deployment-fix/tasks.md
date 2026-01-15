@@ -84,7 +84,7 @@ This implementation plan addresses the 404 routing issues when deploying Next.js
   - **Property 9: Configuration Responsiveness**
   - **Validates: Requirements 5.3**
 
-- [ ] 7. Create deployment validation script
+- [x] 7. Create deployment validation script
   - Create a script to validate the static export before deployment
   - Add checks for all critical HTML files
   - Add validation for .htaccess file syntax
@@ -92,12 +92,12 @@ This implementation plan addresses the 404 routing issues when deploying Next.js
   - Generate deployment instructions
   - _Requirements: 4.2, 4.3, 4.5_
 
-- [ ] 7.1 Write unit tests for deployment validation
+- [x] 7.1 Write unit tests for deployment validation
   - Test validation script functionality
   - Test deployment instruction generation
   - _Requirements: 4.2, 4.5_
 
-- [ ] 8. Final checkpoint - End-to-end testing
+- [-] 8. Final checkpoint - End-to-end testing
   - Test the complete static export locally with Apache simulation
   - Verify all news article routes work correctly
   - Test error handling for non-existent articles

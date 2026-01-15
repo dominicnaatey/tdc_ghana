@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "next start",
     "build:static": "node build-static.mjs",
+    "validate:deployment": "node scripts/validate-deployment.mjs",
     "export": "echo \"Static export is handled by 'next build' with output: export.\"",
     "test": "vitest",
     "test:watch": "vitest --watch",
