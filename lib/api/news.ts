@@ -3,14 +3,16 @@ import { invalidateNewsCache } from "../news-cache";
 
 const serverBase = process.env.API_BASE_URL;
 const publicBase = process.env.NEXT_PUBLIC_API_BASE_URL;
-// Default to remote admin host in production static exports to avoid localhost fallbacks
-const API_BASE_URL = serverBase ?? publicBase ?? 'https://admin.eurochamghana.eu';
+const API_BASE_URL = serverBase ?? publicBase ?? "https://admin.eurochamghana.eu";
 const ENABLE_REWRITES = String(process.env.ENABLE_REWRITES || "").toLowerCase() === "true";
+const IS_STATIC_EXPORT = String(process.env.OUTPUT_EXPORT || "").toLowerCase() === "true";
 
 function getBase(): string {
+  if (IS_STATIC_EXPORT) {
+    return API_BASE_URL;
+  }
   try {
     if (ENABLE_REWRITES && typeof window !== "undefined" && window.location?.origin) {
-      // Same-origin in browser only when rewrites are explicitly enabled
       return window.location.origin;
     }
   } catch {}
