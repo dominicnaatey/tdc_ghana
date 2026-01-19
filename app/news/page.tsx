@@ -31,7 +31,7 @@ function NewsCardSkeleton() {
             <Skeleton className="h-4 w-16" />
           </div>
         </div>
-        <div className="w-48 h-32 flex-shrink-0">
+        <div className="w-48 h-32 shrink-0">
           <Skeleton className="w-full h-full rounded" />
         </div>
       </div>
@@ -42,7 +42,7 @@ function NewsCardSkeleton() {
 function MobileNewsCardSkeleton() {
   return (
     <article className="space-y-4 md:hidden mb-8">
-      <div className="aspect-[2/1] overflow-hidden rounded-md">
+      <div className="aspect-2/1 overflow-hidden rounded-md">
         <Skeleton className="w-full h-full" />
       </div>
       <div className="space-y-3">

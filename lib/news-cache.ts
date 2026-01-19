@@ -1,5 +1,6 @@
 // Robust client-side cache for news with TTL, ETag support, stampede protection, metrics, and eviction
 import type { NewsResponse, ListParams } from "./types/news";
+import { sampleNews } from "./data/sample-news";
 
 const BASE_KEY = "news_cache";
 const VERSION = "v1";
@@ -131,6 +132,52 @@ function withSearchParams(path: string, params: Record<string, any> = {}): strin
   return url.toString();
 }
 
+function buildSampleResponse(params: ListParams = {}): NewsResponse {
+  const page = Number(params.page ?? 1);
+  const perPage = Number(params.per_page ?? 10);
+  const sort = params.sort ?? "published_at";
+  const order = params.order ?? "desc";
+  const sorted = [...sampleNews].sort((a, b) => {
+    if (sort === "title") {
+      return order === "asc"
+        ? a.title.localeCompare(b.title)
+        : b.title.localeCompare(a.title);
+    }
+    const da = new Date(a.published_at).getTime() || 0;
+    const db = new Date(b.published_at).getTime() || 0;
+    return order === "asc" ? da - db : db - da;
+  });
+  const start = (page - 1) * perPage;
+  const paged = sorted.slice(start, start + perPage);
+  const mapped = paged.map((n) => ({
+    id: n.id,
+    title: n.title,
+    slug: n.slug,
+    excerpt: n.excerpt,
+    content: n.content,
+    is_published: n.status === "published",
+    published_at: n.published_at,
+    category_id: null,
+    featured_image_path: n.featured_image,
+    read_time: n.read_time ?? null,
+    created_at: undefined,
+    updated_at: undefined,
+  }));
+  const total = sampleNews.length;
+  const lastPage = Math.max(1, Math.ceil(total / perPage));
+  return {
+    data: mapped,
+    meta: {
+      page,
+      per_page: perPage,
+      total,
+      last_page: lastPage,
+      sort,
+      order,
+    },
+  };
+}
+
 async function fetchListWithCondition(params: ListParams = {}, etag?: string | null, lastModified?: string | null): Promise<{ status: number; data: NewsResponse | null; etag?: string | null; lastModified?: string | null }> {
   const url = withSearchParams('/api/posts', params as any);
   const headers: Record<string, string> = { Accept: 'application/json', 'Content-Type': 'application/json' };
@@ -210,9 +257,12 @@ if (isBrowser()) {
 
 export async function listNewsCached(params: ListParams = {}, _options?: RequestInit): Promise<NewsResponse> {
   if (DISABLE) {
-    // fall back to direct fetch without caching
-    const res = await fetchListWithCondition(params);
-    return res.data as NewsResponse;
+    try {
+      const res = await fetchListWithCondition(params);
+      return res.data as NewsResponse;
+    } catch {
+      return buildSampleResponse(params);
+    }
   }
   const key = makeKey(params);
   const isFirstPage = Number((params?.page ?? 1)) === 1;
@@ -225,17 +275,31 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
       const hardKey = key + ':hard';
       if (inFlight.has(hardKey)) return inFlight.get(hardKey)!;
       const p = (async () => {
-        const res = await fetchListWithCondition(params);
-        const entry: CacheEntry = {
-          ts: Date.now(),
-          lu: Date.now(),
-          params: normalizeParams(params),
-          data: (res.data as NewsResponse),
-          etag: res.etag ?? null,
-          lastModified: res.lastModified ?? null,
-        };
-        writeCache(key, entry);
-        return entry.data;
+        try {
+          const res = await fetchListWithCondition(params);
+          const entry: CacheEntry = {
+            ts: Date.now(),
+            lu: Date.now(),
+            params: normalizeParams(params),
+            data: (res.data as NewsResponse),
+            etag: res.etag ?? null,
+            lastModified: res.lastModified ?? null,
+          };
+          writeCache(key, entry);
+          return entry.data;
+        } catch {
+          const data = buildSampleResponse(params);
+          const entry: CacheEntry = {
+            ts: Date.now(),
+            lu: Date.now(),
+            params: normalizeParams(params),
+            data,
+            etag: null,
+            lastModified: null,
+          };
+          writeCache(key, entry);
+          return data;
+        }
       })();
       inFlight.set(hardKey, p);
       try { return await p; } finally { inFlight.delete(hardKey); }
@@ -260,7 +324,47 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
   metrics.misses += 1;
   if (inFlight.has(key)) return inFlight.get(key)!;
   const p = (async () => {
-    const res = await fetchListWithCondition(params);
+    try {
+      const res = await fetchListWithCondition(params);
+      const entry: CacheEntry = {
+        ts: Date.now(),
+        lu: Date.now(),
+        params: normalizeParams(params),
+        data: (res.data as NewsResponse),
+        etag: res.etag ?? null,
+        lastModified: res.lastModified ?? null,
+      };
+      writeCache(key, entry);
+      return entry.data;
+    } catch {
+      const data = buildSampleResponse(params);
+      const entry: CacheEntry = {
+        ts: Date.now(),
+        lu: Date.now(),
+        params: normalizeParams(params),
+        data,
+        etag: null,
+        lastModified: null,
+      };
+      writeCache(key, entry);
+      return data;
+    }
+  })();
+  inFlight.set(key, p);
+  try { return await p; } finally { inFlight.delete(key); }
+}
+
+export async function refreshNewsCache(params: ListParams = {}, _options?: RequestInit): Promise<NewsResponse> {
+  const key = makeKey(params);
+  const prev = readCache(key, Number.MAX_SAFE_INTEGER);
+  try {
+    const res = await fetchListWithCondition(params, prev?.etag ?? null, prev?.lastModified ?? null);
+    metrics.refreshes += 1;
+    if (res.status === 304 && prev?.data) {
+      const updated: CacheEntry = { ...prev, ts: Date.now(), lu: Date.now() };
+      writeCache(key, updated);
+      return prev.data;
+    }
     const entry: CacheEntry = {
       ts: Date.now(),
       lu: Date.now(),
@@ -271,30 +375,20 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
     };
     writeCache(key, entry);
     return entry.data;
-  })();
-  inFlight.set(key, p);
-  try { return await p; } finally { inFlight.delete(key); }
-}
-
-export async function refreshNewsCache(params: ListParams = {}, _options?: RequestInit): Promise<NewsResponse> {
-  const key = makeKey(params);
-  // use conditional headers to check for 304
-  const prev = readCache(key, Number.MAX_SAFE_INTEGER /* ignore ttl for conditional */);
-  const res = await fetchListWithCondition(params, prev?.etag ?? null, prev?.lastModified ?? null);
-  metrics.refreshes += 1;
-  if (res.status === 304 && prev?.data) {
-    const updated: CacheEntry = { ...prev, ts: Date.now(), lu: Date.now() };
-    writeCache(key, updated);
-    return prev.data;
+  } catch {
+    if (prev?.data) {
+      return prev.data;
+    }
+    const fallback = buildSampleResponse(params);
+    const entry: CacheEntry = {
+      ts: Date.now(),
+      lu: Date.now(),
+      params: normalizeParams(params),
+      data: fallback,
+      etag: null,
+      lastModified: null,
+    };
+    writeCache(key, entry);
+    return fallback;
   }
-  const entry: CacheEntry = {
-    ts: Date.now(),
-    lu: Date.now(),
-    params: normalizeParams(params),
-    data: (res.data as NewsResponse),
-    etag: res.etag ?? null,
-    lastModified: res.lastModified ?? null,
-  };
-  writeCache(key, entry);
-  return entry.data;
 }

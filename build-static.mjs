@@ -7,6 +7,9 @@ const filesToToggle = [
     'app/land/[slug]/page.tsx',
     'app/serviced-plots/[slug]/page.tsx'
 ];
+const pinnedNewsSlugs = [
+    'tdc-ghana-ltd-commences-2026-with-prayer-and-thanksgiving'
+];
 const apiRoute = 'app/api/contact/route.ts';
 const apiRouteDisabled = 'app/api/contact/route.ts.disabled';
 const outDir = path.join(process.cwd(), 'out');
@@ -300,9 +303,19 @@ let buildSuccess = false;
 try {
     // 3. Run Build
     console.log('🚀 Running build with OUTPUT_EXPORT=true...');
+    const existingStaticSlugs = String(process.env.STATIC_NEWS_SLUGS || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+    const mergedSlugs = Array.from(new Set([...existingStaticSlugs, ...pinnedNewsSlugs]));
+    const staticSlugsEnv = mergedSlugs.join(',');
     execSync('npm run build', { 
         stdio: 'inherit', 
-        env: { ...process.env, OUTPUT_EXPORT: 'true' } 
+        env: { 
+            ...process.env, 
+            OUTPUT_EXPORT: 'true',
+            STATIC_NEWS_SLUGS: staticSlugsEnv 
+        } 
     });
     buildSuccess = true;
     console.log('🎉 Static export build completed successfully!');
