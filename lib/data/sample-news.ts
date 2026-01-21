@@ -131,9 +131,7 @@ export const sampleNews: NewsArticle[] = [
     read_time: 3,
     published_at: "2024-01-25T10:00:00Z",
     featured: true
-  },
-  
-  
+  }
 ];
 
 // Helper functions
@@ -146,7 +144,7 @@ export function getFeaturedNews() {
 }
 
 export function getNewsBySlug(slug: string) {
-  return sampleNews.find(article => article.slug === slug && article.status === 'published');
+  return sampleNews.find(article => article.slug === slug && article.status === 'published') ?? null;
 }
 
 export function getRelatedNews(currentId: number, category: string, limit: number = 3) {

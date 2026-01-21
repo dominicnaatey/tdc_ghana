@@ -351,6 +351,7 @@ export default async function NewsArticlePage({
   // Enhanced fallback to local sample data (Requirements 3.2)
   if (!article) {
     article = getNewsBySlug(slug) as any;
+
     if (DEBUG) {
       const fallbackStatus = article ? 'found' : 'not found';
       console.debug("[news][slug] fallback local sample article", {
@@ -421,7 +422,7 @@ export default async function NewsArticlePage({
     (article as any).featured_image ??
     (article as any).featured_image_path ??
     null;
-
+  
   // Server-safe image URL normalizer (keeps same-origin to leverage Next rewrites)
   // Enhanced for mode consistency (Requirements 5.1, 5.2)
   const resolveImageSrc = (a: any) => {
@@ -455,16 +456,16 @@ export default async function NewsArticlePage({
 
     let path = raw.replace(/\\/g, "/");
 
-    // drop route prefix like 'news/'
-    path = path.replace(/^news\//, "");
-    path = path.replace(/^\/news\//, "/");
-
     // fix 'news/posts/...'
     path = path.replace(/^news\/posts\//, "posts/");
     path = path.replace(/^\/news\/posts\//, "/posts/");
-
-    // ensure leading slash and collapse duplicates
-    if (!path.startsWith("/")) path = "/" + path;
+    
+    // ensure it starts with / if not absolute
+    if (!path.startsWith("/") && !path.startsWith("http")) {
+      path = "/" + path;
+    }
+    
+    // collapse duplicates
     path = path.replace(/\/{2,}/g, "/");
 
     // map '/posts/*' to '/storage/posts/*' (actual public path on remote)
@@ -477,8 +478,10 @@ export default async function NewsArticlePage({
       return `${apiBase}${path}`;
     }
 
-    return path; // relative path for same-origin rewrites
+    return path;
   };
+
+  const finalImageSrc = image ? resolveImageSrc({ featured_image: image }) : null;
 
   // Normalize rich HTML content image sources similarly, environment-aware
   // Enhanced for mode consistency (Requirements 5.1, 5.2)
@@ -533,8 +536,6 @@ export default async function NewsArticlePage({
       /src=["']\s*\/?posts\/([^"']+)["']/gi,
       (_m, p1) => `src="${toStorageUrl(`posts/${p1}`)}"`
     );
-    // drop leading 'news/' for local assets
-    out = out.replace(/src=["']\s*\/?news\/([^"']+)["']/gi, 'src="/$1"');
     // collapse stray double slashes
     out = out.replace(/src=["']\s*\/{2,}([^"']+)["']/gi, 'src="/$1"');
     return out;

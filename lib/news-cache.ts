@@ -274,7 +274,7 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
     if (FORCE_REFRESH) {
       const hardKey = key + ':hard';
       if (inFlight.has(hardKey)) return inFlight.get(hardKey)!;
-      const p = (async () => {
+      const p = async () => {
         try {
           const res = await fetchListWithCondition(params);
           const entry: CacheEntry = {
@@ -300,19 +300,21 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
           writeCache(key, entry);
           return data;
         }
-      })();
-      inFlight.set(hardKey, p);
-      try { return await p; } finally { inFlight.delete(hardKey); }
+      };
+      const run = p();
+      inFlight.set(hardKey, run);
+      try { return await run; } finally { inFlight.delete(hardKey); }
     }
 
     const refreshKey = key + ':refresh';
     if (inFlight.has(refreshKey)) return inFlight.get(refreshKey)!;
-    const p = (async () => {
+    const p = async () => {
       const refreshed = await refreshNewsCache(params);
       return refreshed;
-    })();
-    inFlight.set(refreshKey, p);
-    try { return await p; } finally { inFlight.delete(refreshKey); }
+    };
+    const run = p();
+    inFlight.set(refreshKey, run);
+    try { return await run; } finally { inFlight.delete(refreshKey); }
   }
 
   // For subsequent pages, use cached data with stampede protection
@@ -323,7 +325,7 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
   }
   metrics.misses += 1;
   if (inFlight.has(key)) return inFlight.get(key)!;
-  const p = (async () => {
+  const p = async () => {
     try {
       const res = await fetchListWithCondition(params);
       const entry: CacheEntry = {
@@ -349,9 +351,10 @@ export async function listNewsCached(params: ListParams = {}, _options?: Request
       writeCache(key, entry);
       return data;
     }
-  })();
-  inFlight.set(key, p);
-  try { return await p; } finally { inFlight.delete(key); }
+  };
+  const run = p();
+  inFlight.set(key, run);
+  try { return await run; } finally { inFlight.delete(key); }
 }
 
 export async function refreshNewsCache(params: ListParams = {}, _options?: RequestInit): Promise<NewsResponse> {
