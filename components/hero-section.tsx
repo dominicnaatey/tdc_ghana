@@ -84,7 +84,7 @@ export default function HeroSection() {
 
           {/* Video/Visual */}
           <div className="relative order-1 lg:order-2 flex justify-center">
-            <div className="relative w-full max-w-5xl aspect-5/4 overflow-hidden rounded-xl shadow-2xl transition-all duration-700 ease-in-out group bg-black">
+            <div className="relative w-full max-w-5xl aspect-4/3 overflow-hidden rounded-2xl shadow-lg transition-all duration-700 ease-in-out group bg-black">
               {/* Background Mux Player with scale effect */}
               <div className="absolute inset-0 transition-transform duration-10000 ease-linear scale-100 group-hover:scale-105">
                 {!videoError ? (
