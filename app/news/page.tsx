@@ -241,7 +241,7 @@ function NewsList() {
   const [displayedNews, setDisplayedNews] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const desktopObserverRef = useRef<HTMLDivElement>(null);

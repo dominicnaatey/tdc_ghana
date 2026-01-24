@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRight, Heart, MessageCircle, Bookmark } from "lucide-react"
+import { Calendar, ArrowRight, Heart, MessageCircle, Bookmark, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
@@ -12,6 +12,7 @@ import type { News } from "@/lib/types/news"
 
 export default function NewsSection() {
   const [newsItems, setNewsItems] = useState<News[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const DEBUG = String(process.env.NEXT_PUBLIC_DEBUG_NEWS_SECTION || '').toLowerCase() === 'true'
 
   useEffect(() => {
@@ -19,18 +20,27 @@ export default function NewsSection() {
     // Fetch 6 items to ensure we have 3 published ones after filtering
     const params = { page: 1, per_page: 6, sort: 'published_at' as const, order: 'desc' as const }
     const load = async () => {
+      let hasData = false
       try {
         const cached = await listNewsCached(params)
-        if (mounted) setNewsItems((cached?.data || []).filter(n => n.is_published).slice(0, 3))
+        if (mounted && cached?.data?.length > 0) {
+          setNewsItems((cached.data || []).filter(n => n.is_published).slice(0, 3))
+          hasData = true
+          setIsLoading(false)
+        }
       } catch (err) {
         if (DEBUG) console.warn('[news-section] cached load error', err)
       }
       // Background refresh to ensure latest
       try {
         const fresh = await refreshNewsCache(params)
-        if (mounted) setNewsItems((fresh?.data || []).filter(n => n.is_published).slice(0, 3))
+        if (mounted) {
+          setNewsItems((fresh?.data || []).filter(n => n.is_published).slice(0, 3))
+          setIsLoading(false)
+        }
       } catch (err) {
         if (DEBUG) console.warn('[news-section] refresh error', err)
+        if (mounted && !hasData) setIsLoading(false)
       }
     }
     load()
@@ -137,7 +147,14 @@ export default function NewsSection() {
                 </article>
               </a>
             ))}
-            {newsItems.length === 0 && (
+            
+            {isLoading && (
+              <div className="md:col-span-3 flex justify-center items-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            )}
+
+            {!isLoading && newsItems.length === 0 && (
               <div className="md:col-span-3 text-center text-sm text-muted-foreground">
                 No news available yet.
               </div>
