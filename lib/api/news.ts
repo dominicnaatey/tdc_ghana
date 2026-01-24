@@ -96,7 +96,7 @@ export async function findNewsBySlug(slug: string, options?: RequestInit): Promi
 }
 
 export async function createNews(payload: CreateNewsPayload, token?: string): Promise<News> {
-  const url = new URL('/api/posts', getBase()).toString();
+  const url = new URL('/api/v1/posts', getBase()).toString();
   const created = await request<News>(url, {
     method: 'POST',
     headers: { ...getAuthHeaders(token) },

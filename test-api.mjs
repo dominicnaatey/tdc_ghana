@@ -9,7 +9,7 @@ async function testApi() {
   try {
     // 1. Fetch latest posts
     console.log('\n1️⃣ Fetching latest posts...');
-    const response = await fetch(`${API_BASE}/api/posts?per_page=5`);
+    const response = await fetch(`${API_BASE}/api/v1/posts?per_page=5`);
     
     if (!response.ok) {
       throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
@@ -29,7 +29,7 @@ async function testApi() {
       // 2. Test Slug Search with the latest post's slug
       if (latest.slug) {
         console.log(`\n2️⃣ Testing search for slug: "${latest.slug}"...`);
-        const searchResponse = await fetch(`${API_BASE}/api/posts?search=${encodeURIComponent(latest.slug)}`);
+        const searchResponse = await fetch(`${API_BASE}/api/v1/posts?search=${encodeURIComponent(latest.slug)}`);
         const searchData = await searchResponse.json();
         
         const match = searchData.data?.find(n => n.slug === latest.slug);

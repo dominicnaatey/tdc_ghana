@@ -20,8 +20,11 @@ const nextConfig = {
     const ENABLE_REWRITES = String(process.env.ENABLE_REWRITES || "").toLowerCase() === "true";
     if (!ENABLE_REWRITES) return [];
     return [
-      { source: "/api/posts", destination: "https://admin.eurochamghana.eu/api/posts" },
-      { source: "/api/posts/:path*", destination: "https://admin.eurochamghana.eu/api/posts/:path*" },
+      { source: "/api/v1/posts", destination: "https://admin.eurochamghana.eu/api/v1/posts" },
+      { source: "/api/v1/posts/:path*", destination: "https://admin.eurochamghana.eu/api/v1/posts/:path*" },
+      // Legacy support: map old /api/posts to new v1 endpoint
+      { source: "/api/posts", destination: "https://admin.eurochamghana.eu/api/v1/posts" },
+      { source: "/api/posts/:path*", destination: "https://admin.eurochamghana.eu/api/v1/posts/:path*" },
       // Proxy remote storage assets to keep image requests same-origin
       { source: "/storage/:path*", destination: "https://admin.eurochamghana.eu/storage/:path*" },
       { source: "/posts/:path*", destination: "https://admin.eurochamghana.eu/posts/:path*" },

@@ -23,7 +23,7 @@ function getBase(): string {
 }
 
 function buildNewsUrl(params: ListParams = {}): string {
-  const url = new URL('/api/posts', getBase());
+  const url = new URL('/api/v1/posts', getBase());
   const { page = 1, per_page = 20, sort = 'published_at', order = 'desc', search } = params;
   url.searchParams.set('page', String(page));
   url.searchParams.set('per_page', String(per_page));

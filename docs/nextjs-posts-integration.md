@@ -8,8 +8,8 @@ A step-by-step guide to fetch and display posts from your Laravel API in a Next.
 - Backend API running:
   - Base URL (dev): `http://127.0.0.1:8000`
   - Endpoints:
-    - List posts: `GET /api/posts` (public)
-    - Get post by ID: `GET /api/posts/{id}` (public)
+    - List posts: `GET /api/v1/posts` (public)
+    - Get post by ID: `GET /api/v1/posts/{id}` (public)
     - Query params (optional): `search`, `sort` (`title|published_at|created_at`), `order` (`asc|desc`), `page`, `per_page`
   - Auth: Read endpoints are public; write endpoints require `auth:web` and are not needed for display.
 
