@@ -155,7 +155,7 @@ Verification steps:
 To ensure instant display when navigating to `/news`, the app preloads news data in the background while users browse other sections.
 
 - Components:
-  - `public/sw.js`: Service Worker that caches `GET /api/posts` responses using a cache-first, stale-while-revalidate strategy. It also supports explicit prefetch via `postMessage`.
+  - `public/sw.js`: Service Worker that caches `GET /api/v1/posts` responses using a cache-first, stale-while-revalidate strategy. It also supports explicit prefetch via `postMessage`.
   - `components/prefetch-news.tsx`: Client component registered globally in `app/layout.tsx` that:
     - Registers the service worker and sends prefetch messages.
     - Uses `refreshNewsCache()` to warm localStorage with conditional requests (ETag/Last-Modified).
