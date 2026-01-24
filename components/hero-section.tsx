@@ -23,7 +23,7 @@ export default function HeroSection() {
           {/* Content */}
           <div className="space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
-              <h1 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
                 Leader in The Real
                 <span className="text-primary block">
                   Estate Development Business
@@ -36,22 +36,22 @@ export default function HeroSection() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 w-full md:pr-16 lg:pr-24	">
               <Button
                 asChild
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground h-14 px-8 text-lg w-full sm:flex-1"
               >
                 <Link href="/projects">
                   Current Projects
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-6 w-6" />
                 </Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent h-14 px-8 text-lg w-full sm:flex-1"
               >
                 <Link href="/contact">Contact Us</Link>
               </Button>
