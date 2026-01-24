@@ -3,42 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { getAllAlbums } from "@/lib/data/sample-gallery";
+
 export default function Gallery() {
-  type GalleryItem = {
-    slug: string;
-    title: string;
-    image: string;
-    description?: string;
-  };
-  const items: GalleryItem[] = [
-    {
-      slug: "md-quarterly-durbar",
-      title: "The Managing Director Engages Staff at Quarterly Durbar",
-      image: "/gallery/1/1.jpeg",
-    },
-    {
-      slug: "md-courtesy-call-community-7-imam",
-      title: "TDC MD Pays Courtesy Call on Tema Community 7 Imam",
-      image: "/gallery/2/1.jpg",
-    },
-    {
-      slug: "housing-project-in-ho",
-      title: "TDC Ghana Ltd. To Begin Housing Project In HO",
-      image: "/gallery/3/1.JPG",
-    },
-    {
-      slug: "mwhwr-budget-guidance-2025",
-      title:
-        "Ministry of Works, Housing and Water Resources Guides TDC Ghana Ltd. on 2025 Budget Preparation",
-      image: "/gallery/4/1.JPG",
-    },
-    {
-      slug: "tdc-commitment-ibiexpo-2025",
-      title:
-        "TDC Ghana Ltd. Showcases Commitment to  Development at International Building, Infrastructure & Investment Expo 2025",
-      image: "/gallery/5/1.jpg",
-    },
-  ];
+  const albums = getAllAlbums();
 
   return (
     <main className="flex-grow bg-background-light dark:bg-background-dark font-sans">
@@ -53,10 +21,10 @@ export default function Gallery() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-          {items.map((item, idx) => (
+          {albums.map((album, idx) => (
             <Link
               key={idx}
-              href={`/gallery/${item.slug}`}
+              href={`/gallery/${album.slug}`}
               className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
@@ -64,8 +32,8 @@ export default function Gallery() {
               {/* Wrapper enforces visual aspect ratio consistency */}
               <div className="relative aspect-[4/3] w-full">
                 <Image
-                  src={item.image}
-                  alt={item.title}
+                  src={album.images[0]}
+                  alt={album.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
@@ -73,9 +41,9 @@ export default function Gallery() {
 
               <div className="absolute bottom-0 left-0 p-6">
                 <div className="inline-block rounded-md bg-black/70 sm:bg-black/50 md:bg-black/40 px-4 py-3 backdrop-blur-[2px]">
-                  <h3 className="text-base md:text-xl font-medium text-white">{item.title}</h3>
-                  {item.description && (
-                    <p className="text-white/80 mt-1">{item.description}</p>
+                  <h3 className="text-base md:text-xl font-medium text-white">{album.title}</h3>
+                  {album.description && (
+                    <p className="text-white/80 mt-1">{album.description}</p>
                   )}
                 </div>
               </div>

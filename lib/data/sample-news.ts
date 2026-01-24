@@ -15,6 +15,71 @@ export interface NewsArticle {
 
 export const sampleNews: NewsArticle[] = [
   {
+    id: 59,
+    title: "TDC Ghana Ltd Commences 2026 with Prayer and Thanksgiving",
+    slug: "tdc-ghana-ltd-commences-2026-with-prayer-and-thanksgiving",
+    content: `<p>TDC Ghana Ltd has held a prayer and thanksgiving session to usher in the new working year, 2026. The event, held at the company’s head office in Tema, brought together Management and Staff to thank God for a successful 2025 and to seek divine guidance for the year ahead.</p>
+    <p>The Managing Director, Mr. Courage K. M. Nunekpeku, in his address, commended the staff for their hard work and dedication in the previous year, which saw the company achieving significant milestones. He urged them to continue to work with zeal and commitment to ensure that the company achieves its mandate of planning, developing and managing the Tema Acquisition Area.</p>
+    <p>He also expressed gratitude to the Board of Directors, Clients, Contractors, and all partners of the company.</p>
+    <p>Prophet Daniel Amoateng of Power of Worship International Ministries delivered an exhortation on spiritual growth, unity at the workplace, personal development, goal-setting, and perseverance. He encouraged staff to work in harmony and support one another for collective success.</p>
+    <p>In his remarks, the Managing Director expressed appreciation to the Prophet and all participants, and encouraged staff to prioritize their health, regular medical check-ups, discipline, punctuality, and productivity. He also highlighted key ongoing and upcoming projects for 2026, including the Kaisei Flats, Oxygen City Project in Ho, and the planned Community 28 development in Kumasi, urging staff to demonstrate commitment and dedication towards achieving the company's strategic goals.</p>
+    <p>The session ended with prayers and a renewed call for staff to remain spiritually grounded, disciplined, and united as TDC works to deliver excellence in the year 2026 and beyond.</p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/a38ac296-4000-406e-8e18-29191d15df93.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/24a7be59-9c0d-4b53-872d-81f7e0e51efd.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/5ffe0b13-3387-4ac2-a017-58e5845b119d.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/47540c20-c0f2-41b1-bf36-7d792b8155c7.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/f483536d-7a1f-40a7-9d2f-8995a29b52f7.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/d7cbb69c-7658-4bf0-abeb-3911f6568c99.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/78589b8d-a378-4f2d-8503-2d335b58b675.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/1697470f-18db-4cad-ac2c-5b07c1a3e38b.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/7ab389f1-d12e-41fd-8f41-0e295b6df494.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/6edc01d5-01ab-4f9a-86e3-c8bbe2b95663.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/fa62109e-6c09-4404-8ada-2d460d152d07.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/1fc390e1-865f-4502-949d-bc3ba8ac6153.jpeg" alt=""></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/8e0648ac-473e-4e2b-a104-0d71e2d1a098.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/ccd824fe-ec39-43f4-ad7f-97cd33fa52f9.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/253078bb-d1c3-4248-9f02-ebe16367bcf6.jpeg" alt=""></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/b6142a13-6701-4531-9b0d-d65d6f4ce73a.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/8abf4d73-6ca2-4286-9df7-e88b10b6cfb5.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/27544641-02d9-40ba-a8d1-7755bfb51cda.jpeg" alt=""></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/762c7b8c-0135-4f34-b861-686990bfb2ff.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/40107069-5622-4c5c-9b2f-d87bed3c5373.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/b0352267-f7cb-44f4-bfec-b762316aef4b.jpeg" alt=""></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/4e09fdba-d8b1-4f23-b46c-3528353c627f.jpeg" alt="" width="1358" height="905"></p>
+    <p>&nbsp;</p>
+    <p><img src="/storage/editor/2026/01/171e9620-a1da-421e-b138-c84755066360.jpeg" alt="" width="1358" height="905"></p>`,
+    excerpt: "TDC Ghana Ltd has held a prayer and thanksgiving session to usher in the new working year, 2026. The event brought together Management and Staff to thank God for a successful 2025.",
+    featured_image: "posts/7H4CwhQmGvqrJzQ3KQt0w3ZDYgcAsgzp0QujUWqG.jpg",
+    status: "published",
+    category: "Events",
+    author: "TDC Ghana Communications",
+    read_time: 5,
+    published_at: "2026-01-05T10:30:00Z",
+    featured: true
+  },
+  {
     id: 1,
     title: "AGI Tema Branch and TDC Ghana Forge Strong Partnership for Tema Development",
     slug: "agi-tema-branch-and-tdc-ghana-forge-strong-partnership-for-tema-development",

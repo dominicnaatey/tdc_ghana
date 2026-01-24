@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
-import { findNewsBySlug, listNews } from "@/lib/api/news";
+import { findNewsBySlug, listNews, getNews } from "@/lib/api/news";
 import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news";
 
 // Pre-generate static paths for export mode with enhanced error handling and pagination
@@ -325,9 +325,24 @@ export default async function NewsArticlePage({
   
   // Enhanced API error handling with specific error types (Requirements 3.2)
   try {
-    article = await findNewsBySlug(slug);
-    if (DEBUG)
-      console.debug("[news][slug] fetched article by slug", { slug, article, mode: { IS_STATIC_EXPORT, NODE_ENV } });
+    const found = await findNewsBySlug(slug);
+    
+    if (found) {
+      // Ensure we fetch the full article details using the GET method by ID
+      // This guarantees we get the complete content even if the list endpoint returns summaries
+      if (DEBUG) console.debug("[news][slug] found in list, fetching full details by ID", { id: found.id, slug });
+      
+      try {
+        article = await getNews(found.id);
+        if (DEBUG) console.debug("[news][slug] fetched full article", { id: found.id, hasContent: !!article.content });
+      } catch (innerError) {
+        if (DEBUG) console.warn("[news][slug] failed to fetch full details, using list result", { error: innerError });
+        article = found;
+      }
+    }
+
+    if (DEBUG && article)
+      console.debug("[news][slug] final article data", { slug, articleTitle: article.title, mode: { IS_STATIC_EXPORT, NODE_ENV } });
   } catch (e) {
     apiError = e as Error;
     
@@ -492,7 +507,7 @@ export default async function NewsArticlePage({
       String(
         process.env.NEXT_PUBLIC_ENABLE_REWRITES || "false"
       ).toLowerCase() !== "false";
-    const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(
+    const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || "https://admin.eurochamghana.eu").replace(
       /\/$/,
       ""
     );
