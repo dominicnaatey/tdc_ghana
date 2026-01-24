@@ -16,18 +16,19 @@ export default function NewsSection() {
 
   useEffect(() => {
     let mounted = true
-    const params = { page: 1, per_page: 3, sort: 'published_at' as const, order: 'desc' as const }
+    // Fetch 6 items to ensure we have 3 published ones after filtering
+    const params = { page: 1, per_page: 6, sort: 'published_at' as const, order: 'desc' as const }
     const load = async () => {
       try {
         const cached = await listNewsCached(params)
-        if (mounted) setNewsItems((cached?.data || []).filter(n => n.is_published))
+        if (mounted) setNewsItems((cached?.data || []).filter(n => n.is_published).slice(0, 3))
       } catch (err) {
         if (DEBUG) console.warn('[news-section] cached load error', err)
       }
       // Background refresh to ensure latest
       try {
         const fresh = await refreshNewsCache(params)
-        if (mounted) setNewsItems((fresh?.data || []).filter(n => n.is_published))
+        if (mounted) setNewsItems((fresh?.data || []).filter(n => n.is_published).slice(0, 3))
       } catch (err) {
         if (DEBUG) console.warn('[news-section] refresh error', err)
       }
