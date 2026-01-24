@@ -1,11 +1,12 @@
 {
   "name": "my-v0-project",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "eslint .",
+    "lint": "next lint",
     "start": "next start",
     "build:static": "node build-static.mjs",
     "validate:deployment": "node scripts/validate-deployment.mjs",
@@ -13,11 +14,6 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "clean": "rm -rf .next out"
-  },
-  "eslintConfig": {
-    "extends": [
-      "next/core-web-vitals"
-    ]
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
