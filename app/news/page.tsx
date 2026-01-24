@@ -165,7 +165,7 @@ function NewsCard({ article }: { article: any }) {
 
           {/* Always render with fallback to placeholder */}
           <a href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block">
-            <div className="w-48 h-32 flex-shrink-0 cursor-pointer">
+            <div className="w-48 h-32 shrink-0 cursor-pointer">
               <img
                 src={resolveImageSrc(article)}
                 alt={article.title}
@@ -186,7 +186,7 @@ function NewsCard({ article }: { article: any }) {
       >
         <article className="space-y-4">
           {/* Always render with fallback to placeholder */}
-          <div className="aspect-[2/1] overflow-hidden rounded-md">
+          <div className="aspect-2/1 overflow-hidden rounded-md">
             <img
               src={resolveImageSrc(article)}
               alt={article.title}
