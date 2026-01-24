@@ -1,8 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Building } from "lucide-react";
-import MuxPlayer from "@mux/mux-player-react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import Link from "next/link";
+
+const MuxPlayer = dynamic(() => import("@mux/mux-player-react"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-gray-900 text-white">
+      <Building className="h-16 w-16 opacity-50" />
+    </div>
+  ),
+});
 
 export default function HeroSection() {
   const [videoError, setVideoError] = useState(false);

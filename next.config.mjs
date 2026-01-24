@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const useStaticExport = String(process.env.OUTPUT_EXPORT || '').toLowerCase() === 'true'
 const nextConfig = {
+  reactStrictMode: false,
   // Allow opting into static export explicitly via OUTPUT_EXPORT=true
   ...(useStaticExport ? { output: 'export', trailingSlash: true } : {}),
   typescript: {
@@ -8,6 +9,7 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    qualities: [75, 80, 100],
     remotePatterns: [
       {
         protocol: "https",
