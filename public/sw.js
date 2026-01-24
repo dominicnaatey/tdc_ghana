@@ -63,7 +63,7 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
-  const isNewsApi = /\/api\/posts(\/|$|\?)/.test(url.pathname);
+  const isNewsApi = /\/api\/v1\/posts(\/|$|\?)/.test(url.pathname);
   const isGet = req.method === 'GET';
 
   if (isGet && isNewsApi) {

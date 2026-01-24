@@ -79,12 +79,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export async function listNews(params: ListParams = {}, options?: RequestInit): Promise<NewsResponse> {
-  const url = withSearchParams('/api/posts', params);
+  const url = withSearchParams('/api/v1/posts', params);
   return request<NewsResponse>(url, options);
 }
 
 export async function getNews(id: number, options?: RequestInit): Promise<News> {
-  const url = new URL(`/api/posts/${id}`, getBase()).toString();
+  const url = new URL(`/api/v1/posts/${id}`, getBase()).toString();
   return request<News>(url, options);
 }
 
@@ -118,7 +118,7 @@ export async function updateNews(id: number, payload: UpdateNewsPayload, token?:
 }
 
 export async function deleteNews(id: number, token?: string): Promise<{ success: boolean }> {
-  const url = new URL(`/api/posts/${id}`, getBase()).toString();
+  const url = new URL(`/api/v1/posts/${id}`, getBase()).toString();
   await request<void>(url, {
     method: 'DELETE',
     headers: { ...getAuthHeaders(token) },
