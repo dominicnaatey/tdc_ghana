@@ -10,9 +10,10 @@ RewriteEngine On
 RewriteBase /
 
 # Force HTTPS and enable HSTS (cPanel/Apache)
-RewriteCond %{HTTPS} !=on [OR]
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Commented out to prevent redirect loops on some cPanel configurations
+# RewriteCond %{HTTPS} !=on [OR]
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Send HSTS header on HTTPS responses only
 <IfModule mod_headers.c>
@@ -53,9 +54,10 @@ RewriteRule ^news/([^/]+)/$ news/$1/index.html [L]
 RewriteRule ^news/$ news/index.html [L]
 
 # Add trailing slash for other physical directories
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_URI} !/$
-RewriteRule ^(.+)$ $1/ [R=301,L]
+# Commented out as Apache usually handles this with DirectorySlash On
+# RewriteCond %{REQUEST_FILENAME} -d
+# RewriteCond %{REQUEST_URI} !/$
+# RewriteRule ^(.+)$ $1/ [R=301,L]
 
 # Serve directory index for trailing-slash URLs
 RewriteCond %{REQUEST_FILENAME} -d
