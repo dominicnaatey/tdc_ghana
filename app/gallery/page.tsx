@@ -9,7 +9,7 @@ export default function Gallery() {
   const albums = getAllAlbums();
 
   return (
-    <main className="flex-grow bg-background-light dark:bg-background-dark font-sans">
+    <main className="grow bg-background-light dark:bg-background-dark font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-5xl font-bold text-foreground font-serif leading-tight">
@@ -27,10 +27,10 @@ export default function Gallery() {
               href={`/gallery/${album.slug}`}
               className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
 
               {/* Wrapper enforces visual aspect ratio consistency */}
-              <div className="relative aspect-[4/3] w-full">
+              <div className="relative aspect-4/3 w-full">
                 <Image
                   src={album.images[0]}
                   alt={album.title}

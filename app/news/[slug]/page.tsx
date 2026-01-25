@@ -18,6 +18,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { findNewsBySlug, listNews, getNews } from "@/lib/api/news";
 import { getNewsBySlug, sampleNews } from "@/lib/data/sample-news";
+import { saveNewsMap } from "@/lib/news-map-utils";
 
 // Pre-generate static paths for export mode with enhanced error handling and pagination
 // Enhanced for mode consistency (Requirements 5.1, 5.2, 5.3)
@@ -61,6 +62,7 @@ export async function generateStaticParams() {
   }
 
   const slugs = new Set<string>();
+  const slugMap: Record<string, number> = {};
   let apiSuccessful = false;
   let totalApiArticles = 0;
 
@@ -193,8 +195,19 @@ export async function generateStaticParams() {
     if (typeof raw === "string" && raw.trim().length > 0 && article.status === 'published') {
       const normalizedSlug = decodeURIComponent(raw.trim().toLowerCase());
       slugs.add(normalizedSlug);
+      if (article.id) {
+        slugMap[normalizedSlug] = article.id;
+      }
       localArticleCount++;
     }
+  }
+
+  // Save the slug map for use by findNewsBySlug
+  if (Object.keys(slugMap).length > 0) {
+    if (DEBUG) {
+      console.debug(`[generateStaticParams] Saving map with ${Object.keys(slugMap).length} entries`);
+    }
+    await saveNewsMap(slugMap);
   }
 
   if (DEBUG) {
@@ -236,6 +249,14 @@ export async function generateStaticParams() {
   }
 
   const finalSlugs = Array.from(slugs).map((slug) => ({ slug }));
+
+  // Save the generated map for runtime usage (Requirements 3.2)
+  if (Object.keys(slugMap).length > 0) {
+    if (DEBUG) {
+      console.debug(`[generateStaticParams] Saving map with ${Object.keys(slugMap).length} entries`);
+    }
+    await saveNewsMap(slugMap);
+  }
 
   if (DEBUG) {
     console.debug("[generateStaticParams] Final summary:", {

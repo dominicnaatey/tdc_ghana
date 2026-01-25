@@ -209,7 +209,8 @@ export function getFeaturedNews() {
 }
 
 export function getNewsBySlug(slug: string) {
-  return sampleNews.find(article => article.slug === slug && article.status === 'published') ?? null;
+  const norm = slug.trim().toLowerCase();
+  return sampleNews.find(article => article.slug.trim().toLowerCase() === norm && article.status === 'published') ?? null;
 }
 
 export function getRelatedNews(currentId: number, category: string, limit: number = 3) {

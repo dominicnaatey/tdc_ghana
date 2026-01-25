@@ -1,5 +1,6 @@
 import type { News, NewsResponse, ListParams, CreateNewsPayload, UpdateNewsPayload } from "../types/news";
 import { invalidateNewsCache } from "../news-cache";
+import { getNewsIdFromMap } from "../news-map-utils";
 
 const serverBase = process.env.API_BASE_URL;
 const publicBase = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -132,6 +133,24 @@ export async function findNewsBySlug(slug: string, options?: RequestInit): Promi
   } catch (e) {
     if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
       console.warn('[findNewsBySlug] List fallback strategy failed', e);
+    }
+  }
+
+  // Strategy 3: Check static map for ID (useful for static export or when API search is limited)
+  try {
+    const mappedId = await getNewsIdFromMap(norm);
+    if (mappedId) {
+      if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
+        console.debug(`[findNewsBySlug] Found ID ${mappedId} in static map for slug "${norm}"`);
+      }
+      const direct = await getNews(mappedId, options);
+      if (direct && (direct.id === mappedId || String(direct.slug).toLowerCase() === norm)) {
+        return direct;
+      }
+    }
+  } catch (e) {
+    if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
+      console.warn('[findNewsBySlug] Static map strategy failed', e);
     }
   }
 
