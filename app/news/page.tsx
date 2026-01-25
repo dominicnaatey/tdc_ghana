@@ -65,7 +65,7 @@ function MobileNewsCardSkeleton() {
   );
 }
 
-function NewsCard({ article }: { article: any }) {
+function NewsCard({ article, slugMap }: { article: any; slugMap: Record<string, any> | null }) {
   // Normalize image URL: prefer same-origin proxy; cleanup bad prefixes
   const resolveImageSrc = (a: any) => {
     let raw = (a?.featured_image_path ?? a?.featured_image ?? "").trim();
@@ -125,6 +125,18 @@ function NewsCard({ article }: { article: any }) {
     return words && words.length < text.length ? words + "…" : words;
   };
 
+  // Determine URL: use static path if in map, otherwise fallback to dynamic viewer
+  const getArticleUrl = (slug: string) => {
+    const normalized = String(slug || '').trim().toLowerCase();
+    // If slugMap is loaded and this slug exists, it's a static page
+    // If slugMap is loaded and slug MISSING, it's a new article -> use dynamic viewer
+    // If slugMap not yet loaded, default to static (optimistic) or handle gracefully
+    if (slugMap && !slugMap[normalized]) {
+        return `/news/view?slug=${encodeURIComponent(normalized)}`;
+    }
+    return `/news/${normalized}`;
+  };
+
   return (
     <>
       {/* Desktop Layout */}
@@ -133,7 +145,7 @@ function NewsCard({ article }: { article: any }) {
         style={{ fontFamily: "Segoe UI, system-ui, sans-serif" }}
       >
         <div className="flex gap-6">
-          <a href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block flex-1">
+          <a href={getArticleUrl(article.slug)} className="block flex-1">
             <div className="flex-1 cursor-pointer">
               <h2
                 className="font-bold text-black mb-2 line-clamp-2 leading-tight hover:text-black"
@@ -164,7 +176,7 @@ function NewsCard({ article }: { article: any }) {
           </a>
 
           {/* Always render with fallback to placeholder */}
-          <a href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`} className="block">
+          <a href={getArticleUrl(article.slug)} className="block">
             <div className="w-48 h-32 shrink-0 cursor-pointer">
               <img
                 src={resolveImageSrc(article)}
@@ -181,7 +193,7 @@ function NewsCard({ article }: { article: any }) {
 
       {/* Mobile Layout */}
       <a
-        href={`/news/${String(article.slug ?? '').trim().toLowerCase()}`}
+        href={getArticleUrl(article.slug)}
         className="group md:hidden block mb-8"
       >
         <article className="space-y-4">
@@ -239,6 +251,7 @@ function NewsCard({ article }: { article: any }) {
 
 function NewsList() {
   const [displayedNews, setDisplayedNews] = useState<any[]>([]);
+  const [slugMap, setSlugMap] = useState<Record<string, any> | null>(null);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -246,6 +259,16 @@ function NewsList() {
   const [error, setError] = useState<string | null>(null);
   const desktopObserverRef = useRef<HTMLDivElement>(null);
   const mobileObserverRef = useRef<HTMLDivElement>(null);
+
+  // Fetch slug map on mount
+  useEffect(() => {
+    fetch('/news-slug-map.json')
+      .then(res => res.ok ? res.json() : null)
+      .then(map => {
+        if (map) setSlugMap(map);
+      })
+      .catch(() => console.warn('[NewsList] Failed to load slug map'));
+  }, []);
 
   const loadPage = useCallback(async (p: number) => {
     try {
@@ -331,7 +354,7 @@ function NewsList() {
       {/* Desktop Layout */}
       <div className="max-w-4xl mx-auto hidden md:block">
         {displayedNews.map((article) => (
-          <NewsCard key={article.id} article={article} />
+          <NewsCard key={article.id} article={article} slugMap={slugMap} />
         ))}
 
         {/* Loading skeletons for desktop */}
@@ -357,7 +380,7 @@ function NewsList() {
       {/* Mobile Layout - Single Column */}
       <div className="max-w-2xl mx-auto md:hidden">
         {displayedNews.map((article) => (
-          <NewsCard key={article.id} article={article} />
+          <NewsCard key={article.id} article={article} slugMap={slugMap} />
         ))}
 
         {/* Loading skeletons for mobile */}
