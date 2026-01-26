@@ -102,7 +102,24 @@ async function request<T>(path: string, init?: RequestInit, retries = 3): Promis
 
 export async function listNews(params: ListParams = {}, options?: RequestInit): Promise<NewsResponse> {
   const url = withSearchParams('/api/v1/posts', params);
-  return request<NewsResponse>(url, options);
+  const raw = await request<any>(url, options);
+
+  // Normalize flat API response to match NewsResponse interface
+  if (Array.isArray(raw.data) && !raw.meta) {
+    return {
+      data: raw.data,
+      meta: {
+        page: raw.current_page || 1,
+        per_page: Number(raw.per_page) || 10,
+        total: raw.total || raw.data.length,
+        last_page: raw.last_page || 1,
+        sort: params.sort || 'published_at',
+        order: params.order || 'desc',
+      }
+    };
+  }
+
+  return raw as NewsResponse;
 }
 
 export async function getNews(id: number, options?: RequestInit): Promise<News> {
