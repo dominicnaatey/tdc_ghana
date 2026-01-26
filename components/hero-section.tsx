@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Building } from "lucide-react";
+import { ArrowRight, Building, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import Link from "next/link";
@@ -15,6 +15,7 @@ const MuxPlayer = dynamic(() => import("@mux/mux-player-react"), {
 
 export default function HeroSection() {
   const [videoError, setVideoError] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   return (
     <section className="relative bg-linear-to-br from-primary/5 to-accent/5 pt-10 pb-20 lg:py-32">
@@ -88,32 +89,42 @@ export default function HeroSection() {
               {/* Background Mux Player with scale effect */}
               <div className="absolute inset-0 transition-transform duration-10000 ease-linear scale-100 group-hover:scale-105">
                 {!videoError ? (
-                  <MuxPlayer
-                    playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
-                    metadataVideoTitle="Welcome to TDC Ghana Ltd"
-                    metadataViewerUserId="user-tdc-001"
-                    streamType="on-demand"
-                    className="mux-cover pointer-events-none"
-                    accentColor="#00653A"
-                    autoPlay="muted"
-                    loop
-                    muted
-                    theme="microvideo"
-                    playsInline
-                    onError={() => setVideoError(true)}
-                    style={
-                      {
-                        "--controls": "none",
-                        "--media-object-fit": "cover",
-                        "--media-object-position": "center",
-                        objectFit: "cover",
-                        height: "100%",
-                        width: "100%",
-                      } as React.CSSProperties & {
-                        [key: `--${string}`]: string | undefined;
+                  <>
+                    {!isVideoLoaded && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-900/20 backdrop-blur-sm z-10">
+                        <Loader2 className="h-10 w-10 text-white animate-spin" />
+                      </div>
+                    )}
+                    <MuxPlayer
+                      playbackId="W9SyLTrBk8qABzU7mOvTBaAHTphVXXlICDEZ02kOXc00E"
+                      metadataVideoTitle="Welcome to TDC Ghana Ltd"
+                      metadataViewerUserId="user-tdc-001"
+                      streamType="on-demand"
+                      className={`mux-cover pointer-events-none transition-opacity duration-500 ${
+                        isVideoLoaded ? "opacity-100" : "opacity-0"
+                      }`}
+                      accentColor="#00653A"
+                      autoPlay="muted"
+                      loop
+                      muted
+                      theme="microvideo"
+                      playsInline
+                      onCanPlay={() => setIsVideoLoaded(true)}
+                      onError={() => setVideoError(true)}
+                      style={
+                        {
+                          "--controls": "none",
+                          "--media-object-fit": "cover",
+                          "--media-object-position": "center",
+                          objectFit: "cover",
+                          height: "100%",
+                          width: "100%",
+                        } as React.CSSProperties & {
+                          [key: `--${string}`]: string | undefined;
+                        }
                       }
-                    }
-                  />
+                    />
+                  </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gray-900 text-white">
                     <Building className="h-16 w-16 opacity-50" />
