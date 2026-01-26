@@ -7,6 +7,8 @@ import { Heart, MessageCircle, Bookmark, ArrowLeft } from "lucide-react";
 import { listNews, findNewsBySlug } from "@/lib/api/news";
 import { sampleNews } from "@/lib/data/sample-news";
 
+import { getNewsIdFromMap } from "@/lib/news-map-utils";
+
 function resolveImageSrc(a: any): string {
   let raw = (a?.featured_image_path ?? a?.featured_image ?? "").trim();
   if (!raw) return "/placeholder.svg";
@@ -70,6 +72,14 @@ export default function NewsViewerClient() {
     setSlug(s);
   }, []);
 
+  // Update slug when URL changes (but prevent loops)
+  useEffect(() => {
+    if (mounted && !slug) {
+        const s = decodeURIComponent(new URLSearchParams(window.location.search).get("slug") || "").trim().toLowerCase();
+        if (s) setSlug(s);
+    }
+  }, [mounted, slug]);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -80,6 +90,17 @@ export default function NewsViewerClient() {
       try {
         const found = await findNewsBySlug(slug);
         let data = found;
+        
+        // Fallback: check static map if API search failed
+        if (!data) {
+           const mappedId = await getNewsIdFromMap(slug);
+           if (mappedId) {
+             const { getNews } = await import("@/lib/api/news");
+             const direct = await getNews(mappedId);
+             if (direct) data = direct;
+           }
+        }
+
         if (!data) {
           data = sampleNews.find((n) => String(n.slug || "").trim().toLowerCase() === slug) as any;
         }
@@ -126,6 +147,9 @@ export default function NewsViewerClient() {
       <div className="max-w-3xl mx-auto px-4 py-16">
         <h1 className="text-2xl font-bold mb-4">Article Viewer</h1>
         <p className="text-gray-600">No slug provided. Try navigating from the News list.</p>
+        <div className="mt-6">
+            <a href="/news" className="text-blue-600">Back to News</a>
+        </div>
       </div>
     );
   }
@@ -228,7 +252,7 @@ export default function NewsViewerClient() {
                 <a key={rel.id} href={`/news/${String(rel.slug || "").trim().toLowerCase()}`} className="group">
                   <article className="space-y-4">
                     {(rel as any).featured_image || (rel as any).featured_image_path ? (
-                      <div className="aspect-[2/1] overflow-hidden rounded-md">
+                      <div className="aspect-2/1 overflow-hidden rounded-md">
                         <img src={resolveImageSrc(rel)} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                       </div>
                     ) : null}
