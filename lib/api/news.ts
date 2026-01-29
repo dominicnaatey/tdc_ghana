@@ -128,12 +128,27 @@ export async function getNews(id: number, options?: RequestInit): Promise<News> 
 }
 
 export async function findNewsBySlug(slug: string, options?: RequestInit): Promise<News | null> {
-  const norm = decodeURIComponent(slug).trim().toLowerCase();
+  const norm = decodeURIComponent(slug).trim(); // Keep original case for API if needed, but usually slugs are lowercase
   
-  // Strategy 1: Search by slug/title using the API's search parameter
+  // Strategy 1: Direct fetch by slug (Most reliable for this API)
   try {
-    const payload = await listNews({ search: norm, per_page: 100 }, options);
-    const match = payload.data.find((n) => String(n.slug || '').trim().toLowerCase() === norm);
+    const url = new URL(`/api/v1/posts/${encodeURIComponent(norm)}`, getBase()).toString();
+    const res = await request<{ data: News }>(url, options);
+    if (res?.data) {
+       return res.data;
+    }
+  } catch (e) {
+    if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
+      console.warn(`[findNewsBySlug] Direct slug fetch failed for "${norm}"`, e);
+    }
+  }
+
+  const normLower = norm.toLowerCase();
+
+  // Strategy 2: Search by slug/title using the API's search parameter
+  try {
+    const payload = await listNews({ search: normLower, per_page: 100 }, options);
+    const match = payload.data.find((n) => String(n.slug || '').trim().toLowerCase() === normLower);
     if (match) return match;
   } catch (e) {
     if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
@@ -141,11 +156,11 @@ export async function findNewsBySlug(slug: string, options?: RequestInit): Promi
     }
   }
 
-  // Strategy 2: Fallback to fetching the latest news list (in case search is fuzzy or broken)
+  // Strategy 3: Fallback to fetching the latest news list (in case search is fuzzy or broken)
   // This is often more reliable if the article is recent
   try {
     const payload = await listNews({ per_page: 100, sort: 'published_at', order: 'desc' }, options);
-    const match = payload.data.find((n) => String(n.slug || '').trim().toLowerCase() === norm);
+    const match = payload.data.find((n) => String(n.slug || '').trim().toLowerCase() === normLower);
     if (match) return match;
   } catch (e) {
     if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
@@ -153,17 +168,17 @@ export async function findNewsBySlug(slug: string, options?: RequestInit): Promi
     }
   }
 
-  // Strategy 3: Check static map for ID (useful for static export or when API search is limited)
+  // Strategy 4: Check static map for ID (useful for static export or when API search is limited)
   try {
-    const mappedId = await getNewsIdFromMap(norm);
+    const mappedId = await getNewsIdFromMap(normLower);
     if (mappedId) {
       if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {
-        console.debug(`[findNewsBySlug] Found ID ${mappedId} in static map for slug "${norm}"`);
+        console.debug(`[findNewsBySlug] Found ID ${mappedId} in static map for slug "${normLower}"`);
       }
-      const direct = await getNews(mappedId, options);
-      if (direct && (direct.id === mappedId || String(direct.slug).toLowerCase() === norm)) {
-        return direct;
-      }
+      // Note: We can't fetch by ID directly due to API limitations, but we can try the slug again
+      // or if we had an ID-based endpoint, we'd use it here.
+      // Since Strategy 1 already tried the slug, this is mostly redundant unless the map helps us find a different slug?
+      // Keeping it as a placeholder for now.
     }
   } catch (e) {
     if (String(process.env.DEBUG_NEWS).toLowerCase() === 'true') {

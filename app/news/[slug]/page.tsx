@@ -104,6 +104,9 @@ export async function generateStaticParams() {
           // Only include published articles for static generation
           if (article?.status === 'published' || !article?.status) {
             slugs.add(normalizedSlug);
+            if (article.id) {
+              slugMap[normalizedSlug] = article.id;
+            }
             pageArticleCount++;
             totalApiArticles++;
           }
