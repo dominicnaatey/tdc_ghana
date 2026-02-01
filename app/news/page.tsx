@@ -125,15 +125,11 @@ function NewsCard({ article, slugMap }: { article: any; slugMap: Record<string, 
     return words && words.length < text.length ? words + "…" : words;
   };
 
-  // Determine URL: use static path if in map, otherwise fallback to dynamic viewer
+  // Determine URL: always use static slug routes for static deployment compatibility
   const getArticleUrl = (slug: string) => {
     const normalized = String(slug || '').trim().toLowerCase();
-    // If slugMap is loaded and this slug exists, it's a static page
-    // If slugMap is loaded and slug MISSING, it's a new article -> use dynamic viewer
-    // If slugMap not yet loaded, default to static (optimistic) or handle gracefully
-    if (slugMap && !slugMap[normalized]) {
-        return `/news/view?slug=${encodeURIComponent(normalized)}`;
-    }
+    // Always use static routes for cPanel deployment compatibility
+    // The static export process will generate HTML files for all articles
     return `/news/${normalized}`;
   };
 
